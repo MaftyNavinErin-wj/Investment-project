@@ -1,0 +1,1282 @@
+{
+  "report_title": "AI Capex Radar",
+  "lookback_days": 3,
+  "max_items_per_query": 10,
+  "crowded_terms": [
+    "already",
+    "priced in",
+    "overcrowded",
+    "rally",
+    "surged",
+    "soared",
+    "hot trade",
+    "consensus",
+    "everyone",
+    "overvalued",
+    "late cycle",
+    "bubble"
+  ],
+  "discovery_queries": [
+    "AI infrastructure emerging bottleneck not Nvidia",
+    "AI data center supply chain bottleneck underappreciated",
+    "AI inference cost optimization enterprise adoption",
+    "AI agents enterprise workflow revenue adoption",
+    "AI data center software orchestration energy optimization",
+    "AI chips testing burn-in bottleneck advanced packaging",
+    "AI data center grid interconnection battery backed power early",
+    "AI edge inference on-device AI adoption enterprise",
+    "AI security data governance enterprise adoption",
+    "AI robotics physical AI supply chain emerging"
+  ],
+  "discovery_topics": [
+    {
+      "name": "AI 应用/Agent 商业化",
+      "keywords": [
+        "agent",
+        "workflow",
+        "enterprise adoption",
+        "copilot",
+        "ai app",
+        "monetization",
+        "arpu",
+        "productivity"
+      ],
+      "why": "硬件链条已经拥挤，下一阶段要看 AI 是否能在应用端收钱，证明 capex 的 ROI。"
+    },
+    {
+      "name": "推理成本/推理优化",
+      "keywords": [
+        "inference cost",
+        "kv cache",
+        "model serving",
+        "inference optimization",
+        "speculative decoding",
+        "token cost",
+        "ai inference"
+      ],
+      "why": "如果 AI 应用爆发，瓶颈会从训练侧转向推理成本和推理效率。"
+    },
+    {
+      "name": "AI 数据治理/安全",
+      "keywords": [
+        "ai security",
+        "data governance",
+        "model risk",
+        "ai compliance",
+        "observability",
+        "guardrails"
+      ],
+      "why": "企业采用 AI 后，安全、合规、治理和可观测性可能成为软件侧刚需。"
+    },
+    {
+      "name": "测试/老化/良率瓶颈",
+      "keywords": [
+        "burn-in",
+        "testing",
+        "ATE",
+        "yield",
+        "advanced packaging test",
+        "thermal cycling",
+        "reliability"
+      ],
+      "why": "AI 芯片和先进封装复杂度提高后，测试和良率可能成为更隐蔽的约束。"
+    },
+    {
+      "name": "数据中心能源软件/调度",
+      "keywords": [
+        "energy optimization",
+        "demand response",
+        "grid orchestration",
+        "power management software",
+        "load shifting"
+      ],
+      "why": "电力硬件已热，软件化调度、能耗优化和需求响应可能是更轻资产的外溢方向。"
+    },
+    {
+      "name": "端侧/边缘 AI",
+      "keywords": [
+        "edge ai",
+        "on-device ai",
+        "npus",
+        "ai pc",
+        "ai smartphone",
+        "local inference"
+      ],
+      "why": "如果云端推理成本太高，端侧/边缘推理可能获得新的关注。"
+    },
+    {
+      "name": "Physical AI / 机器人",
+      "keywords": [
+        "physical ai",
+        "robotics",
+        "humanoid",
+        "embodied ai",
+        "robot foundation model"
+      ],
+      "why": "可能是 AI 从数字世界走向物理世界的下一层应用，但需要区分真实订单和叙事。"
+    },
+    {
+      "name": "企业级存储/HBF",
+      "keywords": [
+        "high bandwidth flash",
+        "HBF",
+        "enterprise SSD",
+        "QLC",
+        "storage bottleneck",
+        "ai storage"
+      ],
+      "why": "HBM 已拥挤，存储外溢里更前置的问题是推理侧数据访问和企业级 SSD/HBF。"
+    }
+  ],
+  "investment_layers": [
+    {
+      "id": "A_known_bottleneck",
+      "name": "A层：已知瓶颈",
+      "plain": "市场已经知道的短缺，主要赚风险溢价和业绩兑现的钱。",
+      "examples": [
+        "HBM",
+        "CoWoS",
+        "先进制程",
+        "EUV",
+        "AI server",
+        "ODM",
+        "主流光模块"
+      ],
+      "test": "如果代表股票已经大涨、券商密集覆盖、散户都在讨论，就默认是 A 层。"
+    },
+    {
+      "id": "B_bottleneck_migration",
+      "name": "B层：瓶颈迁移",
+      "plain": "算力基础设施继续扩张后，瓶颈从旧环节迁移到新环节，可能赚从非共识到共识的钱。",
+      "examples": [
+        "光互连",
+        "CPO/LPO",
+        "OCS",
+        "光纤预制棒",
+        "网络",
+        "液冷",
+        "机架供电",
+        "电力接入"
+      ],
+      "test": "如果产业证据变强但代表股票还没明显拥挤，才算有吸引力；如果股票已翻倍，就是 B 层里已经被市场发现的部分。"
+    },
+    {
+      "id": "C_architecture_reshaping",
+      "name": "C层：架构重塑",
+      "plain": "下一阶段的长期第二类钱，来自算力架构变化和定价权迁移。",
+      "examples": [
+        "EDA",
+        "IP",
+        "SerDes",
+        "定制 ASIC",
+        "chiplet",
+        "先进封装周边",
+        "测试/良率",
+        "AI治理/安全",
+        "推理优化"
+      ],
+      "test": "重点看谁有定价权、谁被客户锁定、谁不是纯代工、谁能把复杂度变成利润率。"
+    }
+  ],
+  "segments": [
+    {
+      "id": "ai_server_gpu",
+      "name": "1. AI Server / GPU Infrastructure",
+      "themes": [
+        "ai_capex"
+      ],
+      "layer": "A_known_bottleneck",
+      "logic_strength": "high",
+      "mapping_strength": "high",
+      "distance": "near",
+      "logic": "Direct AI capex layer. Demand is clear, but market awareness is very high.",
+      "reps": [
+        {
+          "name": "Foxconn Industrial Internet",
+          "quote": "601138.SS"
+        },
+        {
+          "name": "Celestica",
+          "quote": "CLS"
+        }
+      ]
+    },
+    {
+      "id": "hbm",
+      "name": "2. HBM",
+      "themes": [
+        "memory"
+      ],
+      "layer": "A_known_bottleneck",
+      "logic_strength": "high",
+      "mapping_strength": "high",
+      "distance": "near",
+      "logic": "HBM is a known core bottleneck for AI training and inference memory bandwidth.",
+      "reps": [
+        {
+          "name": "Micron",
+          "quote": "MU"
+        },
+        {
+          "name": "SK Hynix",
+          "quote": "000660.KS"
+        },
+        {
+          "name": "Samsung Electronics",
+          "quote": "005930.KS"
+        }
+      ]
+    },
+    {
+      "id": "dram_nand_ssd",
+      "name": "3. DRAM / NAND / Enterprise SSD",
+      "themes": [
+        "memory"
+      ],
+      "layer": "A_known_bottleneck",
+      "logic_strength": "high",
+      "mapping_strength": "medium",
+      "distance": "near",
+      "logic": "HBM capacity pressure spills over to DRAM, NAND and enterprise SSD pricing and supply.",
+      "reps": [
+        {
+          "name": "Western Digital",
+          "quote": "WDC"
+        },
+        {
+          "name": "GigaDevice",
+          "quote": "603986.SS"
+        },
+        {
+          "name": "Longsys",
+          "quote": "301308.SZ"
+        },
+        {
+          "name": "Biwin Storage",
+          "quote": "688525.SS"
+        }
+      ]
+    },
+    {
+      "id": "memory_interface",
+      "name": "4. Memory Interface / Retimer / CXL",
+      "themes": [
+        "memory",
+        "emerging_second_order"
+      ],
+      "layer": "C_architecture_reshaping",
+      "logic_strength": "high",
+      "mapping_strength": "high",
+      "distance": "near_mid",
+      "logic": "AI server memory bandwidth and interconnect complexity drive DDR5 RCD/MRCD/MDB, PCIe Retimer and CXL demand.",
+      "reps": [
+        {
+          "name": "Montage Technology",
+          "quote": "688008.SS"
+        },
+        {
+          "name": "Rambus",
+          "quote": "RMBS"
+        }
+      ]
+    },
+    {
+      "id": "optical_modules",
+      "name": "5. Optical Modules 800G/1.6T",
+      "themes": [
+        "networking_optics",
+        "ai_capex"
+      ],
+      "layer": "A_known_bottleneck",
+      "logic_strength": "high",
+      "mapping_strength": "high",
+      "distance": "near",
+      "logic": "GPU cluster scaling drives 800G/1.6T optical module demand. This is a known bottleneck.",
+      "reps": [
+        {
+          "name": "Zhongji Innolight",
+          "quote": "300308.SZ"
+        },
+        {
+          "name": "Eoptolink",
+          "quote": "300502.SZ"
+        },
+        {
+          "name": "TFC Communication",
+          "quote": "300394.SZ"
+        },
+        {
+          "name": "Coherent",
+          "quote": "COHR"
+        },
+        {
+          "name": "Lumentum",
+          "quote": "LITE"
+        }
+      ]
+    },
+    {
+      "id": "cpo_silicon_photonics",
+      "name": "6. CPO / Silicon Photonics / OCS",
+      "themes": [
+        "networking_optics",
+        "emerging_second_order"
+      ],
+      "layer": "B_bottleneck_migration",
+      "logic_strength": "high",
+      "mapping_strength": "medium",
+      "distance": "near_mid",
+      "logic": "Networking bottlenecks migrate from pluggable modules toward CPO, silicon photonics and OCS.",
+      "reps": [
+        {
+          "name": "Coherent",
+          "quote": "COHR"
+        },
+        {
+          "name": "Lumentum",
+          "quote": "LITE"
+        },
+        {
+          "name": "TFC Communication",
+          "quote": "300394.SZ"
+        }
+      ]
+    },
+    {
+      "id": "pcb",
+      "name": "7. High-speed PCB",
+      "themes": [
+        "networking_optics",
+        "emerging_second_order"
+      ],
+      "layer": "B_bottleneck_migration",
+      "logic_strength": "medium",
+      "mapping_strength": "medium",
+      "distance": "near_mid",
+      "logic": "AI servers and high-speed switches increase demand for high-layer high-speed PCB.",
+      "reps": [
+        {
+          "name": "WUS Printed Circuit",
+          "quote": "002463.SZ"
+        },
+        {
+          "name": "Shenghong Technology",
+          "quote": "300476.SZ"
+        }
+      ]
+    },
+    {
+      "id": "connectors_serdes",
+      "name": "8. Connectors / SerDes / High-speed Interconnect",
+      "themes": [
+        "networking_optics",
+        "emerging_second_order"
+      ],
+      "layer": "B_bottleneck_migration",
+      "logic_strength": "medium",
+      "mapping_strength": "medium",
+      "distance": "near_mid",
+      "logic": "High-speed signal-chain complexity benefits connectors, SerDes, cables and interconnect solutions.",
+      "reps": [
+        {
+          "name": "AVIC Jonhon",
+          "quote": "002179.SZ"
+        },
+        {
+          "name": "Amphenol",
+          "quote": "APH"
+        },
+        {
+          "name": "Credo",
+          "quote": "CRDO"
+        }
+      ]
+    },
+    {
+      "id": "critical_power",
+      "name": "9. Critical Power: UPS / Switchgear / Power Distribution",
+      "themes": [
+        "power_cooling"
+      ],
+      "layer": "A_known_bottleneck",
+      "logic_strength": "high",
+      "mapping_strength": "high",
+      "distance": "mid",
+      "logic": "High-power racks drive UPS, switchgear, power distribution and critical power systems.",
+      "reps": [
+        {
+          "name": "Vertiv",
+          "quote": "VRT"
+        },
+        {
+          "name": "Eaton",
+          "quote": "ETN"
+        },
+        {
+          "name": "Kehua Data",
+          "quote": "002335.SZ"
+        }
+      ]
+    },
+    {
+      "id": "liquid_cooling",
+      "name": "10. Liquid Cooling / Thermal Management",
+      "themes": [
+        "power_cooling"
+      ],
+      "layer": "A_known_bottleneck",
+      "logic_strength": "high",
+      "mapping_strength": "medium",
+      "distance": "mid",
+      "logic": "Higher rack power density drives liquid cooling and thermal management adoption.",
+      "reps": [
+        {
+          "name": "Vertiv",
+          "quote": "VRT"
+        },
+        {
+          "name": "Envicool",
+          "quote": "002837.SZ"
+        },
+        {
+          "name": "CoolIT/Private",
+          "quote": ""
+        }
+      ]
+    },
+    {
+      "id": "power_generation_turbines",
+      "name": "11. Power Generation / Gas Turbines",
+      "themes": [
+        "power_cooling"
+      ],
+      "layer": "B_bottleneck_migration",
+      "logic_strength": "high",
+      "mapping_strength": "medium",
+      "distance": "far_upstream",
+      "logic": "AI data center bottleneck migrates upstream to time-to-power, benefiting gas turbines and generation equipment.",
+      "reps": [
+        {
+          "name": "GE Vernova",
+          "quote": "GEV"
+        },
+        {
+          "name": "Siemens Energy",
+          "quote": "SMNEY"
+        },
+        {
+          "name": "Mitsubishi Heavy",
+          "quote": "MHVYF"
+        }
+      ]
+    },
+    {
+      "id": "gas_midstream",
+      "name": "12. Natural Gas Midstream / Pipeline / Compression",
+      "themes": [
+        "power_cooling"
+      ],
+      "layer": "B_bottleneck_migration",
+      "logic_strength": "medium",
+      "mapping_strength": "medium",
+      "distance": "far_upstream",
+      "logic": "If data centers shift to onsite gas generation, pipeline laterals, compression, storage and firm gas contracts may benefit.",
+      "reps": [
+        {
+          "name": "Kinder Morgan",
+          "quote": "KMI"
+        },
+        {
+          "name": "Williams",
+          "quote": "WMB"
+        },
+        {
+          "name": "EQT",
+          "quote": "EQT"
+        }
+      ]
+    },
+    {
+      "id": "grid_epc",
+      "name": "13. Grid EPC / Transmission / Substation",
+      "themes": [
+        "power_cooling"
+      ],
+      "layer": "B_bottleneck_migration",
+      "logic_strength": "medium",
+      "mapping_strength": "medium",
+      "distance": "far_upstream",
+      "logic": "Data center buildout requires transmission, substations, interconnection work and EPC delivery.",
+      "reps": [
+        {
+          "name": "Quanta Services",
+          "quote": "PWR"
+        },
+        {
+          "name": "EMCOR",
+          "quote": "EME"
+        },
+        {
+          "name": "MYR Group",
+          "quote": "MYRG"
+        }
+      ]
+    },
+    {
+      "id": "copper_cables",
+      "name": "14. Copper / Cables / Electrification Metals",
+      "themes": [
+        "power_cooling",
+        "emerging_second_order"
+      ],
+      "layer": "B_bottleneck_migration",
+      "logic_strength": "medium",
+      "mapping_strength": "medium",
+      "distance": "far_upstream",
+      "logic": "AI data centers, grid expansion and electrification drive copper, cable and electrical materials demand.",
+      "reps": [
+        {
+          "name": "Freeport-McMoRan",
+          "quote": "FCX"
+        },
+        {
+          "name": "Southern Copper",
+          "quote": "SCCO"
+        },
+        {
+          "name": "Encore Wire/ELV",
+          "quote": "WIRE"
+        }
+      ]
+    },
+    {
+      "id": "fiber_preform_cable",
+      "name": "15. Fiber / Preform / Optical Cable",
+      "themes": [
+        "networking_optics",
+        "emerging_second_order"
+      ],
+      "layer": "B_bottleneck_migration",
+      "logic_strength": "medium",
+      "mapping_strength": "medium",
+      "distance": "mid_upstream",
+      "logic": "AI data center internal and regional networking may shift bottlenecks toward fiber, preform and optical cable.",
+      "reps": [
+        {
+          "name": "Corning",
+          "quote": "GLW"
+        },
+        {
+          "name": "YOFC",
+          "quote": "601869.SS"
+        },
+        {
+          "name": "ZTT",
+          "quote": "600522.SS"
+        }
+      ]
+    },
+    {
+      "id": "ceramic_packaging_htcc",
+      "name": "16. HTCC / Ceramic Packaging Materials",
+      "themes": [
+        "emerging_second_order",
+        "networking_optics"
+      ],
+      "layer": "B_bottleneck_migration",
+      "logic_strength": "medium",
+      "mapping_strength": "medium",
+      "distance": "mid_upstream",
+      "logic": "High-reliability ceramic packaging can map to optical communication and CPO upstream materials, but customer proof is needed.",
+      "reps": [
+        {
+          "name": "Canqin Technology",
+          "quote": "688182.SS"
+        }
+      ]
+    },
+    {
+      "id": "water_resources",
+      "name": "17. Water / Zero-water Cooling / Treatment",
+      "themes": [
+        "power_cooling",
+        "emerging_second_order"
+      ],
+      "layer": "B_bottleneck_migration",
+      "logic_strength": "medium",
+      "mapping_strength": "low",
+      "distance": "far_upstream",
+      "logic": "Data center water use, local opposition and regulation can become site-selection constraints, but pure-play mappings are weak.",
+      "reps": [
+        {
+          "name": "Xylem",
+          "quote": "XYL"
+        },
+        {
+          "name": "Ecolab",
+          "quote": "ECL"
+        }
+      ]
+    },
+    {
+      "id": "test_yield",
+      "name": "18. Testing / Burn-in / Yield",
+      "themes": [
+        "emerging_second_order"
+      ],
+      "layer": "C_architecture_reshaping",
+      "logic_strength": "medium",
+      "mapping_strength": "medium",
+      "distance": "architecture",
+      "logic": "AI chips and advanced packaging complexity may turn testing, burn-in, reliability and yield into hidden bottlenecks.",
+      "reps": [
+        {
+          "name": "Huafeng Test & Control",
+          "quote": "688200.SS"
+        },
+        {
+          "name": "Teradyne",
+          "quote": "TER"
+        },
+        {
+          "name": "Advantest",
+          "quote": "ATEYY"
+        }
+      ]
+    },
+    {
+      "id": "ai_apps_agents",
+      "name": "19. AI Applications / Agents / ROI",
+      "themes": [
+        "ai_app_roi"
+      ],
+      "layer": "C_architecture_reshaping",
+      "logic_strength": "medium",
+      "mapping_strength": "medium",
+      "distance": "downstream_roi",
+      "logic": "After hardware crowding, market focus may shift toward application revenue, agent workflows and AI ROI validation.",
+      "reps": [
+        {
+          "name": "Tencent",
+          "quote": "0700.HK"
+        },
+        {
+          "name": "Kuaishou-W",
+          "quote": "1024.HK"
+        },
+        {
+          "name": "Microsoft",
+          "quote": "MSFT"
+        },
+        {
+          "name": "ServiceNow",
+          "quote": "NOW"
+        }
+      ]
+    },
+    {
+      "id": "ai_governance_security",
+      "name": "20. AI Governance / Security / Observability",
+      "themes": [
+        "ai_app_roi"
+      ],
+      "layer": "C_architecture_reshaping",
+      "logic_strength": "medium",
+      "mapping_strength": "medium",
+      "distance": "downstream_roi",
+      "logic": "Enterprise AI agent adoption may create demand for access control, audit, data governance, security and observability.",
+      "reps": [
+        {
+          "name": "Cloudflare",
+          "quote": "NET"
+        },
+        {
+          "name": "CrowdStrike",
+          "quote": "CRWD"
+        },
+        {
+          "name": "Datadog",
+          "quote": "DDOG"
+        }
+      ]
+    },
+    {
+      "id": "edge_ai",
+      "name": "21. Edge / On-device AI",
+      "themes": [
+        "ai_app_roi",
+        "emerging_second_order"
+      ],
+      "layer": "C_architecture_reshaping",
+      "logic_strength": "low",
+      "mapping_strength": "medium",
+      "distance": "architecture",
+      "logic": "If cloud inference costs stay high, some demand may move toward on-device or edge AI, but timing remains unclear.",
+      "reps": [
+        {
+          "name": "Qualcomm",
+          "quote": "QCOM"
+        },
+        {
+          "name": "MediaTek",
+          "quote": "2454.TW"
+        }
+      ]
+    }
+  ],
+  "themes": [
+    {
+      "id": "ai_capex",
+      "name": "AI Capex",
+      "description": "看微软、谷歌、亚马逊、Meta、Oracle/CoreWeave 等是否继续上修 AI 数据中心资本开支，以及市场是否开始担心 ROI。",
+      "queries": [
+        "Microsoft AI capex guidance data center",
+        "Google Alphabet AI capex data center guidance",
+        "Amazon AWS AI capex data center guidance",
+        "Meta AI capex data center guidance",
+        "Oracle CoreWeave AI data center capex",
+        "site:seekingalpha.com AI capex hyperscaler earnings call",
+        "site:fool.com AI capex data center hyperscaler",
+        "site:investing.com AI capex data center hyperscaler",
+        "sovereign AI data center capex Nvidia Oracle CoreWeave",
+        "AI capex ROI concern hyperscaler spending"
+      ],
+      "keywords": [
+        "capex",
+        "capital expenditure",
+        "hyperscaler",
+        "data center",
+        "datacenter",
+        "cloud",
+        "coreweave",
+        "oracle",
+        "microsoft",
+        "alphabet",
+        "amazon",
+        "meta"
+      ],
+      "positive_terms": [
+        "raise capex",
+        "increase capex",
+        "higher capex",
+        "accelerate",
+        "strong demand",
+        "capacity expansion",
+        "multi-year",
+        "backlog"
+      ],
+      "negative_terms": [
+        "cut capex",
+        "lower capex",
+        "slowdown",
+        "delay",
+        "overcapacity",
+        "roi concern",
+        "pause",
+        "cancel"
+      ]
+    },
+    {
+      "id": "networking_optics",
+      "name": "Networking / Optical Modules",
+      "description": "看 800G/1.6T 光模块、交换机、CPO/硅光、激光器、光纤和网络架构瓶颈。",
+      "queries": [
+        "800G 1.6T optical module demand AI data center",
+        "Arista AI networking 800G 1.6T demand",
+        "Coherent Lumentum Fabrinet optical transceiver AI demand",
+        "AI data center fiber shortage optical cable",
+        "Broadcom AI networking switch demand",
+        "CPO silicon photonics AI data center bottleneck",
+        "optical circuit switch OCS AI cluster bottleneck",
+        "InP EML laser shortage 1.6T optical transceiver",
+        "AI data center glass fiber preform shortage",
+        "site:trendforce.com AI optical transceiver 1.6T shortage"
+      ],
+      "keywords": [
+        "800g",
+        "1.6t",
+        "optical",
+        "transceiver",
+        "coherent",
+        "lumentum",
+        "fabrinet",
+        "arista",
+        "broadcom",
+        "switch",
+        "networking",
+        "fiber",
+        "cpo",
+        "silicon photonics"
+      ],
+      "positive_terms": [
+        "shortage",
+        "sold out",
+        "lead time",
+        "tight supply",
+        "price increase",
+        "strong order",
+        "capacity constrained",
+        "1.6T"
+      ],
+      "negative_terms": [
+        "inventory correction",
+        "price decline",
+        "oversupply",
+        "order cut",
+        "lead time normalizing",
+        "competition"
+      ]
+    },
+    {
+      "id": "memory",
+      "name": "HBM / Memory",
+      "description": "看 HBM、DRAM、NAND、企业级 SSD、内存接口和产能分配，重点区分结构性短缺和已经拥挤的交易。",
+      "queries": [
+        "HBM shortage AI data center 2026",
+        "DRAM price AI server demand HBM capacity allocation",
+        "NAND enterprise SSD AI server demand price",
+        "Samsung SK hynix Micron HBM demand guidance",
+        "AI memory bottleneck HBM DRAM supply",
+        "high bandwidth flash HBF AI inference storage",
+        "enterprise SSD shortage AI inference demand",
+        "SOCAMM AI memory Nvidia Vera Rubin supply",
+        "memory stocks already rallied AI shortage consensus",
+        "site:trendforce.com DRAM NAND HBM price AI server"
+      ],
+      "keywords": [
+        "hbm",
+        "dram",
+        "nand",
+        "ssd",
+        "memory",
+        "micron",
+        "sk hynix",
+        "samsung",
+        "ddr5",
+        "lpddr"
+      ],
+      "positive_terms": [
+        "shortage",
+        "price increase",
+        "sold out",
+        "capacity constrained",
+        "allocation",
+        "multi-year agreement",
+        "tight supply"
+      ],
+      "negative_terms": [
+        "price decline",
+        "oversupply",
+        "inventory",
+        "weaker demand",
+        "capacity digestion"
+      ]
+    },
+    {
+      "id": "power_cooling",
+      "name": "Power / Cooling",
+      "description": "看并网、变压器、开关柜、UPS、液冷、温控和数据中心电力约束。",
+      "queries": [
+        "AI data center power bottleneck transformer switchgear shortage",
+        "liquid cooling AI data center demand guidance",
+        "Vertiv Eaton Schneider AI data center demand",
+        "data center grid connection delays AI capex",
+        "UPS power distribution AI data center shortage",
+        "AI data center gas turbine power bottleneck",
+        "battery backed power AI data center grid constraints",
+        "solid state transformer AI data center",
+        "AI rack power semiconductor SiC GaN data center",
+        "liquid cooling stocks already rallied AI data center"
+      ],
+      "keywords": [
+        "power",
+        "cooling",
+        "liquid cooling",
+        "transformer",
+        "switchgear",
+        "ups",
+        "grid",
+        "vertiv",
+        "eaton",
+        "schneider",
+        "thermal",
+        "electricity"
+      ],
+      "positive_terms": [
+        "shortage",
+        "lead time",
+        "capacity expansion",
+        "grid constraint",
+        "liquid cooling",
+        "backlog",
+        "pricing power"
+      ],
+      "negative_terms": [
+        "delay",
+        "cancel",
+        "margin pressure",
+        "normalizing",
+        "oversupply"
+      ]
+    },
+    {
+      "id": "ai_app_roi",
+      "name": "AI Applications / ROI",
+      "description": "看 AI 应用收入、推理需求、企业采用率和商业化，回答 AI capex 最终能不能被收入证明。",
+      "queries": [
+        "AI application revenue monetization enterprise adoption",
+        "OpenAI Anthropic revenue run rate inference demand",
+        "AI ROI enterprise adoption concern capex",
+        "Tencent AI advertising cloud monetization",
+        "Kuaishou Kling AI revenue monetization",
+        "AI inference revenue run rate enterprise adoption",
+        "Copilot monetization ARPU enterprise adoption",
+        "AI agent enterprise workflow monetization",
+        "AI video generation monetization Kling Runway Sora",
+        "AI capex justified by application revenue"
+      ],
+      "keywords": [
+        "monetization",
+        "revenue",
+        "adoption",
+        "inference",
+        "roi",
+        "openai",
+        "anthropic",
+        "tencent",
+        "kuaishou",
+        "kling",
+        "advertising",
+        "copilot"
+      ],
+      "positive_terms": [
+        "monetization",
+        "revenue growth",
+        "adoption",
+        "paying users",
+        "productivity",
+        "inference demand"
+      ],
+      "negative_terms": [
+        "roi concern",
+        "low adoption",
+        "churn",
+        "losses",
+        "high inference cost",
+        "margin pressure"
+      ]
+    },
+    {
+      "id": "emerging_second_order",
+      "name": "Second-order / Earlier AI Bottlenecks",
+      "description": "专门找更前置的二阶瓶颈：光纤预制棒、OCS、CPO/硅光、InP/EML、HBF、企业级 SSD、电池备电、SiC/GaN、测试和材料。",
+      "queries": [
+        "next AI infrastructure bottleneck after HBM power liquid cooling",
+        "AI data center optical circuit switching OCS startup bottleneck",
+        "AI cluster CPO thermal yield bottleneck silicon photonics",
+        "AI data center InP laser EML shortage",
+        "high bandwidth flash HBF AI inference alternative HBM",
+        "AI inference enterprise SSD QLC NAND bottleneck",
+        "AI data center battery backed power grid interconnection",
+        "AI rack SiC GaN power semiconductor opportunity",
+        "AI server testing bottleneck burn in advanced packaging",
+        "AI data center fiber preform glass shortage"
+      ],
+      "keywords": [
+        "bottleneck",
+        "shortage",
+        "preform",
+        "ocs",
+        "cpo",
+        "silicon photonics",
+        "inp",
+        "eml",
+        "hbf",
+        "enterprise ssd",
+        "battery-backed",
+        "sic",
+        "gan",
+        "burn-in",
+        "testing"
+      ],
+      "positive_terms": [
+        "shortage",
+        "bottleneck",
+        "lead time",
+        "capacity constrained",
+        "design win",
+        "early",
+        "emerging",
+        "underappreciated"
+      ],
+      "negative_terms": [
+        "hype",
+        "overvalued",
+        "not material",
+        "delayed",
+        "too early"
+      ]
+    }
+  ],
+  "holdings": [
+    {
+      "ticker": "300750.SZ",
+      "quote": "300750.SZ",
+      "name": "宁德时代",
+      "themes": [
+        "power_cooling",
+        "ai_capex"
+      ],
+      "logic": "储能、电力基础设施和中国制造龙头重估。AI 数据中心用电和储能需求是加分项，不是唯一主线。"
+    },
+    {
+      "ticker": "300308.SZ",
+      "quote": "300308.SZ",
+      "name": "中际旭创",
+      "themes": [
+        "networking_optics",
+        "ai_capex"
+      ],
+      "logic": "AI 集群网络带宽升级带动 800G/1.6T 光模块需求，核心变量是北美 capex、网络架构、订单、毛利和供需紧张度。"
+    },
+    {
+      "ticker": "0700.HK",
+      "quote": "0700.HK",
+      "name": "腾讯控股",
+      "themes": [
+        "ai_app_roi",
+        "ai_capex"
+      ],
+      "logic": "中国互联网核心资产，AI 应用、广告、游戏和云的商业化决定估值修复空间。"
+    },
+    {
+      "ticker": "0300.HK",
+      "quote": "0300.HK",
+      "name": "美的集团",
+      "themes": [],
+      "logic": "现金流和分红底仓。暂不把它机械映射到 AI power/cooling，除非后续看到数据中心热管理、楼宇能源或工业技术订单的明确证据。"
+    },
+    {
+      "ticker": "1024.HK",
+      "quote": "1024.HK",
+      "name": "快手-W",
+      "themes": [
+        "ai_app_roi"
+      ],
+      "logic": "可灵和 AI 视频商业化期权，关键是融资/估值是否落地、收入能否验证、推理成本是否可控。"
+    }
+  ],
+  "watchlist": [
+    {
+      "name": "新易盛",
+      "quote": "300502.SZ",
+      "themes": [
+        "networking_optics"
+      ],
+      "reason": "光模块弹性标的，适合和中际旭创对比订单、客户和估值。"
+    },
+    {
+      "name": "天孚通信",
+      "quote": "300394.SZ",
+      "themes": [
+        "networking_optics"
+      ],
+      "reason": "光器件和光引擎环节，关注是否成为 1.6T/CPO 扩散受益者。"
+    },
+    {
+      "name": "工业富联",
+      "quote": "601138.SS",
+      "themes": [
+        "ai_capex"
+      ],
+      "reason": "AI 服务器链条，关注服务器出货、毛利和客户集中度。"
+    },
+    {
+      "name": "胜宏科技",
+      "quote": "300476.SZ",
+      "themes": [
+        "networking_optics"
+      ],
+      "reason": "AI PCB 环节，关注高层数/高频高速板供需和价格。"
+    },
+    {
+      "name": "沪电股份",
+      "quote": "002463.SZ",
+      "themes": [
+        "networking_optics"
+      ],
+      "reason": "交换机/服务器 PCB，关注网络侧 capex 的二阶扩散。"
+    },
+    {
+      "name": "中航光电",
+      "quote": "002179.SZ",
+      "themes": [
+        "networking_optics",
+        "power_cooling"
+      ],
+      "reason": "连接器环节，关注高速连接和电力连接需求。"
+    },
+    {
+      "name": "英维克",
+      "quote": "002837.SZ",
+      "themes": [
+        "power_cooling"
+      ],
+      "reason": "温控和液冷，关注液冷渗透率、订单和毛利。"
+    },
+    {
+      "name": "科华数据",
+      "quote": "002335.SZ",
+      "themes": [
+        "power_cooling"
+      ],
+      "reason": "UPS/数据中心电源，关注 AI 数据中心电力瓶颈外溢。"
+    },
+    {
+      "name": "兆易创新",
+      "quote": "603986.SS",
+      "themes": [
+        "memory"
+      ],
+      "reason": "存储周期和国产替代，关注 DRAM/NOR/NAND 价格外溢。"
+    },
+    {
+      "name": "澜起科技",
+      "quote": "688008.SS",
+      "themes": [
+        "memory"
+      ],
+      "reason": "内存接口芯片，关注 DDR5/服务器内存升级。"
+    },
+    {
+      "name": "长飞光纤",
+      "quote": "601869.SS",
+      "themes": [
+        "networking_optics",
+        "emerging_second_order"
+      ],
+      "reason": "光纤/预制棒方向，验证 AI 数据中心光纤需求是否向上游扩散。"
+    },
+    {
+      "name": "中天科技",
+      "quote": "600522.SS",
+      "themes": [
+        "networking_optics",
+        "emerging_second_order"
+      ],
+      "reason": "光纤光缆和电力通信复合暴露，关注订单和价格是否真正上行。"
+    },
+    {
+      "name": "东山精密",
+      "quote": "002384.SZ",
+      "themes": [
+        "networking_optics",
+        "emerging_second_order"
+      ],
+      "reason": "高速连接/PCB/电子制造外溢候选，需验证 AI 服务器占比。"
+    },
+    {
+      "name": "通富微电",
+      "quote": "002156.SZ",
+      "themes": [
+        "emerging_second_order"
+      ],
+      "reason": "先进封装和测试外溢候选，关注高端封测产能与客户导入。"
+    },
+    {
+      "name": "华峰测控",
+      "quote": "688200.SS",
+      "themes": [
+        "emerging_second_order"
+      ],
+      "reason": "测试设备候选，关注 AI 芯片和先进封装测试复杂度提升。"
+    },
+    {
+      "name": "纳芯微",
+      "quote": "688052.SS",
+      "themes": [
+        "power_cooling",
+        "emerging_second_order"
+      ],
+      "reason": "电源管理/隔离/功率链条候选，关注 AI 机柜高功率化外溢。"
+    },
+    {
+      "name": "Corning",
+      "quote": "GLW",
+      "themes": [
+        "networking_optics",
+        "emerging_second_order"
+      ],
+      "reason": "海外光纤/玻璃/连接代表票，判断光纤预制棒是否已经拥挤。"
+    },
+    {
+      "name": "Lumentum",
+      "quote": "LITE",
+      "themes": [
+        "networking_optics",
+        "emerging_second_order"
+      ],
+      "reason": "CPO/OCS/激光器代表票，判断美股 photonics 拥挤度。"
+    },
+    {
+      "name": "Coherent",
+      "quote": "COHR",
+      "themes": [
+        "networking_optics",
+        "emerging_second_order"
+      ],
+      "reason": "InP/光器件/硅光代表票，判断 Nvidia 投资后是否已充分定价。"
+    },
+    {
+      "name": "Vertiv",
+      "quote": "VRT",
+      "themes": [
+        "power_cooling"
+      ],
+      "reason": "数据中心电力和液冷代表票，判断 power/cooling 是否拥挤。"
+    },
+    {
+      "name": "Eaton",
+      "quote": "ETN",
+      "themes": [
+        "power_cooling"
+      ],
+      "reason": "电力设备和配电代表票。"
+    },
+    {
+      "name": "Quanta Services",
+      "quote": "PWR",
+      "themes": [
+        "power_cooling"
+      ],
+      "reason": "电网工程和数据中心电力建设代表票。"
+    },
+    {
+      "name": "Micron",
+      "quote": "MU",
+      "themes": [
+        "memory"
+      ],
+      "reason": "HBM/DRAM/NAND 海外代表票，判断 memory 是否已经拥挤。"
+    },
+    {
+      "name": "Western Digital",
+      "quote": "WDC",
+      "themes": [
+        "memory"
+      ],
+      "reason": "NAND/存储外溢代表票。"
+    },
+    {
+      "name": "Celestica",
+      "quote": "CLS",
+      "themes": [
+        "ai_capex",
+        "networking_optics"
+      ],
+      "reason": "AI 服务器/网络系统制造代表票。"
+    }
+  ],
+  "manual_inbox_dir": "manual_inbox",
+  "reports_dir": "reports"
+}
