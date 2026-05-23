@@ -1,5 +1,37 @@
 {
   "report_title": "AI Capex Radar",
+  "ai_capex_macro_facts": [
+    {
+      "metric": "Big 4 hyperscaler 2026 capex",
+      "status": "约 7250 亿美元，较 2025 年约 4100 亿美元继续大幅上修",
+      "implication": "AI 基建仍在扩张期，核心硬件链不能简单按见顶处理。",
+      "source": "https://www.tomshardware.com/tech-industry/big-tech/big-techs-ai-spending-plans-reach-725-billion"
+    },
+    {
+      "metric": "Meta 2026 capex guidance",
+      "status": "上调至 1250-1450 亿美元，前值 1150-1350 亿美元",
+      "implication": "头部互联网仍愿意继续扩 AI 基础设施，但市场也开始追问 ROI。",
+      "source": "https://www.investing.com/news/stock-market-news/meta-lifts-capital-expenditure-forecast-doubling-down-on-ai-push-4646727"
+    },
+    {
+      "metric": "Alphabet 2026 capex guidance",
+      "status": "上调至 1800-1900 亿美元，AI/Cloud 需求是核心驱动",
+      "implication": "Google/TPU/GPU/网络/数据中心建设继续支撑 AI 硬件需求。",
+      "source": "https://www.spglobal.com/market-intelligence/en/news-insights/research/2026/05/alphabet-postq-snapshot-ai-momentum-drives-cloud-surge-capex-outlook-rises1"
+    },
+    {
+      "metric": "Microsoft data center spend",
+      "status": "FY2026 Q1 capex-heavy，数据中心租赁支出也处在高位",
+      "implication": "即使市场担心回报，云厂商仍在锁算力和数据中心容量。",
+      "source": "https://www.datacenterdynamics.com/en/news/microsoft-spent-111bn-on-data-center-leases-alone-in-q1-2026/"
+    },
+    {
+      "metric": "Macro risk",
+      "status": "ROI、长端利率、融资成本、电力/水/土地等资源约束同时升温",
+      "implication": "风险更可能先体现为高估值压缩和边际项目推迟，而不是核心订单立刻消失。",
+      "source": "https://fortune.com/2026/04/29/meta-zuckerberg-145-billion-ai-spending-roi/"
+    }
+  ],
   "lookback_days": 3,
   "max_items_per_query": 10,
   "crowded_terms": [

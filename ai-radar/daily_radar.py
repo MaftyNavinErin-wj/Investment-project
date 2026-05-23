@@ -736,6 +736,59 @@ def format_date(value):
     return value.strftime("%Y-%m-%d")
 
 
+def ai_capex_macro_view(by_theme):
+    items = by_theme.get("ai_capex", [])
+    texts = " ".join(normalize_text(item) for item in items)
+    pos_terms = [
+        "raise",
+        "raised",
+        "boost",
+        "increase",
+        "higher",
+        "capacity constrained",
+        "backlog",
+        "data center",
+        "ai infrastructure",
+    ]
+    risk_terms = [
+        "roi",
+        "return",
+        "concern",
+        "high interest",
+        "interest rate",
+        "financing",
+        "debt",
+        "free cash flow",
+        "margin",
+        "power",
+        "water",
+        "grid",
+        "delay",
+    ]
+    pos_hits = sorted({term for term in pos_terms if term in texts})
+    risk_hits = sorted({term for term in risk_terms if term in texts})
+    if len(pos_hits) >= 3 and len(risk_hits) >= 3:
+        stance = "总水位仍上修，但市场开始同时交易 ROI、融资成本和资源约束。"
+        risk_level = "中高"
+    elif len(pos_hits) >= 3:
+        stance = "总水位偏上修，AI 基建仍处在扩张阶段。"
+        risk_level = "中"
+    elif len(risk_hits) >= 3:
+        stance = "风险词更多，需警惕 AI capex 从上修转为审慎。"
+        risk_level = "高"
+    else:
+        stance = "公开信息不足，先维持观察。"
+        risk_level = "待确认"
+    top_items = items[:5]
+    return {
+        "stance": stance,
+        "risk_level": risk_level,
+        "pos_hits": pos_hits,
+        "risk_hits": risk_hits,
+        "top_items": top_items,
+    }
+
+
 def md_escape(value):
     return (value or "").replace("|", "\\|").strip()
 
@@ -866,6 +919,41 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
         layer_id = infer_investment_layer(theme["id"], signal, maturity, market_state)
         layer_name = layers.get(layer_id, {}).get("name", layer_id).split("：")[0]
         theme_rows.append({"theme": theme, "items": items, "signal": signal, "maturity": maturity, "market_state": market_state, "layer": layer_name})
+
+    macro = ai_capex_macro_view(by_theme)
+    lines.append("## AI Capex Macro")
+    lines.append("")
+    lines.append("先判断总水位，再看细分环节。若美国 AI capex 从继续上修变成审慎，A 股硬件链的估值会先受压；若总水位仍上修，重点就是找哪一环节继续吃到订单和盈利预测上修。")
+    lines.append("")
+    lines.append("| 维度 | 当前判断 | 对 A 股硬件链的含义 |")
+    lines.append("|---|---|---|")
+    lines.append(f"| 总水位 | {macro['stance']} | 支撑光模块、AI PCB、存储接口、电力/散热等核心链条，但不能自动推出所有二阶映射都有机会。 |")
+    lines.append(f"| 风险温度 | {macro['risk_level']} | 风险不是订单立刻消失，而是高 PE/远期故事先被压估值；进一步加息或长端利率上行会放大这个压力。 |")
+    lines.append("| 传导顺序 | Hyperscaler capex -> GPU/ASIC 集群 -> 网络/PCB/内存带宽 -> 电力/散热/资源约束 | 中际最直接吃网络瓶颈，沪电吃高速 PCB 复杂度，澜起吃 MRDIMM/Retimer/CXL 等架构升级。 |")
+    lines.append("| 核心证伪 | Capex 指引停止上修、AI ROI 被质疑、融资型数据中心项目放缓、长端利率继续上行 | 出现组合坏信号时，高拥挤主线先做风险复盘，不再只看静态 PE。 |")
+    lines.append("")
+    facts = config.get("ai_capex_macro_facts", [])
+    if facts:
+        lines.append("**公开基准事实：**")
+        lines.append("")
+        lines.append("| 指标 | 当前公开信息 | 投资含义 | 来源 |")
+        lines.append("|---|---|---|---|")
+        for fact in facts:
+            source = fact.get("source", "")
+            source_text = f"[link]({source})" if source else "n/a"
+            lines.append(
+                f"| {md_escape(fact.get('metric'))} | {md_escape(fact.get('status'))} | "
+                f"{md_escape(fact.get('implication'))} | {source_text} |"
+            )
+        lines.append("")
+    if macro["pos_hits"] or macro["risk_hits"]:
+        lines.append(f"- 正向关键词：{', '.join(macro['pos_hits'][:8]) if macro['pos_hits'] else 'n/a'}")
+        lines.append(f"- 风险关键词：{', '.join(macro['risk_hits'][:8]) if macro['risk_hits'] else 'n/a'}")
+    if macro["top_items"]:
+        lines.append("- 今日公开信息样本：")
+        for item in macro["top_items"][:4]:
+            lines.append(f"  - {format_date(item.get('published'))} [{md_escape(item.get('title'))}]({item.get('link')})")
+    lines.append("")
 
     segment_rows = []
     for segment in config.get("segments", []):
