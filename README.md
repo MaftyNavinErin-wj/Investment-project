@@ -8,6 +8,14 @@ Run the daily AI radar:
 .\run-ai-radar.ps1
 ```
 
+Download official evidence first when doing deeper work:
+
+```powershell
+python .\scripts\fetch-evidence.py --months 12
+```
+
+This writes SEC filings and official investor-relations pages under `evidence/`, with manifests that the research workflow can cite or review manually.
+
 The script writes dated reports under `reports/`:
 
 - `ai-radar-YYYY-MM-DD.md`

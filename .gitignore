@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+.edge-pdf-profile/
+.edge-pdf-profile-nvda/

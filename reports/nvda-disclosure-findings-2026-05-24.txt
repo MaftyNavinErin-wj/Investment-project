@@ -1,0 +1,48 @@
+
+TERM: Blackwell
+PATH: evidence/sec/NVDA/2026-05-20-10-Q-nvda-20260426.htm
+revenue by market platform and the comparable periods have been recast. Revenue was $81.6 billion, up 85% from a year ago and up 20% sequentially. Data Center revenue was $75.2 billion, up 92% from a year ago and up 21% sequentially, driven by the ramp of our Blackwell 300 products and demand for our InfiniBand, Spectrum-X Ethernet, and NVLink solutions. Hyperscaler revenue increased sequentially and remained at approximately 50% of Data Center revenue, while the remaining 50% came from a continued diversification of custom
+
+TERM: supply
+PATH: evidence/sec/NVDA/2026-05-20-10-Q-nvda-20260426.htm
+ng. Note 10 - Commitments and Contingencies Commitments Manufacturing, supply, and capacity commitments reflect data center-scale production and longer future ordering horizons across current and future product architectures. We enter into agreements with our supply vendors that allow them to procure inventory based upon our defined criteria, and in certain instances, these agreements are cancellable, able to be rescheduled, or adjustable for our business needs prior to placing firm orders. Changes to these agreements ma
+
+TERM: purchase obligations
+PATH: evidence/sec/NVDA/2026-05-20-10-Q-nvda-20260426.htm
+y offset by slower consumer PC demand that was tempered by elevated memory and systems prices. Gross margin increased from a year ago on lower inventory provisions, primarily due to the prior year's $4.5 billion charge associated with H20 excess inventory and purchase obligations. Gross margin was approximately flat sequentially as our Blackwell architecture remains the majority of our revenue. Operating expenses were up 52% from a year ago and up 12% sequentially. The increases were primarily driven by higher compensation and benefit
+
+TERM: inventories
+PATH: evidence/sec/NVDA/2026-05-20-10-Q-nvda-20260426.htm
+1,474 Deferred income taxes 1,584 ( 2,177 ) Depreciation and amortization 997 611 (Gains) losses from equity securities, net ( 15,936 ) 175 Other ( 94 ) ( 98 ) Changes in operating assets and liabilities, net of acquisitions: Accounts receivable ( 2,243 ) 933 Inventories ( 4,420 ) ( 1,258 ) Prepaid expenses and other assets ( 983 ) 560 Accounts payable 2,210 941 Accrued and other current liabilities 7,763 7,128 Other long-term liabilities 1,217 350 Net cash provided by operating activities 50,344 27,414 Cash flows from invest
+
+TERM: gross margin
+PATH: evidence/sec/NVDA/2026-05-20-10-Q-nvda-20260426.htm
+ue for the first quarter was $6.4 billion, up 29% from a year ago and up 10% sequentially. The increases were driven by robust Blackwell workstation demand, partially offset by slower consumer PC demand that was tempered by elevated memory and systems prices. Gross margin increased from a year ago on lower inventory provisions, primarily due to the prior year's $4.5 billion charge associated with H20 excess inventory and purchase obligations. Gross margin was approximately flat sequentially as our Blackwell architecture remain
+
+TERM: China
+PATH: evidence/sec/NVDA/2026-05-20-10-Q-nvda-20260426.htm
+ernment, or USG, granted licenses that allow us to ship small amounts of H200 products to specific China-based customers. To date, we have not generated any revenue under the H200 licensing program, and do not yet know whether any imports will be allowed into China. The license requires that the H200s go through an inspection process in the United States prior to any shipment to the customer. As a result, any H200 shipped under the new licensing program will be subject to a 25% tariff upon importation into the United St
+
+TERM: H20
+PATH: evidence/sec/NVDA/2026-05-20-10-Q-nvda-20260426.htm
+t allow us to ship small amounts of H200 products to specific China-based customers. To date, we have not generated any revenue under the H200 licensing program, and do not yet know whether any imports will be allowed into China. The license requires that the H200s go through an inspection process in the United States prior to any shipment to the customer. As a result, any H200 shipped under the new licensing program will be subject to a 25% tariff upon importation into the United States. The recent rise in high-quali
+
+TERM: export
+PATH: evidence/sec/NVDA/2026-05-20-10-Q-nvda-20260426.htm
+• the demand for accelerated computing, AI-related cloud services, or large language models; • changes that impact the ecosystem for the architectures underlying our products and technologies; • government actions or changes in governmental policies, such as export controls, increased restrictions on gaming usage, or tariffs; • our customers’ and partners’ ability to secure capital and energy and to build complex data center infrastructure timely; and • the availability of third-party content on our platforms, such as G
+
+TERM: Hyperscale
+PATH: evidence/sec/NVDA/2026-05-20-10-Q-nvda-20260426.htm
+evolution in our businesses, we are transitioning to a new reporting framework that better reflects our current and future growth drivers. We will have two market platforms – Data Center and Edge Computing. Within Data Center, we will report two sub-markets, Hyperscale and ACIE which incorporates AI Clouds, Industrial, and Enterprise. Hyperscale will include revenue from the public clouds and the world’s largest consumer internet companies, 24 while ACIE addresses our growth opportunity in diverse AI purpose-built data cent
+
+TERM: ACIE
+PATH: evidence/sec/NVDA/2026-05-20-10-Q-nvda-20260426.htm
+ur businesses, we are transitioning to a new reporting framework that better reflects our current and future growth drivers. We will have two market platforms – Data Center and Edge Computing. Within Data Center, we will report two sub-markets, Hyperscale and ACIE which incorporates AI Clouds, Industrial, and Enterprise. Hyperscale will include revenue from the public clouds and the world’s largest consumer internet companies, 24 while ACIE addresses our growth opportunity in diverse AI purpose-built data centers and A
+
+TERM: AI factories
+PATH: evidence/sec/NVDA/2026-05-20-10-Q-nvda-20260426.htm
+E which incorporates AI Clouds, Industrial, and Enterprise. Hyperscale will include revenue from the public clouds and the world’s largest consumer internet companies, 24 while ACIE addresses our growth opportunity in diverse AI purpose-built data centers and AI factories across industries and countries. Edge Computing highlights devices for agentic and physical AI including PCs, game consoles, workstations, AI-RAN base stations, robotics and automotive. Three Months Ended Quarter-over-Quarter Change Year-over-Year Change Apr
+
+TERM: Edge Computing
+PATH: evidence/sec/NVDA/2026-05-20-10-Q-nvda-20260426.htm
+, systems, and services to deliver unique value. Following the rapid evolution in our businesses, we are transitioning to a new reporting framework that better reflects our current and future growth drivers. We will have two market platforms – Data Center and Edge Computing. Within Data Center, we will report two sub-markets, Hyperscale and ACIE which incorporates AI Clouds, Industrial, and Enterprise. Hyperscale will include revenue from the public clouds and the world’s largest consumer internet companies, 24 while ACIE addres
