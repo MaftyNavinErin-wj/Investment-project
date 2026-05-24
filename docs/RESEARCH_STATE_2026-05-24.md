@@ -6,9 +6,9 @@ The main audience-facing report is:
 
 - `reports/ai-radar-2026-05-24.md`
 - `reports/ai-radar-2026-05-24.html`
-- `reports/ai-radar-2026-05-24-kol.pdf`
+- `reports/ai-radar-2026-05-24-emergent.pdf`
 
-Note: `reports/ai-radar-2026-05-24.pdf` was locked by an external process during export, so newer PDFs use suffixed filenames. The latest PDF is `ai-radar-2026-05-24-kol.pdf`.
+Note: `reports/ai-radar-2026-05-24.pdf` was locked by an external process during export, so newer PDFs use suffixed filenames. The latest PDF is `ai-radar-2026-05-24-emergent.pdf`.
 
 ## Scope Boundary
 
@@ -94,7 +94,7 @@ Use these for follow-up verification, not as the primary client-facing narrative
 
 ## Known Issues
 
-- The original `ai-radar-2026-05-24.pdf` file was locked during export. The latest PDF is `ai-radar-2026-05-24-nvda.pdf`.
+- The original `ai-radar-2026-05-24.pdf` file was locked during export. The latest PDF is `ai-radar-2026-05-24-emergent.pdf`.
 - Some PowerShell commands display UTF-8 Chinese text as mojibake. Use `rg` or open files in a UTF-8-aware editor to verify content.
 - The evidence puller downloads what is available from configured sources; transcript coverage is partial and depends on company IR site structure.
 
@@ -105,3 +105,4 @@ Use these for follow-up verification, not as the primary client-facing narrative
 - Add a small evidence coverage table by company and source type, without expanding raw snippets in the main report.
 - For NVIDIA-driven updates, add a recurring chain-master review section rather than treating it as a one-off insertion.
 - For KOL-driven updates, maintain `data/kol_watch_*.json` and map each external view to the segment framework before changing conclusions.
+- Add an emergent segment discovery process: first derive possible future bottlenecks from AI factory architecture, then remove already crowded A-share mappings, then test lower-crowding candidates in data-center power protection, server-power magnetic components, thermal consumables, and DDR5 support parts. KOLs are only one idea feed. Current draft is stored in `data/emergent_segment_watch_2026-05-24.json`.

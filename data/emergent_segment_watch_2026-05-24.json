@@ -1,0 +1,108 @@
+{
+  "date": "2026-05-24",
+  "purpose": "Track emergent AI capex segments after removing already crowded A-share mappings.",
+  "framework_fit": "Part of the core AI capex framework: start from future system bottlenecks, then look for company-level evidence and crowding gaps. KOLs, sell-side notes and social reads are only idea feeds, not the source of conviction.",
+  "not_recommendations": true,
+  "remove_as_early_ideas": [
+    {
+      "bucket": "Optical modules / CPO main chain",
+      "reason": "Already repeatedly traded as an AI capex consensus direction."
+    },
+    {
+      "bucket": "AI PCB / CCL / electronic glass fabric",
+      "reason": "Core logic remains strong, but the obvious A-share mappings are already crowded."
+    },
+    {
+      "bucket": "Storage module cycle names",
+      "reason": "Many names have already been repriced by memory-cycle and AI-storage narratives."
+    },
+    {
+      "bucket": "Visible copper interconnect / high-speed cable names",
+      "reason": "The theme has already spread beyond first-tier optical names."
+    },
+    {
+      "bucket": "Liquid-cooling integrators",
+      "reason": "The market has already named the direct liquid-cooling beneficiaries."
+    },
+    {
+      "bucket": "Visible AI power-supply names",
+      "reason": "Several server-power names have explicit AI data-center coverage and price moves."
+    },
+    {
+      "bucket": "Already-started optical/CPO test-equipment names",
+      "reason": "Names such as JPT have already moved sharply and should not be treated as undiscovered."
+    }
+  ],
+  "watchlist": [
+    {
+      "ticker": "002706.SZ",
+      "name": "良信股份",
+      "theme": "Data-center low-voltage electrical / protection",
+      "why": "Potential hidden beneficiary if AI data centers require more low-voltage distribution and protection gear.",
+      "to_verify": ["data-center customer evidence", "HVDC / low-voltage distribution exposure", "AI-related revenue share", "recent price crowding"]
+    },
+    {
+      "ticker": "002782.SZ",
+      "name": "可立克",
+      "theme": "Magnetic components for server power",
+      "why": "More upstream than visible server-power vendors; could benefit from higher-power rack architecture if server power magnetic components ramp.",
+      "to_verify": ["server-power transformer and inductor shipments", "data-center customer evidence", "margin impact", "recent price crowding"]
+    },
+    {
+      "ticker": "300041.SZ",
+      "name": "回天新材",
+      "theme": "Thermal interface / adhesives / sealing materials",
+      "why": "Possible second-order thermal-management consumables exposure after liquid-cooling integrators become crowded.",
+      "to_verify": ["AI server or data-center product evidence", "revenue split", "customer validation", "gross-margin delta"]
+    },
+    {
+      "ticker": "300019.SZ",
+      "name": "硅宝科技",
+      "theme": "Silicone sealing / thermal materials",
+      "why": "Could map to thermal and sealing materials, but AI data-center purity is not yet proven.",
+      "to_verify": ["server/data-center customer evidence", "thermal product revenue", "order visibility", "crowding"]
+    },
+    {
+      "ticker": "688123.SS",
+      "name": "聚辰股份",
+      "theme": "DDR5 SPD / EEPROM memory-module support",
+      "why": "Memory-wall and DDR5 server penetration could create second-order module-support demand; less direct than Montage.",
+      "to_verify": ["DDR5 SPD revenue", "server module customer exposure", "AI server linkage", "valuation and price crowding"]
+    },
+    {
+      "ticker": "300672.SZ",
+      "name": "国科微",
+      "theme": "Storage controller / edge storage",
+      "why": "Potential inference-storage read-through, but current AI capex linkage is weak and requires proof.",
+      "to_verify": ["enterprise/storage-controller exposure", "AI inference storage evidence", "customer evidence", "valuation"]
+    }
+  ],
+  "gray_list": [
+    {
+      "ticker": "301031.SZ",
+      "name": "中熔电气",
+      "reason": "Power protection logic is relevant, but it may already be partly recognized by the market."
+    },
+    {
+      "ticker": "600885.SS",
+      "name": "宏发股份",
+      "reason": "Relay / HVDC logic is relevant, but institutional coverage has started."
+    },
+    {
+      "ticker": "300602.SZ",
+      "name": "飞荣达",
+      "reason": "Thermal/EMI logic exists, but AI server exposure and crowding need checking."
+    },
+    {
+      "ticker": "300684.SZ",
+      "name": "中石科技",
+      "reason": "Thermal-material logic exists, but AI server revenue proof is required."
+    }
+  ],
+  "next_steps": [
+    "Pull 3M/6M/1Y price performance and valuation snapshots for each candidate.",
+    "Check 2025 annual reports and 2026 Q1 reports for AI data-center, server, HVDC, DDR5, thermal, or customer language.",
+    "Remove names that have already been repriced or lack company-level revenue evidence.",
+    "Only after evidence review, decide whether any candidate deserves inclusion in the low-crowding watch basket."
+  ]
+}
