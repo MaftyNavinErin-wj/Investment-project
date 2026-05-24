@@ -1,0 +1,72 @@
+{
+  "date": "2026-05-24",
+  "scope": "External idea feed for cross-checking the AI capex framework. These are not buy/sell recommendations.",
+  "sources": [
+    {
+      "source": "CNBC Mad Money page",
+      "url": "https://www.cnbc.com/mad-money/",
+      "note": "Official source for Mad Money clips and recaps. Direct page access may be limited by robots, so secondary recaps are used only as a discovery layer."
+    },
+    {
+      "source": "Insider Monkey recap of Jim Cramer",
+      "url": "https://www.insidermonkey.com/blog/5-stocks-on-jim-cramers-radar-nvidia-astera-labs-and-v-f-corporation-1766812/",
+      "note": "Recaps Cramer's May 2026 view that semiconductor and AI infrastructure stocks are currently driving the market while software is in the background."
+    },
+    {
+      "source": "Yahoo Finance recap of Jim Cramer on NVIDIA",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/jim-cramer-nvidia-no-ai-131231491.html",
+      "note": "Recaps Cramer's view that NVIDIA remains central to the AI revolution while cautioning about red-hot AI stocks."
+    },
+    {
+      "source": "24/7 Wall St. recap of Jim Cramer on NVIDIA",
+      "url": "https://247wallst.com/investing/2026/05/15/jim-cramer-says-buy-nvidia-for-valuation-not-china-bet-stock-trades-cheaper-than-intel-and-amd/",
+      "note": "Recaps the idea that NVIDIA should be evaluated on valuation and fundamentals rather than a China recovery bet."
+    }
+  ],
+  "items": [
+    {
+      "person": "Jim Cramer",
+      "program": "Mad Money / CNBC ecosystem",
+      "date": "2026-05-22",
+      "topic": "Semis and AI infrastructure over software",
+      "tickers": ["NVDA", "ALAB"],
+      "view": "Cramer reportedly said semiconductor and AI infrastructure stocks are driving the market while enterprise software has moved into the background.",
+      "framework_mapping": ["AI Server / GPU Infrastructure", "Memory Interface / Retimer / CXL", "Optical Modules / CPO / Silicon Photonics", "Critical Power / Cooling"],
+      "cross_check": "Validates our conclusion that hardware and physical AI infrastructure remain the primary market narrative. It also warns that these areas are already consensus, so it is more useful as a trend confirmation than a fresh low-crowding idea.",
+      "a_share_readthrough": "Supports continued monitoring of optical modules, high-speed PCB, connectors, memory interface, power and cooling in A-shares, but only with earnings-revision discipline."
+    },
+    {
+      "person": "Jim Cramer",
+      "program": "Mad Money / CNBC ecosystem",
+      "date": "2026-05-22",
+      "topic": "Astera Labs",
+      "tickers": ["ALAB"],
+      "view": "Cramer reportedly told a caller who had already taken out cost basis to hold the remaining Astera Labs position.",
+      "framework_mapping": ["Memory Interface / Retimer / CXL", "Connectors / SerDes / High-speed Interconnect", "NVLink / AI connectivity"],
+      "cross_check": "This lines up with our NVIDIA-chain finding that networking, NVLink, retimers, connectivity and high-speed interconnect are core bottleneck-migration areas.",
+      "a_share_readthrough": "Indirectly validates the logic for memory-interface, retimer, high-speed cable and connector mapping, but does not remove the need for company-level revenue proof."
+    },
+    {
+      "person": "Jim Cramer",
+      "program": "Mad Money / CNBC ecosystem",
+      "date": "2026-05-17",
+      "topic": "NVIDIA as chain master",
+      "tickers": ["NVDA"],
+      "view": "Recent recaps frame Cramer as emphasizing NVIDIA's centrality to the AI revolution while remaining aware of overheated AI-stock conditions.",
+      "framework_mapping": ["AI Server / GPU Infrastructure", "Data Center Networking", "Power / Cooling", "AI Factory"],
+      "cross_check": "Consistent with treating NVIDIA as the chain-master disclosure source. It strengthens the case for using NVIDIA filings and product ecosystem announcements as the first filter for upstream ideas.",
+      "a_share_readthrough": "A-share mapping should be validated through NVIDIA-driven bottlenecks, not through generic AI label exposure."
+    },
+    {
+      "person": "Jim Cramer",
+      "program": "Mad Money / CNBC ecosystem",
+      "date": "2026-05-15",
+      "topic": "NVIDIA not as a China-recovery bet",
+      "tickers": ["NVDA"],
+      "view": "A recap says Cramer argued NVIDIA should be bought for valuation/fundamentals rather than as a China bet.",
+      "framework_mapping": ["Export controls", "China read-through", "Data Center compute"],
+      "cross_check": "Matches NVIDIA's own disclosure that its near-term outlook does not assume China Data Center compute revenue.",
+      "a_share_readthrough": "Avoid mapping global NVIDIA demand one-for-one to China supply chain demand; export controls and local substitution matter."
+    }
+  ]
+}

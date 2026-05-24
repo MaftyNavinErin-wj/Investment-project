@@ -43,6 +43,29 @@ NVIDIA 是 AI capex 链主，所以上游判断不能只看各自公司的叙事
 """
 
 
+KOL_WATCH = """## KOL / 外部观点交叉验证
+
+我们需要外部 idea feed 来避免完全闭门造车，但 KOL 观点只作为线索，不作为结论。使用方式是：先记录观点，再映射到我们的 segment，最后判断它是验证、冲突、还是仅代表市场热度。
+
+当前先从 CNBC Mad Money / Jim Cramer 开始，后续可以扩展到其他 KOL、sell-side notes、播客和产业访谈。
+
+| 来源 / 人物 | 观点或提到的票 | 映射到我们的框架 | Cross-check 结论 | 对 A 股逻辑的间接意义 |
+|---|---|---|---|---|
+| Jim Cramer / Mad Money recap | Semis and AI infrastructure are driving the market; software is in the background. | AI Server、networking、CPO/硅光、memory interface、power/cooling。 | 验证我们“硬件和物理 AI infrastructure 仍是主线”的判断，但也说明这些方向已经接近共识。 | 光模块、PCB、连接器、存储接口、电力/散热仍可跟，但必须看业绩上修，不能只看叙事。 |
+| Jim Cramer / Astera Labs | 对 ALAB 这类 AI connectivity / retimer / cable-module 暴露保持正面态度。 | Memory Interface / Retimer / CXL；Connectors / SerDes / High-speed Interconnect；NVLink connectivity。 | 和 NVIDIA 披露的 NVLink、networking、connectivity 瓶颈迁移一致。 | 间接验证澜起、中航光电、连接器/高速线缆链条，但仍需公司收入证明。 |
+| Jim Cramer / NVIDIA | 强调 NVIDIA 是 AI 革命核心，但也提醒 AI 热门股可能过热。 | NVIDIA chain-master；AI Server；Data Center Networking；AI Factory。 | 支持我们把 NVIDIA 披露作为上游第一过滤器，同时保留拥挤度约束。 | A 股映射应围绕 NVIDIA 真实瓶颈，而不是所有带 AI 标签的公司。 |
+| Jim Cramer / NVIDIA-China | 近期观点偏向 NVIDIA fundamentals / valuation，而不是 China recovery bet。 | Export controls；China read-through；Data Center compute。 | 与 NVIDIA Q2 outlook 不假设 China Data Center compute revenue 相吻合。 | 不应把 NVIDIA 全球需求直接等同于中国链条需求；国内映射要额外验证客户和出口限制。 |
+
+**使用规则：**
+
+- KOL 观点用于发现 idea 和衡量市场共识，不用于替代 primary-source evidence。
+- 如果 KOL 观点和公司披露一致，提升该 segment 的验证优先级。
+- 如果 KOL 观点很热但股价也高度拥挤，只能作为趋势确认，不能当 early opportunity。
+- 如果 KOL 提到的美股逻辑能映射到 A 股，只能算间接验证，必须再找 A 股公司的订单、客户、收入或产能证据。
+
+"""
+
+
 INTERPRETATION = """## 赛道解读
 
 `Segment 全景` 已经列出每个赛道的层级、温度、逻辑、映射、拥挤度和代表公司。这里不再重复逐条解释，而是给读者一个决策读法。
@@ -90,6 +113,8 @@ def main():
         )
     if "## NVIDIA 链主披露" not in text:
         text = text.replace("## Segment 全景\n", NVDA_CHAIN_MASTER + "## Segment 全景\n", 1)
+    if "## KOL / 外部观点交叉验证" not in text:
+        text = text.replace("## 搜索热度线索\n", KOL_WATCH + "## 搜索热度线索\n", 1)
     if "## Theme Temperature" in text:
         start = text.index("## Theme Temperature")
         end = text.index("## 搜索热度线索")

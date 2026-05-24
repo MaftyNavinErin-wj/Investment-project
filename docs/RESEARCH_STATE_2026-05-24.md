@@ -6,9 +6,9 @@ The main audience-facing report is:
 
 - `reports/ai-radar-2026-05-24.md`
 - `reports/ai-radar-2026-05-24.html`
-- `reports/ai-radar-2026-05-24-nvda.pdf`
+- `reports/ai-radar-2026-05-24-kol.pdf`
 
-Note: `reports/ai-radar-2026-05-24.pdf` was locked by an external process during export, so the latest PDF was saved as `ai-radar-2026-05-24-nvda.pdf`.
+Note: `reports/ai-radar-2026-05-24.pdf` was locked by an external process during export, so newer PDFs use suffixed filenames. The latest PDF is `ai-radar-2026-05-24-kol.pdf`.
 
 ## Scope Boundary
 
@@ -50,11 +50,12 @@ The main report should preserve this order:
 4. Full segment map
 5. Segment interpretation without repeating the full map
 6. Representative company verification order
-7. Search heat / early signal notes
-8. Low-crowding watch basket
-9. Holdings mapping
-10. Stock crowding table
-11. Evidence appendix
+7. KOL / external idea-feed cross-check
+8. Search heat / early signal notes
+9. Low-crowding watch basket
+10. Holdings mapping
+11. Stock crowding table
+12. Evidence appendix
 
 The earlier `Theme Temperature` section was removed because it repeated the segment map. Its useful content was consolidated into `赛道解读`.
 
@@ -103,3 +104,4 @@ Use these for follow-up verification, not as the primary client-facing narrative
 - Replace the locked main PDF once it is no longer open.
 - Add a small evidence coverage table by company and source type, without expanding raw snippets in the main report.
 - For NVIDIA-driven updates, add a recurring chain-master review section rather than treating it as a one-off insertion.
+- For KOL-driven updates, maintain `data/kol_watch_*.json` and map each external view to the segment framework before changing conclusions.
