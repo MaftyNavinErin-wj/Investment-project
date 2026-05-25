@@ -10,6 +10,8 @@ The main audience-facing report is:
 
 Note: `reports/ai-radar-2026-05-24.pdf` was locked by an external process during export, so newer PDFs use suffixed filenames. The latest PDF is `ai-radar-2026-05-24-emergent.pdf`.
 
+Older report runs and interim export variants are archived under `reports/archive/`.
+
 ## Scope Boundary
 
 The report is based on public materials that have been collected and checked locally:
@@ -95,6 +97,7 @@ Use these for follow-up verification, not as the primary client-facing narrative
 ## Known Issues
 
 - The original `ai-radar-2026-05-24.pdf` file was locked during export. The latest PDF is `ai-radar-2026-05-24-emergent.pdf`.
+- The locked/original PDF and other interim 2026-05-24 variants were moved to `reports/archive/2026-05-24-interim/`.
 - Some PowerShell commands display UTF-8 Chinese text as mojibake. Use `rg` or open files in a UTF-8-aware editor to verify content.
 - The evidence puller downloads what is available from configured sources; transcript coverage is partial and depends on company IR site structure.
 
