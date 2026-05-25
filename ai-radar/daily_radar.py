@@ -182,6 +182,15 @@ def within_lookback(item, lookback_days):
     return published >= threshold
 
 
+def within_delta_window(item, since):
+    if since is None:
+        return True
+    published = item.get("published")
+    if not published:
+        return True
+    return published >= since
+
+
 def collect_items(config):
     max_items = int(config.get("max_items_per_query", 10))
     all_items = []
@@ -205,7 +214,7 @@ def collect_items(config):
     return all_items, errors
 
 
-def collect_discovery_items(config):
+def collect_discovery_items(config, since=None):
     max_items = int(config.get("max_items_per_query", 10))
     all_items = []
     errors = []
@@ -223,18 +232,16 @@ def collect_discovery_items(config):
         except Exception as exc:
             errors.append(f"Discovery / Google / {query}: {exc}")
     dedup = {}
-    lookback_days = int(config.get("lookback_days", 3))
     for item in all_items:
-        if within_lookback(item, lookback_days):
+        if within_delta_window(item, since):
             dedup.setdefault(item_key(item), item)
     return list(dedup.values()), errors
 
 
-def classify_items(config, raw_items):
-    lookback_days = int(config.get("lookback_days", 3))
+def classify_items(config, raw_items, since=None):
     dedup = {}
     for item in raw_items:
-        if not within_lookback(item, lookback_days) and item.get("query") != "manual_inbox":
+        if not within_delta_window(item, since) and item.get("query") != "manual_inbox":
             continue
         dedup.setdefault(item_key(item), item)
 
@@ -736,6 +743,12 @@ def format_date(value):
     return value.strftime("%Y-%m-%d")
 
 
+def format_timestamp(value):
+    if not value:
+        return "n/a"
+    return value.strftime("%Y-%m-%d %H:%M UTC")
+
+
 def ai_capex_macro_view(by_theme):
     items = by_theme.get("ai_capex", [])
     texts = " ".join(normalize_text(item) for item in items)
@@ -787,6 +800,65 @@ def ai_capex_macro_view(by_theme):
         "risk_hits": risk_hits,
         "top_items": top_items,
     }
+
+
+def iter_theme_items(by_theme):
+    seen = set()
+    for items in by_theme.values():
+        for item in items:
+            key = item_key(item)
+            if key in seen:
+                continue
+            seen.add(key)
+            yield item
+
+
+def holding_exit_radar_alerts(config, by_theme):
+    rules = config.get("holding_exit_radar", [])
+    if not rules:
+        return []
+    items = list(iter_theme_items(by_theme))
+    alerts = []
+    for rule in rules:
+        terms = [term.lower() for term in rule.get("terms", []) if term]
+        if not terms:
+            continue
+        hits = []
+        for item in items:
+            text = normalize_text(item)
+            matched = [term for term in terms if term in text]
+            if matched:
+                hits.append({"item": item, "matched": matched})
+        if hits:
+            alerts.append({"rule": rule, "hits": hits[:3]})
+    severity_order = {"red": 0, "orange": 1, "yellow": 2}
+    alerts.sort(key=lambda alert: severity_order.get(alert["rule"].get("severity", "yellow"), 9))
+    return alerts
+
+
+def render_holding_exit_radar(alerts):
+    if not alerts:
+        return []
+    lines = []
+    lines.append("## 持仓跑路雷达")
+    lines.append("")
+    lines.append("只列已经命中负面触发器的持仓；没有触发器时本节不显示。")
+    lines.append("")
+    lines.append("| 等级 | 持仓 | 触发器 | 证据样本 | 动作 |")
+    lines.append("|---|---|---|---|---|")
+    for alert in alerts:
+        rule = alert["rule"]
+        evidence = []
+        for hit in alert["hits"]:
+            item = hit["item"]
+            evidence.append(f"{format_date(item.get('published'))} [{md_escape(item.get('title'))}]({item.get('link')})")
+        lines.append(
+            f"| {rule.get('severity', 'yellow').upper()} | {md_escape(rule.get('name', rule.get('ticker', 'n/a')))} "
+            f"({md_escape(rule.get('ticker', 'n/a'))}) | {md_escape(rule.get('trigger', 'n/a'))} | "
+            f"{'<br>'.join(evidence)} | {md_escape(rule.get('action', 'review position'))} |"
+        )
+    lines.append("")
+    return lines
 
 
 def md_escape(value):
@@ -902,13 +974,35 @@ def render_pdf(html_path, pdf_path):
     return True
 
 
-def build_report(config, by_theme, market_rows, discovery_candidates, discovery_topics, market_errors, errors):
-    now = dt.datetime.now()
+def previous_report_issue_time(reports_dir, output_path):
+    candidates = []
+    output_abs = os.path.abspath(output_path) if output_path else None
+    if output_abs and os.path.exists(output_abs):
+        candidates.append(output_abs)
+    if os.path.isdir(reports_dir):
+        for name in os.listdir(reports_dir):
+            if not re.match(r"ai-radar-\d{4}-\d{2}-\d{2}\.md$", name):
+                continue
+            path = os.path.abspath(os.path.join(reports_dir, name))
+            if output_abs and path == output_abs:
+                continue
+            candidates.append(path)
+    if not candidates:
+        return None
+    latest_path = max(candidates, key=lambda path: os.path.getmtime(path))
+    return dt.datetime.fromtimestamp(os.path.getmtime(latest_path), tz=dt.timezone.utc).replace(tzinfo=None)
+
+
+def build_report(config, by_theme, market_rows, discovery_candidates, discovery_topics, market_errors, errors, report_issued_at, delta_since):
+    now = report_issued_at
     theme_map = {theme["id"]: theme for theme in config["themes"]}
     market_summary = theme_market_summary(config, market_rows)
     layers = layer_by_id(config)
     lines = []
     lines.append(f"# {config.get('report_title', 'AI Capex Radar')} - {now:%Y-%m-%d}")
+    lines.append("")
+    lines.append(f"Report issued: {format_timestamp(report_issued_at)}")
+    lines.append(f"Delta window: {format_timestamp(delta_since)} -> {format_timestamp(report_issued_at)}")
     lines.append("")
     theme_rows = []
     for theme in config["themes"]:
@@ -1076,6 +1170,8 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
         lines.append("| n/a | n/a | n/a | n/a | n/a | 当前观察池没有低拥挤度标的 |")
     lines.append("")
 
+    lines.extend(render_holding_exit_radar(holding_exit_radar_alerts(config, by_theme)))
+
     lines.append("## 持仓映射")
     lines.append("")
     market_by_quote = {row.get("quote"): row for row in market_rows}
@@ -1173,18 +1269,34 @@ def main():
     os.makedirs(reports_dir, exist_ok=True)
     os.makedirs(os.path.join(PROJECT_ROOT, config.get("manual_inbox_dir", "manual_inbox")), exist_ok=True)
 
+    output = args.output
+    if not output:
+        output = os.path.join(reports_dir, f"ai-radar-{utc_now():%Y-%m-%d}.md")
+
+    report_issued_at = utc_now()
+    delta_since = previous_report_issue_time(reports_dir, output)
+    if delta_since is None:
+        delta_since = report_issued_at - dt.timedelta(days=int(config.get("lookback_days", 1)))
+
     raw_items, errors = collect_items(config)
-    discovery_items, discovery_errors = collect_discovery_items(config)
+    discovery_items, discovery_errors = collect_discovery_items(config, since=delta_since)
     errors.extend(discovery_errors)
-    by_theme = classify_items(config, raw_items)
+    by_theme = classify_items(config, raw_items, since=delta_since)
     market_rows, market_errors = collect_market_data(config)
     market_summary = theme_market_summary(config, market_rows)
     discovery_candidates, discovery_topics = build_discovery(config, discovery_items, market_summary)
-    report = build_report(config, by_theme, market_rows, discovery_candidates, discovery_topics, market_errors, errors)
+    report = build_report(
+        config,
+        by_theme,
+        market_rows,
+        discovery_candidates,
+        discovery_topics,
+        market_errors,
+        errors,
+        report_issued_at,
+        delta_since,
+    )
 
-    output = args.output
-    if not output:
-        output = os.path.join(reports_dir, f"ai-radar-{dt.datetime.now():%Y-%m-%d}.md")
     with open(output, "w", encoding="utf-8") as f:
         f.write(report)
     html_output = os.path.splitext(output)[0] + ".html"

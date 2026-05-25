@@ -32,7 +32,7 @@
       "source": "https://fortune.com/2026/04/29/meta-zuckerberg-145-billion-ai-spending-roi/"
     }
   ],
-  "lookback_days": 3,
+  "lookback_days": 7,
   "max_items_per_query": 10,
   "crowded_terms": [
     "already",
@@ -1050,6 +1050,129 @@
       ]
     }
   ],
+  "holding_exit_radar": [
+    {
+      "ticker": "AI-HARDWARE-BASKET",
+      "name": "沪电 / 中际旭创 / 澜起",
+      "severity": "red",
+      "trigger": "AI capex 掉头、云厂商下修数据中心/AI 服务器订单，或供应链出现明确砍单。",
+      "action": "先降 AI 硬件链集中度，再逐票复核。",
+      "terms": [
+        "ai capex cut",
+        "capex guidance lowered",
+        "lowered capex guidance",
+        "cut ai spending",
+        "slow ai infrastructure spending",
+        "ai server order cut",
+        "data center order cut",
+        "hyperscaler order cut",
+        "cancel ai data center",
+        "ai data center cancellation"
+      ]
+    },
+    {
+      "ticker": "300308.SZ",
+      "name": "中际旭创",
+      "severity": "red",
+      "trigger": "800G/1.6T 光模块需求、价格或大客户订单被证伪。",
+      "action": "大幅降仓或退出新增仓。",
+      "terms": [
+        "800g order cut",
+        "1.6t order cut",
+        "optical module order cut",
+        "optical transceiver demand slowdown",
+        "optical module oversupply",
+        "hyperscaler optical order cut"
+      ]
+    },
+    {
+      "ticker": "002463.SZ",
+      "name": "沪电股份",
+      "severity": "red",
+      "trigger": "AI 服务器 PCB 订单、价格或产能利用率明显转弱。",
+      "action": "先撤新增仓，若公司指引下修则大幅降仓。",
+      "terms": [
+        "ai server pcb order cut",
+        "pcb demand slowdown",
+        "high speed pcb order cut",
+        "server pcb oversupply",
+        "pcb capacity utilization decline"
+      ]
+    },
+    {
+      "ticker": "688008.SS",
+      "name": "澜起科技",
+      "severity": "red",
+      "trigger": "DDR5/RCD/MRCD/Retimer/CXL 新品收入或毛利逻辑被证伪。",
+      "action": "降到观察仓，等下一季财报修复。",
+      "terms": [
+        "ddr5 demand slowdown",
+        "rcd order cut",
+        "mrcd order cut",
+        "retimer demand slowdown",
+        "cxl demand delay",
+        "memory interface order cut"
+      ]
+    },
+    {
+      "ticker": "1024.HK",
+      "name": "快手-W",
+      "severity": "red",
+      "trigger": "可灵分拆/融资失败，或可灵商业化显著低于预期。",
+      "action": "重估 AI 期权，优先降仓。",
+      "terms": [
+        "kling spin off fails",
+        "kling spin-off fails",
+        "kling financing fails",
+        "kling ipo delayed",
+        "kling revenue misses",
+        "kling arr slows",
+        "kuaishou ai financing fails"
+      ]
+    },
+    {
+      "ticker": "300750.SZ",
+      "name": "宁德时代",
+      "severity": "orange",
+      "trigger": "单 Wh 盈利、全球份额或储能利润率出现连续恶化。",
+      "action": "降预期，复核是否仍适合作为底仓。",
+      "terms": [
+        "catl margin pressure",
+        "catl market share decline",
+        "catl energy storage margin decline",
+        "battery price war intensifies",
+        "catl profit misses"
+      ]
+    },
+    {
+      "ticker": "0700.HK",
+      "name": "腾讯控股",
+      "severity": "orange",
+      "trigger": "游戏/广告增长失速，或 AI 投入拖累利润但商业化没有兑现。",
+      "action": "降预期，观察回购和利润率。",
+      "terms": [
+        "tencent earnings miss",
+        "tencent game revenue slowdown",
+        "tencent advertising slowdown",
+        "tencent ai margin pressure",
+        "tencent capex margin pressure"
+      ]
+    },
+    {
+      "ticker": "000333.SZ",
+      "name": "美的集团",
+      "severity": "orange",
+      "trigger": "扣非利润、现金流或海外业务连续恶化。",
+      "action": "复核底仓逻辑，避免把防守仓误拿成成长仓。",
+      "terms": [
+        "midea recurring profit decline",
+        "midea core profit decline",
+        "midea cash flow deteriorates",
+        "midea overseas demand slowdown",
+        "midea margin pressure"
+      ]
+    }
+  ],
   "holdings": [
     {
       "ticker": "300750.SZ",
@@ -1072,6 +1195,26 @@
       "logic": "AI 集群网络带宽升级带动 800G/1.6T 光模块需求，核心变量是北美 capex、网络架构、订单、毛利和供需紧张度。"
     },
     {
+      "ticker": "002463.SZ",
+      "quote": "002463.SZ",
+      "name": "沪电股份",
+      "themes": [
+        "networking_optics",
+        "ai_capex"
+      ],
+      "logic": "AI 服务器和高速交换机带动高层数、高频高速 PCB 需求，核心变量是 AI server/ASIC/GPU 订单、产品结构、毛利率和产能利用率。"
+    },
+    {
+      "ticker": "688008.SS",
+      "quote": "688008.SS",
+      "name": "澜起科技",
+      "themes": [
+        "memory",
+        "ai_capex"
+      ],
+      "logic": "服务器 DDR5 渗透、RCD/MRCD/MDB、PCIe Retimer 和 CXL 架构升级带动内存接口芯片需求，核心变量是新品收入占比和毛利率。"
+    },
+    {
       "ticker": "0700.HK",
       "quote": "0700.HK",
       "name": "腾讯控股",
@@ -1082,8 +1225,8 @@
       "logic": "中国互联网核心资产，AI 应用、广告、游戏和云的商业化决定估值修复空间。"
     },
     {
-      "ticker": "0300.HK",
-      "quote": "0300.HK",
+      "ticker": "000333.SZ",
+      "quote": "000333.SZ",
       "name": "美的集团",
       "themes": [],
       "logic": "现金流和分红底仓。暂不把它机械映射到 AI power/cooling，除非后续看到数据中心热管理、楼宇能源或工业技术订单的明确证据。"
