@@ -1,0 +1,401 @@
+{
+  "description": "Bloomberg data request for AI Capex Radar. Generated from ai-radar/config.json; edit securities/fields when report scope changes.",
+  "output_dir": "\\\\primavera.local\\primavera.local\\shared\\Beijing\\Shared Documentation\\bloomberg\\Jie",
+  "latest_filename": "bloomberg_snapshot_latest.json",
+  "archive_filename_template": "bloomberg_snapshot_{date}.json",
+  "reference_fields": [
+    "PX_LAST",
+    "CUR_MKT_CAP",
+    "BEST_PE_RATIO",
+    "EV_TO_T12M_EBITDA",
+    "EV_TO_T12M_SALES",
+    "PX_TO_BOOK_RATIO",
+    "VOLUME",
+    "VOLUME_AVG_30D",
+    "EQY_FREE_FLOAT_PCT",
+    "SHORT_INT_RATIO",
+    "BETA_ADJ_OVERRIDABLE",
+    "VOLATILITY_30D",
+    "CHG_PCT_1D",
+    "CHG_PCT_5D",
+    "CHG_PCT_1M",
+    "CHG_PCT_3M",
+    "CHG_PCT_6M",
+    "CHG_PCT_1YR"
+  ],
+  "securities": [
+    {
+      "name": "宁德时代",
+      "quote": "300750.SZ",
+      "security": "300750 CH Equity"
+    },
+    {
+      "name": "中际旭创",
+      "quote": "300308.SZ",
+      "security": "300308 CH Equity"
+    },
+    {
+      "name": "沪电股份",
+      "quote": "002463.SZ",
+      "security": "002463 CH Equity"
+    },
+    {
+      "name": "澜起科技",
+      "quote": "688008.SS",
+      "security": "688008 CH Equity"
+    },
+    {
+      "name": "腾讯控股",
+      "quote": "0700.HK",
+      "security": "700 HK Equity"
+    },
+    {
+      "name": "美的集团",
+      "quote": "000333.SZ",
+      "security": "000333 CH Equity"
+    },
+    {
+      "name": "快手-W",
+      "quote": "1024.HK",
+      "security": "1024 HK Equity"
+    },
+    {
+      "name": "新易盛",
+      "quote": "300502.SZ",
+      "security": "300502 CH Equity"
+    },
+    {
+      "name": "天孚通信",
+      "quote": "300394.SZ",
+      "security": "300394 CH Equity"
+    },
+    {
+      "name": "工业富联",
+      "quote": "601138.SS",
+      "security": "601138 CH Equity"
+    },
+    {
+      "name": "胜宏科技",
+      "quote": "300476.SZ",
+      "security": "300476 CH Equity"
+    },
+    {
+      "name": "中航光电",
+      "quote": "002179.SZ",
+      "security": "002179 CH Equity"
+    },
+    {
+      "name": "英维克",
+      "quote": "002837.SZ",
+      "security": "002837 CH Equity"
+    },
+    {
+      "name": "科华数据",
+      "quote": "002335.SZ",
+      "security": "002335 CH Equity"
+    },
+    {
+      "name": "兆易创新",
+      "quote": "603986.SS",
+      "security": "603986 CH Equity"
+    },
+    {
+      "name": "长飞光纤",
+      "quote": "601869.SS",
+      "security": "601869 CH Equity"
+    },
+    {
+      "name": "中天科技",
+      "quote": "600522.SS",
+      "security": "600522 CH Equity"
+    },
+    {
+      "name": "东山精密",
+      "quote": "002384.SZ",
+      "security": "002384 CH Equity"
+    },
+    {
+      "name": "通富微电",
+      "quote": "002156.SZ",
+      "security": "002156 CH Equity"
+    },
+    {
+      "name": "华峰测控",
+      "quote": "688200.SS",
+      "security": "688200 CH Equity"
+    },
+    {
+      "name": "纳芯微",
+      "quote": "688052.SS",
+      "security": "688052 CH Equity"
+    },
+    {
+      "name": "Corning",
+      "quote": "GLW",
+      "security": "GLW US Equity"
+    },
+    {
+      "name": "Lumentum",
+      "quote": "LITE",
+      "security": "LITE US Equity"
+    },
+    {
+      "name": "Coherent",
+      "quote": "COHR",
+      "security": "COHR US Equity"
+    },
+    {
+      "name": "Vertiv",
+      "quote": "VRT",
+      "security": "VRT US Equity"
+    },
+    {
+      "name": "Eaton",
+      "quote": "ETN",
+      "security": "ETN US Equity"
+    },
+    {
+      "name": "Quanta Services",
+      "quote": "PWR",
+      "security": "PWR US Equity"
+    },
+    {
+      "name": "Micron",
+      "quote": "MU",
+      "security": "MU US Equity"
+    },
+    {
+      "name": "Western Digital",
+      "quote": "WDC",
+      "security": "WDC US Equity"
+    },
+    {
+      "name": "Celestica",
+      "quote": "CLS",
+      "security": "CLS US Equity"
+    },
+    {
+      "name": "SK Hynix",
+      "quote": "000660.KS",
+      "security": "000660 KS Equity"
+    },
+    {
+      "name": "Samsung Electronics",
+      "quote": "005930.KS",
+      "security": "005930 KS Equity"
+    },
+    {
+      "name": "Longsys",
+      "quote": "301308.SZ",
+      "security": "301308 CH Equity"
+    },
+    {
+      "name": "Biwin Storage",
+      "quote": "688525.SS",
+      "security": "688525 CH Equity"
+    },
+    {
+      "name": "Rambus",
+      "quote": "RMBS",
+      "security": "RMBS US Equity"
+    },
+    {
+      "name": "Amphenol",
+      "quote": "APH",
+      "security": "APH US Equity"
+    },
+    {
+      "name": "Credo",
+      "quote": "CRDO",
+      "security": "CRDO US Equity"
+    },
+    {
+      "name": "GE Vernova",
+      "quote": "GEV",
+      "security": "GEV US Equity"
+    },
+    {
+      "name": "Siemens Energy",
+      "quote": "SMNEY",
+      "security": "SMNEY US Equity"
+    },
+    {
+      "name": "Mitsubishi Heavy",
+      "quote": "MHVYF",
+      "security": "MHVYF US Equity"
+    },
+    {
+      "name": "Kinder Morgan",
+      "quote": "KMI",
+      "security": "KMI US Equity"
+    },
+    {
+      "name": "Williams",
+      "quote": "WMB",
+      "security": "WMB US Equity"
+    },
+    {
+      "name": "EQT",
+      "quote": "EQT",
+      "security": "EQT US Equity"
+    },
+    {
+      "name": "EMCOR",
+      "quote": "EME",
+      "security": "EME US Equity"
+    },
+    {
+      "name": "MYR Group",
+      "quote": "MYRG",
+      "security": "MYRG US Equity"
+    },
+    {
+      "name": "Freeport-McMoRan",
+      "quote": "FCX",
+      "security": "FCX US Equity"
+    },
+    {
+      "name": "Southern Copper",
+      "quote": "SCCO",
+      "security": "SCCO US Equity"
+    },
+    {
+      "name": "Encore Wire/ELV",
+      "quote": "WIRE",
+      "security": "WIRE US Equity"
+    },
+    {
+      "name": "Canqin Technology",
+      "quote": "688182.SS",
+      "security": "688182 CH Equity"
+    },
+    {
+      "name": "Xylem",
+      "quote": "XYL",
+      "security": "XYL US Equity"
+    },
+    {
+      "name": "Ecolab",
+      "quote": "ECL",
+      "security": "ECL US Equity"
+    },
+    {
+      "name": "Teradyne",
+      "quote": "TER",
+      "security": "TER US Equity"
+    },
+    {
+      "name": "Advantest",
+      "quote": "ATEYY",
+      "security": "ATEYY US Equity"
+    },
+    {
+      "name": "Microsoft",
+      "quote": "MSFT",
+      "security": "MSFT US Equity"
+    },
+    {
+      "name": "ServiceNow",
+      "quote": "NOW",
+      "security": "NOW US Equity"
+    },
+    {
+      "name": "Cloudflare",
+      "quote": "NET",
+      "security": "NET US Equity"
+    },
+    {
+      "name": "CrowdStrike",
+      "quote": "CRWD",
+      "security": "CRWD US Equity"
+    },
+    {
+      "name": "Datadog",
+      "quote": "DDOG",
+      "security": "DDOG US Equity"
+    },
+    {
+      "name": "Qualcomm",
+      "quote": "QCOM",
+      "security": "QCOM US Equity"
+    },
+    {
+      "name": "MediaTek",
+      "quote": "2454.TW",
+      "security": "2454 TT Equity"
+    },
+    {
+      "name": "S&P 500",
+      "quote": "SPX",
+      "security": "SPX Index",
+      "role": "macro_index"
+    },
+    {
+      "name": "Nasdaq 100",
+      "quote": "NDX",
+      "security": "NDX Index",
+      "role": "macro_index"
+    },
+    {
+      "name": "Philadelphia Semiconductor Index",
+      "quote": "SOX",
+      "security": "SOX Index",
+      "role": "macro_index"
+    },
+    {
+      "name": "VIX",
+      "quote": "VIX",
+      "security": "VIX Index",
+      "role": "macro_index"
+    },
+    {
+      "name": "US 10Y Treasury Yield",
+      "quote": "USGG10YR",
+      "security": "USGG10YR Index",
+      "role": "rates"
+    },
+    {
+      "name": "US 2Y Treasury Yield",
+      "quote": "USGG2YR",
+      "security": "USGG2YR Index",
+      "role": "rates"
+    },
+    {
+      "name": "Dollar Index",
+      "quote": "DXY",
+      "security": "DXY Curncy",
+      "role": "fx"
+    },
+    {
+      "name": "Copper Future",
+      "quote": "HG1",
+      "security": "HG1 Comdty",
+      "role": "commodity"
+    },
+    {
+      "name": "Natural Gas Future",
+      "quote": "NG1",
+      "security": "NG1 Comdty",
+      "role": "commodity"
+    },
+    {
+      "name": "WTI Crude Future",
+      "quote": "CL1",
+      "security": "CL1 Comdty",
+      "role": "commodity"
+    }
+  ],
+  "historical": {
+    "enabled": true,
+    "fields": [
+      "PX_LAST"
+    ],
+    "lookback_days": 370,
+    "periodicitySelection": "DAILY",
+    "nonTradingDayFillOption": "NON_TRADING_WEEKDAYS",
+    "nonTradingDayFillMethod": "PREVIOUS_VALUE",
+    "latest_filename": "bloomberg_history_latest.json",
+    "archive_filename_template": "bloomberg_history_{date}.json"
+  },
+  "notes": "Reference data gives latest valuation/crowding inputs. Historical data gives local return, volatility, drawdown and relative-strength calculations."
+}

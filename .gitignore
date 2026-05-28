@@ -4,3 +4,8 @@ __pycache__/
 .edge-pdf-profile-nvda/
 .edge-pdf-profile-kol/
 .edge-pdf-profile-emergent/
+data/bloomberg_snapshot*.json
+data/bloomberg_history*.json
+bloomberg/bloomberg_snapshot*.json
+bloomberg/bloomberg_history*.json
+bloomberg/__pycache__/

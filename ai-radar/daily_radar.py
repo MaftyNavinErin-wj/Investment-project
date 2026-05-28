@@ -17,6 +17,17 @@ from collections import Counter, defaultdict
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(ROOT)
+BLOOMBERG_SNAPSHOT_PATHS = [
+    r"\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie\bloomberg_snapshot_latest.json",
+    os.path.join(PROJECT_ROOT, "data", "bloomberg_snapshot_latest.json"),
+    os.path.join(PROJECT_ROOT, "data", "bloomberg_snapshot.json"),
+    os.path.join(os.path.expanduser("~"), "Desktop", "bloomberg_snapshot.json"),
+]
+BLOOMBERG_HISTORY_PATHS = [
+    r"\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie\bloomberg_history_latest.json",
+    os.path.join(PROJECT_ROOT, "data", "bloomberg_history_latest.json"),
+    os.path.join(os.path.expanduser("~"), "Desktop", "bloomberg_history_latest.json"),
+]
 STOPWORDS = {
     "about", "above", "after", "again", "against", "ahead", "also", "amid", "among", "another", "around",
     "because", "before", "behind", "being", "between", "beyond", "could", "data", "does", "down", "during",
@@ -404,11 +415,129 @@ def fetch_stockanalysis_valuation(symbol):
     }
 
 
+def parse_float(value):
+    if value is None:
+        return None
+    try:
+        return float(str(value).replace(",", ""))
+    except (TypeError, ValueError):
+        return None
+
+
+def bloomberg_security_key(security):
+    parts = (security or "").split()
+    if len(parts) >= 3 and parts[-2].upper() == "US" and parts[-1].upper() == "EQUITY":
+        return parts[0].upper()
+    return (security or "").upper()
+
+
+def load_bloomberg_snapshot():
+    for path in BLOOMBERG_SNAPSHOT_PATHS:
+        if not os.path.exists(path):
+            continue
+        with open(path, "r", encoding="utf-8") as f:
+            snapshot = json.load(f)
+        rows = {}
+        for item in snapshot.get("rows", []):
+            key = (item.get("quote") or bloomberg_security_key(item.get("security"))).upper()
+            fields = item.get("fields", {})
+            rows[key] = {
+                "symbol": key,
+                "date": (snapshot.get("created_at") or "")[:10],
+                "price": parse_float(fields.get("PX_LAST")),
+                "market_cap": parse_float(fields.get("CUR_MKT_CAP")),
+                "forward_pe": parse_float(fields.get("BEST_PE_RATIO")),
+                "ev_to_ebitda": parse_float(fields.get("EV_TO_T12M_EBITDA")),
+                "ev_to_revenue": parse_float(fields.get("EV_TO_T12M_SALES")),
+                "returns": {
+                    "1M": parse_float(fields.get("CHG_PCT_1M")),
+                    "3M": parse_float(fields.get("CHG_PCT_3M")),
+                    "6M": parse_float(fields.get("CHG_PCT_6M")),
+                    "1Y": parse_float(fields.get("CHG_PCT_1YR")),
+                },
+                "market_source": snapshot.get("source", "Bloomberg Desktop API"),
+                "bloomberg_security": item.get("security"),
+                "bloomberg_field_errors": item.get("field_errors", []),
+            }
+        return rows, path
+    return {}, None
+
+
+def compute_history_metrics(points):
+    series = []
+    for point in points or []:
+        value = parse_float(point.get("PX_LAST"))
+        if value is not None:
+            series.append((point.get("date"), value))
+    if len(series) < 2:
+        return {}
+    current = series[-1][1]
+
+    def trailing_return(days):
+        if len(series) <= days:
+            base = series[0][1]
+        else:
+            base = series[-days - 1][1]
+        if not base:
+            return None
+        return (current / base - 1) * 100
+
+    daily_returns = []
+    for (_, prev), (_, value) in zip(series, series[1:]):
+        if prev:
+            daily_returns.append(value / prev - 1)
+    trailing_30 = daily_returns[-30:]
+    volatility_30d = None
+    if len(trailing_30) >= 2:
+        mean = sum(trailing_30) / len(trailing_30)
+        variance = sum((value - mean) ** 2 for value in trailing_30) / (len(trailing_30) - 1)
+        volatility_30d = math.sqrt(variance) * math.sqrt(252) * 100
+
+    peak = series[0][1]
+    max_drawdown = 0
+    for _, value in series:
+        peak = max(peak, value)
+        if peak:
+            max_drawdown = min(max_drawdown, value / peak - 1)
+
+    return {
+        "date": series[-1][0],
+        "price": current,
+        "returns": {
+            "1M": trailing_return(21),
+            "3M": trailing_return(63),
+            "6M": trailing_return(126),
+            "1Y": trailing_return(252),
+        },
+        "volatility_30d": volatility_30d,
+        "max_drawdown_1y": max_drawdown * 100,
+    }
+
+
+def load_bloomberg_history():
+    for path in BLOOMBERG_HISTORY_PATHS:
+        if not os.path.exists(path):
+            continue
+        with open(path, "r", encoding="utf-8") as f:
+            history = json.load(f)
+        rows = {}
+        for item in history.get("rows", []):
+            key = (item.get("quote") or bloomberg_security_key(item.get("security"))).upper()
+            metrics = compute_history_metrics(item.get("field_data"))
+            if metrics:
+                metrics["history_source_path"] = path
+                rows[key] = metrics
+        return rows, path
+    return {}, None
+
+
 def collect_market_data(config):
     rows = []
     errors = []
     seen = set()
     universe = []
+    bloomberg_rows, bloomberg_path = load_bloomberg_snapshot()
+    bloomberg_history, _ = load_bloomberg_history()
     universe.extend(config.get("holdings", []))
     universe.extend(config.get("watchlist", []))
     for segment in config.get("segments", []):
@@ -422,6 +551,20 @@ def collect_market_data(config):
             continue
         seen.add(symbol)
         row = {"name": item.get("name", symbol), "quote": symbol, "themes": item.get("themes", [])}
+        bloomberg_row = bloomberg_rows.get(symbol.upper())
+        if bloomberg_row:
+            row.update(bloomberg_row)
+            if symbol.upper() in bloomberg_history:
+                history_metrics = bloomberg_history[symbol.upper()]
+                row.update(history_metrics)
+            row["market_source_path"] = bloomberg_path
+            rows.append(row)
+            continue
+        if symbol.upper() in bloomberg_history:
+            row.update(bloomberg_history[symbol.upper()])
+            row["market_source"] = "Bloomberg Desktop API historical"
+            rows.append(row)
+            continue
         try:
             row.update(fetch_quote_history(symbol))
             try:
