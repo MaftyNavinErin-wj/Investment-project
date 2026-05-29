@@ -6,6 +6,7 @@ import math
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import textwrap
@@ -33,6 +34,11 @@ BLOOMBERG_NEWS_PATHS = [
     os.path.join(PROJECT_ROOT, "data", "bloomberg_news_latest.json"),
     os.path.join(os.path.expanduser("~"), "Desktop", "bloomberg_news_latest.json"),
 ]
+LOCAL_BLOOMBERG_CACHE = {
+    "snapshot": os.path.join(PROJECT_ROOT, "data", "bloomberg_snapshot_latest.json"),
+    "history": os.path.join(PROJECT_ROOT, "data", "bloomberg_history_latest.json"),
+    "news": os.path.join(PROJECT_ROOT, "data", "bloomberg_news_latest.json"),
+}
 STOPWORDS = {
     "about", "above", "after", "again", "against", "ahead", "also", "amid", "among", "another", "around",
     "because", "before", "behind", "being", "between", "beyond", "could", "data", "does", "down", "during",
@@ -367,7 +373,20 @@ def fetch_quote_history(symbol):
         "1Y": int((now - dt.timedelta(days=365)).timestamp()),
     }
     returns = {label: pct_return(current, nearest_price(points, ts)) for label, ts in targets.items()}
-    return {"symbol": symbol, "date": now.strftime("%Y-%m-%d"), "price": current, "returns": returns}
+    if len(points) >= 6:
+        returns["5D"] = pct_return(current, points[-6][1])
+    ma20 = sum(point[1] for point in points[-20:]) / 20 if len(points) >= 20 else None
+    ma60 = sum(point[1] for point in points[-60:]) / 60 if len(points) >= 60 else None
+    return {
+        "symbol": symbol,
+        "date": now.strftime("%Y-%m-%d"),
+        "price": current,
+        "returns": returns,
+        "ma20": ma20,
+        "ma60": ma60,
+        "dist_ma20": pct_return(current, ma20),
+        "dist_ma60": pct_return(current, ma60),
+    }
 
 
 def fetch_quote_summary(symbol):
@@ -459,6 +478,7 @@ def load_bloomberg_snapshot():
             continue
         with open(path, "r", encoding="utf-8") as f:
             snapshot = json.load(f)
+        cache_bloomberg_file(path, LOCAL_BLOOMBERG_CACHE["snapshot"])
         rows = {}
         for item in snapshot.get("rows", []):
             key = (item.get("quote") or bloomberg_security_key(item.get("security"))).upper()
@@ -491,6 +511,20 @@ def load_bloomberg_snapshot():
             }
         return rows, path
     return {}, None
+
+
+def cache_bloomberg_file(source, target):
+    if not source or not target:
+        return
+    try:
+        source_abs = os.path.abspath(source)
+        target_abs = os.path.abspath(target)
+        if source_abs == target_abs:
+            return
+        os.makedirs(os.path.dirname(target_abs), exist_ok=True)
+        shutil.copy2(source_abs, target_abs)
+    except Exception:
+        pass
 
 
 MACRO_TICKERS = {
@@ -693,11 +727,16 @@ def compute_history_metrics(points):
         "date": series[-1][0],
         "price": current,
         "returns": {
+            "5D": trailing_return(5),
             "1M": trailing_return(21),
             "3M": trailing_return(63),
             "6M": trailing_return(126),
             "1Y": trailing_return(252),
         },
+        "ma20": sum(value for _, value in series[-20:]) / 20 if len(series) >= 20 else None,
+        "ma60": sum(value for _, value in series[-60:]) / 60 if len(series) >= 60 else None,
+        "dist_ma20": pct_return(current, sum(value for _, value in series[-20:]) / 20) if len(series) >= 20 else None,
+        "dist_ma60": pct_return(current, sum(value for _, value in series[-60:]) / 60) if len(series) >= 60 else None,
         "volatility_30d": volatility_30d,
         "max_drawdown_1y": max_drawdown * 100,
     }
@@ -709,6 +748,7 @@ def load_bloomberg_history():
             continue
         with open(path, "r", encoding="utf-8") as f:
             history = json.load(f)
+        cache_bloomberg_file(path, LOCAL_BLOOMBERG_CACHE["history"])
         rows = {}
         for item in history.get("rows", []):
             key = (item.get("quote") or bloomberg_security_key(item.get("security"))).upper()
@@ -814,6 +854,136 @@ def combined_crowding(row):
     if ret in ("不算拥挤", "降温/回撤") and val in ("估值尚可", "估值中性", "估值缺口"):
         return "拥挤度尚可"
     return "待确认"
+
+
+def trading_crowding_risk(row):
+    returns = row.get("returns") or {}
+    score = 0
+    notes = []
+
+    def add(condition, points, note):
+        nonlocal score
+        if condition:
+            score += points
+            notes.append(note)
+
+    add((returns.get("5D") or 0) >= 15, 1, "5D上涨过快")
+    add((returns.get("1M") or 0) >= 30, 2, "1M涨幅过大")
+    add(20 <= (returns.get("1M") or 0) < 30, 1, "1M涨幅偏快")
+    add((returns.get("3M") or 0) >= 80, 2, "3M极拥挤")
+    add(50 <= (returns.get("3M") or 0) < 80, 1, "3M偏拥挤")
+    add((returns.get("1Y") or 0) >= 300, 2, "1Y涨幅过大")
+    add(150 <= (returns.get("1Y") or 0) < 300, 1, "1Y涨幅偏大")
+
+    dist_ma20 = row.get("dist_ma20")
+    dist_ma60 = row.get("dist_ma60")
+    add(dist_ma20 is not None and dist_ma20 >= 20, 2, "偏离20日线过大")
+    add(dist_ma20 is not None and 10 <= dist_ma20 < 20, 1, "偏离20日线偏高")
+    add(dist_ma60 is not None and dist_ma60 >= 35, 1, "偏离60日线偏高")
+
+    high_pe = any(
+        value is not None and value >= threshold
+        for value, threshold in [
+            (row.get("pe_2027e"), 50),
+            (row.get("pe_2028e"), 35),
+            (row.get("forward_pe"), 45),
+            (row.get("trailing_pe"), 60),
+        ]
+    )
+    very_high_pe = any(
+        value is not None and value >= threshold
+        for value, threshold in [
+            (row.get("pe_2027e"), 80),
+            (row.get("pe_2028e"), 60),
+            (row.get("forward_pe"), 70),
+            (row.get("trailing_pe"), 90),
+        ]
+    )
+    add(very_high_pe, 2, "估值很贵")
+    add(high_pe and not very_high_pe, 1, "估值偏贵")
+    add((row.get("volatility_30d") or 0) >= 70, 1, "波动率高")
+
+    if score >= 7:
+        level = "高"
+    elif score >= 4:
+        level = "中高"
+    elif score >= 2:
+        level = "中"
+    else:
+        level = "低"
+    return {"score": score, "level": level, "notes": notes[:3]}
+
+
+def level_score(level):
+    return {"低": 0, "中": 1, "中高": 2, "高": 3}.get(level, 1)
+
+
+def fundamental_support(row, by_theme):
+    score = 0
+    notes = []
+
+    def add(condition, points, note):
+        nonlocal score
+        if condition:
+            score += points
+            notes.append(note)
+
+    theme_ids = row.get("themes") or []
+    for theme_id in theme_ids:
+        signal = theme_signal(by_theme.get(theme_id, []))
+        add(signal == "利好", 2, f"{theme_id}边际利好")
+        add(signal == "中性" and by_theme.get(theme_id), 1, f"{theme_id}有信息流")
+
+    add(row.get("pe_2028e") is not None and row.get("pe_2028e") <= 25, 1, "28E估值可解释")
+    add(row.get("pe_2027e") is not None and row.get("pe_2027e") <= 35, 1, "27E估值可解释")
+    add(row.get("forward_pe") is not None and row.get("forward_pe") <= 35, 1, "远期估值可解释")
+    add((row.get("earnings_growth") or 0) >= 0.25, 1, "盈利增长较快")
+    add((row.get("revenue_growth") or 0) >= 0.25, 1, "收入增长较快")
+
+    if score >= 5:
+        level = "强"
+    elif score >= 3:
+        level = "中强"
+    elif score >= 1:
+        level = "中"
+    else:
+        level = "弱/待验证"
+    return {"score": score, "level": level, "notes": notes[:3]}
+
+
+def combined_pullback_risk(trading, support):
+    raw = level_score(trading["level"])
+    support_offset = {"强": 2, "中强": 1, "中": 0, "弱/待验证": -1}.get(support["level"], 0)
+    adjusted = raw - support_offset
+    if adjusted >= 3:
+        level = "高"
+        action = "交易和预期都偏脆弱；先控制仓位。"
+    elif adjusted == 2:
+        level = "中高"
+        action = "回调风险明显；需要EPS/订单继续上修来消化。"
+    elif adjusted == 1:
+        level = "中"
+        action = "有拥挤压力，但基本面仍可承接，回调更像换手。"
+    else:
+        level = "中低"
+        action = "交易拥挤可见，但基本面支撑较强，不宜只因涨幅大判断结束。"
+    return {"level": level, "action": action}
+
+
+def pullback_risk_dashboard(config, market_rows, by_theme):
+    focus_quotes = {item.get("quote") or item.get("ticker") for item in config.get("holdings", [])}
+    for item in config.get("pullback_watchlist", []):
+        focus_quotes.add(item.get("quote") or item.get("ticker"))
+    rows = []
+    for row in market_rows:
+        if row.get("quote") not in focus_quotes:
+            continue
+        trading = trading_crowding_risk(row)
+        support = fundamental_support(row, by_theme)
+        risk = combined_pullback_risk(trading, support)
+        rows.append({"row": row, "risk": risk, "trading": trading, "support": support})
+    rows.sort(key=lambda item: (level_score(item["risk"]["level"]), (item["row"].get("returns") or {}).get("3M") or -999), reverse=True)
+    return rows
 
 
 def tokenize(text):
@@ -1545,6 +1715,8 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
         for quote in hot_holding_quotes
         if market_by_quote.get(quote) and combined_crowding(market_by_quote.get(quote)) == "高拥挤"
     ]
+    pullback_rows = pullback_risk_dashboard(config, market_rows, by_theme)
+    high_pullback = [item for item in pullback_rows if item["risk"]["level"] in ("高", "中高")]
     dell_items = [
         item for item in by_theme.get("ai_capex", [])
         if "dell" in normalize_text(item) and any(term in normalize_text(item) for term in ["server", "backlog", "orders", "guidance", "revenue"])
@@ -1566,6 +1738,8 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
         lines.append("- **可研究方向**：今天仍没有“逻辑强 + 映射强 + 低拥挤”的完美交集，更多是已拥挤主线的超预期复核。")
     if hot_holdings:
         lines.append("- **持仓风险**：" + "；".join(f"{row.get('name')} 3M {fmt_pct(row.get('returns', {}).get('3M'))}" for row in hot_holdings[:4]) + "，这些需要看业绩继续兑现，不能只看主题热度。")
+    if high_pullback:
+        lines.append("- **回调风险**：" + "；".join(f"{item['row'].get('name')}={item['risk']['level']}（交易拥挤={item['trading']['level']}，支撑={item['support']['level']}）" for item in high_pullback[:4]) + "。结论不是“涨多了就该卖”，而是看预期上修能否继续抵消交易拥挤。")
     lines.append("")
 
     lines.append("## 本轮新增证据")
@@ -1744,6 +1918,20 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
     lines.append("")
 
     lines.extend(render_holding_exit_radar(holding_exit_radar_alerts(config, by_theme)))
+
+    lines.append("## 回调风险结论")
+    lines.append("")
+    lines.append("只展示结论，不展开计算过程。这个表把短期交易拥挤和基本面/预期支撑分开看，避免把强趋势简单判成高风险。")
+    lines.append("")
+    lines.append("| 标的 | 代码 | 交易拥挤 | 支撑强度 | 综合风险 | 结论 |")
+    lines.append("|---|---|---|---|---|---|")
+    for item in pullback_rows:
+        row = item["row"]
+        risk = item["risk"]
+        lines.append(f"| {row.get('name')} | {row.get('quote')} | {item['trading']['level']} | {item['support']['level']} | {risk['level']} | {risk['action']} |")
+    if not pullback_rows:
+        lines.append("| n/a | n/a | n/a | n/a | n/a | 没有可用数据 |")
+    lines.append("")
 
     lines.append("## 持仓映射")
     lines.append("")
