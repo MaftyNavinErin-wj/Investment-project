@@ -22,4 +22,7 @@ The script writes dated reports under `reports/`:
 - `ai-radar-YYYY-MM-DD.html`
 - `ai-radar-YYYY-MM-DD.pdf`
 
-Workflow notes and maintenance rules live in [docs/AI_RADAR_WORKFLOW.md](docs/AI_RADAR_WORKFLOW.md).
+Workflow notes and maintenance rules live in:
+
+- [docs/AI_RADAR_WORKFLOW.md](docs/AI_RADAR_WORKFLOW.md)
+- [docs/BLOOMBERG_WORKFLOW.md](docs/BLOOMBERG_WORKFLOW.md)
