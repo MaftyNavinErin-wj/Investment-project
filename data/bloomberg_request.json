@@ -6,10 +6,15 @@
   "reference_fields": [
     "PX_LAST",
     "CUR_MKT_CAP",
+    "PE_RATIO",
     "BEST_PE_RATIO",
+    "CURRENT_EV_TO_T12M_EBITDA",
     "EV_TO_T12M_EBITDA",
+    "BEST_CUR_EV_TO_EBITDA",
     "EV_TO_T12M_SALES",
     "PX_TO_BOOK_RATIO",
+    "CURR_ENTP_VAL",
+    "TRAIL_12M_EPS",
     "VOLUME",
     "VOLUME_AVG_30D",
     "EQY_FREE_FLOAT_PCT",
@@ -22,6 +27,84 @@
     "CHG_PCT_3M",
     "CHG_PCT_6M",
     "CHG_PCT_1YR"
+  ],
+  "reference_fields_by_role": {
+    "macro_index": [
+      "PX_LAST",
+      "PE_RATIO",
+      "BEST_PE_RATIO",
+      "CHG_PCT_1D",
+      "CHG_PCT_5D",
+      "CHG_PCT_1M",
+      "CHG_PCT_3M",
+      "CHG_PCT_6M",
+      "CHG_PCT_1YR",
+      "VOLATILITY_30D"
+    ],
+    "rates": [
+      "PX_LAST",
+      "CHG_PCT_1D",
+      "CHG_PCT_5D",
+      "CHG_PCT_1M",
+      "CHG_PCT_3M",
+      "CHG_PCT_6M",
+      "CHG_PCT_1YR"
+    ],
+    "credit_spread": [
+      "PX_LAST",
+      "CHG_PCT_1D",
+      "CHG_PCT_5D",
+      "CHG_PCT_1M",
+      "CHG_PCT_3M",
+      "CHG_PCT_6M",
+      "CHG_PCT_1YR"
+    ],
+    "fx": [
+      "PX_LAST",
+      "CHG_PCT_1D",
+      "CHG_PCT_5D",
+      "CHG_PCT_1M",
+      "CHG_PCT_3M",
+      "CHG_PCT_6M",
+      "CHG_PCT_1YR"
+    ],
+    "commodity": [
+      "PX_LAST",
+      "CHG_PCT_1D",
+      "CHG_PCT_5D",
+      "CHG_PCT_1M",
+      "CHG_PCT_3M",
+      "CHG_PCT_6M",
+      "CHG_PCT_1YR"
+    ]
+  },
+  "reference_override_requests": [
+    {
+      "name": "27E P/E",
+      "field_prefix": "PE_27E_",
+      "fields": [
+        "BEST_PE_RATIO"
+      ],
+      "overrides": [
+        {
+          "fieldId": "BEST_FPERIOD_OVERRIDE",
+          "value": "2FY"
+        }
+      ]
+    },
+    {
+      "name": "28E P/E",
+      "field_prefix": "PE_28E_",
+      "fields": [
+        "BEST_PE_RATIO"
+      ],
+      "overrides": [
+        {
+          "fieldId": "BEST_FPERIOD_OVERRIDE",
+          "value": "3FY"
+        }
+      ]
+    }
   ],
   "securities": [
     {
@@ -128,6 +211,11 @@
       "name": "纳芯微",
       "quote": "688052.SS",
       "security": "688052 CH Equity"
+    },
+    {
+      "name": "Dell Technologies",
+      "quote": "DELL",
+      "security": "DELL US Equity"
     },
     {
       "name": "Corning",
@@ -325,6 +413,56 @@
       "security": "2454 TT Equity"
     },
     {
+      "name": "Amazon",
+      "quote": "AMZN",
+      "security": "AMZN US Equity"
+    },
+    {
+      "name": "Alphabet",
+      "quote": "GOOGL",
+      "security": "GOOGL US Equity"
+    },
+    {
+      "name": "Meta Platforms",
+      "quote": "META",
+      "security": "META US Equity"
+    },
+    {
+      "name": "Oracle",
+      "quote": "ORCL",
+      "security": "ORCL US Equity"
+    },
+    {
+      "name": "CoreWeave",
+      "quote": "CRWV",
+      "security": "CRWV US Equity"
+    },
+    {
+      "name": "Equinix",
+      "quote": "EQIX",
+      "security": "EQIX US Equity"
+    },
+    {
+      "name": "Digital Realty",
+      "quote": "DLR",
+      "security": "DLR US Equity"
+    },
+    {
+      "name": "Constellation Energy",
+      "quote": "CEG",
+      "security": "CEG US Equity"
+    },
+    {
+      "name": "Vistra",
+      "quote": "VST",
+      "security": "VST US Equity"
+    },
+    {
+      "name": "NextEra Energy",
+      "quote": "NEE",
+      "security": "NEE US Equity"
+    },
+    {
       "name": "S&P 500",
       "quote": "SPX",
       "security": "SPX Index",
@@ -359,6 +497,30 @@
       "quote": "USGG2YR",
       "security": "USGG2YR Index",
       "role": "rates"
+    },
+    {
+      "name": "US 5Y Treasury Yield",
+      "quote": "USGG5YR",
+      "security": "USGG5YR Index",
+      "role": "rates"
+    },
+    {
+      "name": "US 30Y Treasury Yield",
+      "quote": "USGG30YR",
+      "security": "USGG30YR Index",
+      "role": "rates"
+    },
+    {
+      "name": "US Corporate IG OAS",
+      "quote": "LUACOAS",
+      "security": "LUACOAS Index",
+      "role": "credit_spread"
+    },
+    {
+      "name": "US High Yield OAS",
+      "quote": "LF98OAS",
+      "security": "LF98OAS Index",
+      "role": "credit_spread"
     },
     {
       "name": "Dollar Index",
@@ -396,6 +558,91 @@
     "nonTradingDayFillMethod": "PREVIOUS_VALUE",
     "latest_filename": "bloomberg_history_latest.json",
     "archive_filename_template": "bloomberg_history_{date}.json"
+  },
+  "news": {
+    "enabled": false,
+    "status": "Default full export keeps news disabled. Use --news-only to test Bloomberg reference fields NEWS_HEADLINES and NEWS_STORY.",
+    "mode": "field_probe",
+    "service": "//blp/refdata",
+    "headline_fields": [
+      "NEWS_HEADLINES"
+    ],
+    "story_fields": [
+      "NEWS_STORY"
+    ],
+    "field_probe_security": "DELL US Equity",
+    "field_probe_fields": [
+      "NEWS_HEADLINES",
+      "NEWS_STORY",
+      "NEWS",
+      "HEADLINE",
+      "LAST_NEWS",
+      "TOP_NEWS",
+      "CN",
+      "CN_STORIES",
+      "BLOOMBERG_NEWS",
+      "ALL_NEWS"
+    ],
+    "lookback_hours": 36,
+    "max_results": 20,
+    "latest_filename": "bloomberg_news_latest.json",
+    "archive_filename_template": "bloomberg_news_{date}.json",
+    "queries": [
+      {
+        "name": "AI server earnings",
+        "query": "Dell AI server orders backlog revenue guidance OR Supermicro AI server backlog OR HPE AI server",
+        "securities": [
+          "DELL US Equity",
+          "SMCI US Equity",
+          "HPE US Equity"
+        ]
+      },
+      {
+        "name": "Hyperscaler AI capex",
+        "query": "Microsoft OR Amazon OR Alphabet OR Meta AI capex data center guidance",
+        "securities": [
+          "MSFT US Equity",
+          "AMZN US Equity",
+          "GOOGL US Equity",
+          "META US Equity",
+          "ORCL US Equity"
+        ]
+      },
+      {
+        "name": "AI networking optics",
+        "query": "800G OR 1.6T optical transceiver AI data center demand shortage",
+        "securities": [
+          "300308 CH Equity",
+          "300502 CH Equity",
+          "300394 CH Equity",
+          "COHR US Equity",
+          "LITE US Equity"
+        ]
+      },
+      {
+        "name": "AI power cooling",
+        "query": "AI data center power cooling grid interconnection switchgear liquid cooling",
+        "securities": [
+          "VRT US Equity",
+          "ETN US Equity",
+          "GEV US Equity",
+          "PWR US Equity",
+          "002837 CH Equity"
+        ]
+      },
+      {
+        "name": "AI ROI applications",
+        "query": "AI agents enterprise monetization ROI inference cost",
+        "securities": [
+          "MSFT US Equity",
+          "NOW US Equity",
+          "DDOG US Equity",
+          "NET US Equity",
+          "700 HK Equity",
+          "1024 HK Equity"
+        ]
+      }
+    ]
   },
   "notes": "Reference data gives latest valuation/crowding inputs. Historical data gives local return, volatility, drawdown and relative-strength calculations."
 }

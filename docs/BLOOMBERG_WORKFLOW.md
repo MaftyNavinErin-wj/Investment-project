@@ -15,6 +15,8 @@ The fixed workflow is now shared-drive based:
    - `\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie\bloomberg_snapshot_YYYY-MM-DD.json`
    - `\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie\bloomberg_history_latest.json`
    - `\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie\bloomberg_history_YYYY-MM-DD.json`
+   - `\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie\bloomberg_news_latest.json` when Bloomberg News export is enabled and supported by the VDI API session
+   - `\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie\bloomberg_news_YYYY-MM-DD.json`
 5. The local daily report reads Bloomberg data in this order:
    - shared-drive `bloomberg_snapshot_latest.json`
    - local `data/bloomberg_snapshot_latest.json`
@@ -40,6 +42,12 @@ Copy-Item .\scripts\bloomberg_export.py -Destination (Join-Path $share "bloomber
 
 Codex can perform this sync when shared-drive access is available.
 
+The sync also writes VDI runner scripts to the shared-drive folder:
+
+- `run_bloomberg_reference.ps1`
+- `run_bloomberg_full.ps1`
+- `run_bloomberg_field_search.ps1`
+
 ## Pull Latest Data Back
 
 After the VDI export finishes, pull the generated latest files back into local `data/`:
@@ -52,6 +60,7 @@ This copies:
 
 - shared-drive `bloomberg_snapshot_latest.json` to `data/bloomberg_snapshot_latest.json`
 - shared-drive `bloomberg_history_latest.json` to `data/bloomberg_history_latest.json`
+- shared-drive `bloomberg_news_latest.json` to `data/bloomberg_news_latest.json` when present
 
 To check timestamps and file sizes without copying:
 
@@ -64,6 +73,12 @@ To check timestamps and file sizes without copying:
 In Bloomberg VDI, run the exporter by full UNC path. This does not require changing the current directory:
 
 ```powershell
+& "\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie\run_bloomberg_reference.ps1"
+```
+
+Manual equivalent:
+
+```powershell
 $share = "\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie"
 python (Join-Path $share "bloomberg_export.py") --request (Join-Path $share "bloomberg_request.json")
 ```
@@ -74,6 +89,28 @@ This exports both reference data and one-year daily historical data. For a quick
 $share = "\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie"
 python (Join-Path $share "bloomberg_export.py") --request (Join-Path $share "bloomberg_request.json") --reference-only
 ```
+
+Bloomberg News status:
+
+As of the 2026-05-29 VDI probe, this Bloomberg Desktop API session does not expose Bloomberg News search:
+
+- `//blp/refdata/NewsSearchRequest` returned `Operation 'NewsSearchRequest' was not found`.
+- `//blp/news` returned `openService false`.
+
+Therefore keyword-style Bloomberg News search is not available through the tested Desktop API services. The exporter now supports a different diagnostic path: `//blp/refdata` `ReferenceDataRequest` using `NEWS_HEADLINES` for configured securities, then `NEWS_STORY` for returned story IDs if Bloomberg returns them.
+
+`news.enabled` remains disabled in `data/bloomberg_request.json` by default so normal reference/history exports stay clean. `--news-only` still runs the diagnostic news pull even while `news.enabled=false`.
+
+For a future Bloomberg News-only smoke test:
+
+```powershell
+$share = "\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie"
+python (Join-Path $share "bloomberg_export.py") --request (Join-Path $share "bloomberg_request.json") --news-only
+```
+
+News export is best-effort and non-blocking. If `NEWS_HEADLINES` / `NEWS_STORY` are unavailable for the current entitlement, the exporter writes field exceptions into `bloomberg_news_latest.json` and still leaves reference/history workflow unchanged.
+
+If `NEWS_HEADLINES` returns `BAD_FLD`, run a field probe by temporarily setting `news.mode` to `field_probe` in `bloomberg_request.json`, then rerun `--news-only`. The probe tests candidate news/headline/story fields against `DELL US Equity` and reports `valid_fields` / `invalid_fields`. If no valid field appears, use Bloomberg Terminal `FLDS <GO>` or ask Bloomberg support for the exact Desktop API refdata fields available under the account entitlement.
 
 If `Set-Location` / `cd` to the UNC path returns `Access is denied`, do not rely on `cd`. First test whether the session can read the folder:
 
@@ -124,10 +161,61 @@ After changing `data/bloomberg_request.json`, run:
 
 Then rerun the VDI command above.
 
+### Current Expanded AI Capex Coverage
+
+The request now covers more than equity valuation. The report separates AI capex into demand, financing, resources and crowding:
+
+- Demand and AI infrastructure platforms: hyperscalers, Oracle, CoreWeave, Dell and AI server/networking representatives.
+- Data center asset proxies: Equinix and Digital Realty.
+- Power/resource proxies: Constellation Energy, Vistra, NextEra, copper, natural gas and crude.
+- Financing proxies: US 2Y/5Y/10Y/30Y yields plus IG/HY OAS indices where Bloomberg entitlement supports them.
+- Crowding proxies: SOX, NDX, SPX and VIX.
+
+After this kind of request expansion, run at least the reference export on the Bloomberg VDI:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File "\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie\run_bloomberg_reference.ps1"
+```
+
+If proxy credit indices such as `LUACOAS Index` or `LF98OAS Index` return Bloomberg errors, keep the output and verify the correct ticker in Terminal. Equity and macro rows should still export even if a few proxy indices fail.
+
+## Bloomberg Field Discovery
+
+Do not guess Bloomberg field names. Use the API field metadata service from VDI:
+
+```powershell
+$share = "\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie"
+python (Join-Path $share "bloomberg_export.py") --request (Join-Path $share "bloomberg_request.json") --field-search "news headline story" "enterprise value ebitda" "pe ratio"
+```
+
+This writes:
+
+- `bloomberg_field_search_latest.json`
+- `bloomberg_field_search_YYYY-MM-DD.json`
+
+To inspect specific fields:
+
+```powershell
+$share = "\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie"
+python (Join-Path $share "bloomberg_export.py") --request (Join-Path $share "bloomberg_request.json") --field-info PE_RATIO BEST_PE_RATIO EV_TO_T12M_EBITDA NEWS_HEADLINES NEWS_STORY
+```
+
+This writes:
+
+- `bloomberg_field_info_latest.json`
+- `bloomberg_field_info_YYYY-MM-DD.json`
+
+After running either command, pull results locally:
+
+```powershell
+.\scripts\sync-bloomberg-shared.ps1 -Mode Pull
+```
+
 ## Current Data Coverage
 
 The current request exports:
 
-- Reference: price, market cap, forward P/E, EV/EBITDA, EV/Sales, P/B, volume, 30D average volume, free float, short-interest ratio, beta, 30D volatility, 1D/5D/1M/3M/6M/1Y price changes.
+- Reference: price, market cap, TTM P/E, forward P/E, current EV/TTM EBITDA, periodic EV/TTM EBITDA, BEst EV/EBITDA, EV/Sales, P/B, volume, 30D average volume, free float, short-interest ratio, beta, 30D volatility, 1D/5D/1M/3M/6M/1Y price changes.
 - Historical: one year of daily `PX_LAST` for all equities, indices, rates, FX and commodity proxies in the request.
+- News: configurable event-driven Bloomberg News searches for AI server earnings, hyperscaler capex, networking/optics, power/cooling and AI ROI/application signals.
 - Macro/cross-asset proxies: `SPX Index`, `NDX Index`, `SOX Index`, `VIX Index`, `USGG10YR Index`, `USGG2YR Index`, `DXY Curncy`, `HG1 Comdty`, `NG1 Comdty`, `CL1 Comdty`.

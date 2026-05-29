@@ -50,6 +50,9 @@
   ],
   "discovery_queries": [
     "AI infrastructure emerging bottleneck not Nvidia",
+    "Dell AI server orders backlog revenue guidance earnings",
+    "AI server earnings backlog guidance Dell Supermicro HPE",
+    "AI infrastructure earnings beat backlog revenue guidance",
     "AI data center supply chain bottleneck underappreciated",
     "AI inference cost optimization enterprise adoption",
     "AI agents enterprise workflow revenue adoption",
@@ -223,6 +226,10 @@
       "distance": "near",
       "logic": "Direct AI capex layer. Demand is clear, but market awareness is very high.",
       "reps": [
+        {
+          "name": "Dell Technologies",
+          "quote": "DELL"
+        },
         {
           "name": "Foxconn Industrial Internet",
           "quote": "601138.SS"
@@ -763,6 +770,9 @@
       "description": "看微软、谷歌、亚马逊、Meta、Oracle/CoreWeave 等是否继续上修 AI 数据中心资本开支，以及市场是否开始担心 ROI。",
       "queries": [
         "Microsoft AI capex guidance data center",
+        "Dell AI server orders backlog revenue guidance earnings",
+        "Dell Technologies AI optimized server revenue backlog guidance",
+        "AI server earnings backlog Dell Supermicro HPE",
         "Google Alphabet AI capex data center guidance",
         "Amazon AWS AI capex data center guidance",
         "Meta AI capex data center guidance",
@@ -782,6 +792,11 @@
         "cloud",
         "coreweave",
         "oracle",
+        "dell",
+        "ai server",
+        "ai-optimized server",
+        "orders",
+        "backlog",
         "microsoft",
         "alphabet",
         "amazon",
@@ -791,6 +806,12 @@
         "raise capex",
         "increase capex",
         "higher capex",
+        "raised outlook",
+        "raises guidance",
+        "record revenue",
+        "record orders",
+        "ai orders",
+        "ai server revenue",
         "accelerate",
         "strong demand",
         "capacity expansion",
@@ -1450,6 +1471,91 @@
         "networking_optics"
       ],
       "reason": "AI 服务器/网络系统制造代表票。"
+    },
+    {
+      "name": "Amazon",
+      "quote": "AMZN",
+      "themes": [
+        "ai_capex",
+        "ai_app_roi"
+      ],
+      "reason": "Hyperscaler capex 和 AWS AI monetization 代表票，用来验证需求侧是否扩散到云收入。"
+    },
+    {
+      "name": "Alphabet",
+      "quote": "GOOGL",
+      "themes": [
+        "ai_capex",
+        "ai_app_roi"
+      ],
+      "reason": "Hyperscaler capex、TPU 和 Google Cloud AI demand 代表票。"
+    },
+    {
+      "name": "Meta Platforms",
+      "quote": "META",
+      "themes": [
+        "ai_capex",
+        "ai_app_roi"
+      ],
+      "reason": "AI capex 上修与广告/应用 ROI 验证的核心样本。"
+    },
+    {
+      "name": "Oracle",
+      "quote": "ORCL",
+      "themes": [
+        "ai_capex"
+      ],
+      "reason": "AI cloud backlog、租赁/债务融资和 data center capacity 的代表票。"
+    },
+    {
+      "name": "CoreWeave",
+      "quote": "CRWV",
+      "themes": [
+        "ai_capex"
+      ],
+      "reason": "AI infrastructure platform 和融资型算力扩张代表票，重点看收入增长、债务和客户集中度。"
+    },
+    {
+      "name": "Equinix",
+      "quote": "EQIX",
+      "themes": [
+        "power_cooling",
+        "ai_capex"
+      ],
+      "reason": "Data center REIT 代表票，跟踪 capex、融资成本、租赁需求和资产回报率。"
+    },
+    {
+      "name": "Digital Realty",
+      "quote": "DLR",
+      "themes": [
+        "power_cooling",
+        "ai_capex"
+      ],
+      "reason": "Data center REIT 代表票，检验 AI demand 是否转化为租金和开发收益。"
+    },
+    {
+      "name": "Constellation Energy",
+      "quote": "CEG",
+      "themes": [
+        "power_cooling"
+      ],
+      "reason": "AI data center 电力采购和 nuclear/power scarcity 代表票。"
+    },
+    {
+      "name": "Vistra",
+      "quote": "VST",
+      "themes": [
+        "power_cooling"
+      ],
+      "reason": "美国电力供给紧张和 data center power demand 代表票。"
+    },
+    {
+      "name": "NextEra Energy",
+      "quote": "NEE",
+      "themes": [
+        "power_cooling"
+      ],
+      "reason": "可再生电力、输电和数据中心购电需求的公共事业代表票。"
     }
   ],
   "manual_inbox_dir": "manual_inbox",

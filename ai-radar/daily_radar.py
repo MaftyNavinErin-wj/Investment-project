@@ -28,6 +28,11 @@ BLOOMBERG_HISTORY_PATHS = [
     os.path.join(PROJECT_ROOT, "data", "bloomberg_history_latest.json"),
     os.path.join(os.path.expanduser("~"), "Desktop", "bloomberg_history_latest.json"),
 ]
+BLOOMBERG_NEWS_PATHS = [
+    r"\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie\bloomberg_news_latest.json",
+    os.path.join(PROJECT_ROOT, "data", "bloomberg_news_latest.json"),
+    os.path.join(os.path.expanduser("~"), "Desktop", "bloomberg_news_latest.json"),
+]
 STOPWORDS = {
     "about", "above", "after", "again", "against", "ahead", "also", "amid", "among", "another", "around",
     "because", "before", "behind", "being", "between", "beyond", "could", "data", "does", "down", "during",
@@ -280,12 +285,29 @@ def theme_signal(items):
     pos_hits = sum(len(item.get("positive_hits", [])) for item in items)
     neg_hits = sum(len(item.get("negative_hits", [])) for item in items)
     if total >= 3 or (pos_hits >= 4 and pos_hits >= neg_hits * 2):
-        return "上修/变紧"
+        return "利好"
     if total <= -2 or (neg_hits >= 3 and neg_hits > pos_hits):
-        return "下修/转弱"
-    if items:
-        return "有信息流，但方向待确认"
-    return "暂无有效新信号"
+        return "利空"
+    return "中性"
+
+
+def signal_driver(items, direction):
+    if direction not in ("利好", "利空"):
+        return ""
+    key = "positive_hits" if direction == "利好" else "negative_hits"
+    counts = Counter()
+    examples = []
+    for item in items:
+        for term in item.get(key, []):
+            counts[term] += 1
+        if len(examples) < 2:
+            title = item.get("title")
+            if title:
+                examples.append(title)
+    terms = ", ".join([term for term, _ in counts.most_common(3)])
+    if terms:
+        return terms
+    return "; ".join(examples[:2])
 
 
 def theme_maturity(items):
@@ -446,9 +468,17 @@ def load_bloomberg_snapshot():
                 "date": (snapshot.get("created_at") or "")[:10],
                 "price": parse_float(fields.get("PX_LAST")),
                 "market_cap": parse_float(fields.get("CUR_MKT_CAP")),
+                "trailing_pe": parse_float(fields.get("PE_RATIO")),
                 "forward_pe": parse_float(fields.get("BEST_PE_RATIO")),
-                "ev_to_ebitda": parse_float(fields.get("EV_TO_T12M_EBITDA")),
+                "pe_2027e": parse_float(fields.get("PE_27E_BEST_PE_RATIO")),
+                "pe_2028e": parse_float(fields.get("PE_28E_BEST_PE_RATIO")),
+                "ev_to_ebitda": parse_float(fields.get("CURRENT_EV_TO_T12M_EBITDA")) or parse_float(fields.get("EV_TO_T12M_EBITDA")),
+                "ev_to_ebitda_periodic": parse_float(fields.get("EV_TO_T12M_EBITDA")),
+                "forward_ev_to_ebitda": parse_float(fields.get("BEST_CUR_EV_TO_EBITDA")),
                 "ev_to_revenue": parse_float(fields.get("EV_TO_T12M_SALES")),
+                "price_to_book": parse_float(fields.get("PX_TO_BOOK_RATIO")),
+                "enterprise_value": parse_float(fields.get("CURR_ENTP_VAL")),
+                "ttm_eps": parse_float(fields.get("TRAIL_12M_EPS")),
                 "returns": {
                     "1M": parse_float(fields.get("CHG_PCT_1M")),
                     "3M": parse_float(fields.get("CHG_PCT_3M")),
@@ -461,6 +491,165 @@ def load_bloomberg_snapshot():
             }
         return rows, path
     return {}, None
+
+
+MACRO_TICKERS = {
+    "SPX": {"name": "S&P 500", "bucket": "Risk appetite"},
+    "NDX": {"name": "Nasdaq 100", "bucket": "AI equity beta"},
+    "SOX": {"name": "Philadelphia Semiconductor Index", "bucket": "AI hardware crowding"},
+    "VIX": {"name": "VIX", "bucket": "Volatility"},
+    "USGG10YR": {"name": "US 10Y Treasury Yield", "bucket": "Discount rate"},
+    "USGG2YR": {"name": "US 2Y Treasury Yield", "bucket": "Policy-rate expectations"},
+    "USGG5YR": {"name": "US 5Y Treasury Yield", "bucket": "Project finance tenor"},
+    "USGG30YR": {"name": "US 30Y Treasury Yield", "bucket": "Long-duration discount rate"},
+    "LUACOAS": {"name": "US Corporate IG OAS", "bucket": "IG credit spread"},
+    "LF98OAS": {"name": "US High Yield OAS", "bucket": "HY credit spread"},
+    "DXY": {"name": "Dollar Index", "bucket": "USD/liquidity"},
+    "HG1": {"name": "Copper Future", "bucket": "Power/grid input cost"},
+    "NG1": {"name": "Natural Gas Future", "bucket": "Power input cost"},
+    "CL1": {"name": "WTI Crude Future", "bucket": "Energy input cost"},
+}
+
+MACRO_RISK_REFERENCES = [
+    {
+        "topic": "融资结构",
+        "point": "AI data center buildout 正从纯 equity story 变成 debt/private credit/project finance story；资本结构复杂化会放大再融资和回报率压力。",
+        "source": "S&P Global",
+        "url": "https://www.spglobal.com/en/research-insights/podcasts/look-forward/credit-risks-current-ai-data-center-infrastructure",
+    },
+    {
+        "topic": "资产重化",
+        "point": "GenAI 公司和 AI infra 平台越来越像资本密集型基础设施，capex、energy、data center capacity 与收入兑现之间的时间差变长。",
+        "source": "S&P Global Market Intelligence",
+        "url": "https://www.spglobal.com/market-intelligence/en/news-insights/research/2026/02/generative-ai-funding-a-sober-retrospective-and-the-trends-shaping-2026",
+    },
+    {
+        "topic": "电力约束",
+        "point": "Hyperscaler 正在提前锁 power；可用电力、输电建设和选址约束会影响建设速度，而不是简单影响最终需求。",
+        "source": "S&P Global",
+        "url": "https://www.spglobal.com/energy/en/news-research/special-reports/energy-transition/2026-trends-in-data-center-services-infrastructure",
+    },
+    {
+        "topic": "债务融资案例",
+        "point": "大型数据中心 capex 已经伴随大额债务融资案例，说明未来需要同时跟踪订单、融资成本和项目回报。",
+        "source": "Data Center Dynamics",
+        "url": "https://www.datacenterdynamics.com/en/news/google-secures-nearly-32bn-in-debt-following-major-data-center-capex-commitment/",
+    },
+]
+
+
+def load_bloomberg_macro_rows():
+    rows, path = load_bloomberg_snapshot()
+    macro_rows = []
+    for quote, meta in MACRO_TICKERS.items():
+        row = rows.get(quote)
+        if not row:
+            continue
+        returns = row.get("returns", {})
+        macro_rows.append(
+            {
+                "quote": quote,
+                "name": meta["name"],
+                "bucket": meta["bucket"],
+                "price": row.get("price"),
+                "date": row.get("date"),
+                "returns": returns,
+                "source_path": path,
+            }
+        )
+    return macro_rows
+
+
+def approx_yield_change_bps(current, pct_change):
+    if current is None or pct_change is None:
+        return None
+    prev = current / (1 + pct_change / 100) if pct_change != -100 else None
+    if prev is None:
+        return None
+    return (current - prev) * 100
+
+
+def fmt_bps(value):
+    if value is None or (isinstance(value, float) and math.isnan(value)):
+        return "n/a"
+    return f"{value:+.0f}bp"
+
+
+def macro_market_dashboard():
+    rows = load_bloomberg_macro_rows()
+    by_quote = {row["quote"]: row for row in rows}
+    us10 = by_quote.get("USGG10YR", {})
+    us2 = by_quote.get("USGG2YR", {})
+    us5 = by_quote.get("USGG5YR", {})
+    us30 = by_quote.get("USGG30YR", {})
+    ig_oas = by_quote.get("LUACOAS", {})
+    hy_oas = by_quote.get("LF98OAS", {})
+    sox = by_quote.get("SOX", {})
+    ndx = by_quote.get("NDX", {})
+    vix = by_quote.get("VIX", {})
+    hg = by_quote.get("HG1", {})
+    ng = by_quote.get("NG1", {})
+
+    us10_3m_bps = approx_yield_change_bps(us10.get("price"), (us10.get("returns") or {}).get("3M"))
+    us2_3m_bps = approx_yield_change_bps(us2.get("price"), (us2.get("returns") or {}).get("3M"))
+    us5_3m_bps = approx_yield_change_bps(us5.get("price"), (us5.get("returns") or {}).get("3M"))
+    us30_3m_bps = approx_yield_change_bps(us30.get("price"), (us30.get("returns") or {}).get("3M"))
+    ig_oas_1m_bps = approx_yield_change_bps(ig_oas.get("price"), (ig_oas.get("returns") or {}).get("1M"))
+    hy_oas_1m_bps = approx_yield_change_bps(hy_oas.get("price"), (hy_oas.get("returns") or {}).get("1M"))
+    sox_3m = (sox.get("returns") or {}).get("3M")
+    ndx_3m = (ndx.get("returns") or {}).get("3M")
+    vix_1m = (vix.get("returns") or {}).get("1M")
+    copper_1m = (hg.get("returns") or {}).get("1M")
+    gas_1m = (ng.get("returns") or {}).get("1M")
+
+    risk_notes = []
+    if us10_3m_bps is not None and us10_3m_bps > 35:
+        risk_notes.append("10Y 上行超过 35bp，长久期 AI 硬件估值折现率压力上升")
+    if us2_3m_bps is not None and us2_3m_bps > 35:
+        risk_notes.append("2Y 上行，降息预期/短端资金成本对融资型项目不友好")
+    if us5_3m_bps is not None and us5_3m_bps > 35:
+        risk_notes.append("5Y 上行，项目融资和中期债务成本压力上升")
+    if us30_3m_bps is not None and us30_3m_bps > 35:
+        risk_notes.append("30Y 上行，长久期基础设施资产折现率压力上升")
+    if ig_oas_1m_bps is not None and ig_oas_1m_bps > 10:
+        risk_notes.append("IG OAS 走阔，投资级融资环境边际变差")
+    if hy_oas_1m_bps is not None and hy_oas_1m_bps > 30:
+        risk_notes.append("HY OAS 走阔，信用风险偏好对高杠杆 AI infra 更不友好")
+    if sox_3m is not None and sox_3m > 40:
+        risk_notes.append("SOX 3M 涨幅过大，半导体 beta 和拥挤度已经很高")
+    if vix_1m is not None and vix_1m < -10:
+        risk_notes.append("VIX 下行说明风险偏好尚可，短期不是流动性压力主导")
+    if copper_1m is not None and copper_1m > 8:
+        risk_notes.append("铜价上行，电网/电气化/数据中心建设成本压力抬升")
+    if gas_1m is not None and gas_1m > 15:
+        risk_notes.append("天然气上行，on-site power 和电力输入成本需要跟踪")
+
+    credit_worse = any(value is not None and value > threshold for value, threshold in [(ig_oas_1m_bps, 10), (hy_oas_1m_bps, 30)])
+    if us10_3m_bps and us10_3m_bps > 35 and sox_3m and sox_3m > 40:
+        verdict = "中性偏利空"
+        message = "基本面需求仍强，但 discount-rate + crowding 的组合变差；这会先压高估值和远期故事，而不是立刻否定订单。"
+    elif credit_worse:
+        verdict = "中性偏利空"
+        message = "信用利差走阔会提高 AI infra 融资成本，尤其影响高杠杆或项目融资依赖更强的链条。"
+    elif sox_3m and sox_3m > 40:
+        verdict = "中性"
+        message = "AI beta 很强，短期动量仍在，但拥挤度已经限制 risk/reward。"
+    else:
+        verdict = "中性"
+        message = "宏观行情没有给出足够强的新增方向，维持跟踪。"
+
+    return {
+        "rows": rows,
+        "verdict": verdict,
+        "message": message,
+        "risk_notes": risk_notes,
+        "us10_3m_bps": us10_3m_bps,
+        "us2_3m_bps": us2_3m_bps,
+        "us5_3m_bps": us5_3m_bps,
+        "us30_3m_bps": us30_3m_bps,
+        "ig_oas_1m_bps": ig_oas_1m_bps,
+        "hy_oas_1m_bps": hy_oas_1m_bps,
+    }
 
 
 def compute_history_metrics(points):
@@ -801,8 +990,10 @@ def segment_delta(segment, by_theme, discovery_topics):
     signals = []
     for theme_id in segment.get("themes", []):
         items = by_theme.get(theme_id, [])
-        if items:
-            signals.append(f"{theme_id}:{theme_signal(items)}")
+        direction = theme_signal(items)
+        if direction in ("利好", "利空"):
+            driver = signal_driver(items, direction)
+            signals.append(f"{direction}: {driver}" if driver else direction)
     matched_topics = []
     segment_text = f"{segment.get('name', '')} {segment.get('logic', '')}".lower()
     for topic in discovery_topics:
@@ -811,9 +1002,22 @@ def segment_delta(segment, by_theme, discovery_topics):
             matched_topics.append(topic["name"])
     if signals:
         return "; ".join(signals[:3])
-    if matched_topics:
-        return "discovery: " + ", ".join(matched_topics[:2])
-    return "无明显新 delta"
+    return "中性"
+
+
+def segment_discovery_note(segment, discovery_topics):
+    matched_topics = []
+    segment_tokens = set(tokenize(f"{segment.get('name', '')} {segment.get('logic', '')}"))
+    generic = {"ai", "data", "center", "demand", "drive", "drives", "server", "servers", "infrastructure"}
+    segment_tokens = {token for token in segment_tokens if token not in generic}
+    for topic in discovery_topics:
+        topic_tokens = set(tokenize(f"{topic.get('name', '')} {' '.join(topic.get('keywords', []))}"))
+        topic_tokens = {token for token in topic_tokens if token not in generic}
+        if topic.get("hits") and len(segment_tokens & topic_tokens) >= 1:
+            matched_topics.append(topic["name"])
+    if not matched_topics:
+        return "无"
+    return ", ".join(matched_topics[:2])
 
 
 def segment_score(segment, crowding):
@@ -831,7 +1035,7 @@ def segment_temperature(row):
         return "Hot Consensus"
     if crowding == "中高拥挤":
         return "Hot/Warming"
-    if crowding in ("拥挤度尚可", "待确认") and "上修/变紧" in delta:
+    if crowding in ("拥挤度尚可", "待确认") and ("利好" in delta or "利空" in delta):
         if row["segment"].get("mapping_strength") == "low":
             return "Early Signal"
         return "Warming"
@@ -923,26 +1127,165 @@ def ai_capex_macro_view(by_theme):
     ]
     pos_hits = sorted({term for term in pos_terms if term in texts})
     risk_hits = sorted({term for term in risk_terms if term in texts})
+    dell_hits = [
+        item for item in items
+        if "dell" in normalize_text(item) and any(term in normalize_text(item) for term in ["server", "backlog", "guidance", "revenue"])
+    ]
     if len(pos_hits) >= 3 and len(risk_hits) >= 3:
-        stance = "总水位仍上修，但市场开始同时交易 ROI、融资成本和资源约束。"
+        stance = "中性偏利好"
+        consensus_delta = "边际强化，不是全市场 capex consensus 的大幅改写"
+        read_through = "Dell 对 AI server 订单和 backlog 是硬证据，但更像供应链需求韧性的追加确认；若是全市场 consensus 大幅上修，供应链应出现更广谱的大涨和盈利预测同步上修。"
         risk_level = "中高"
     elif len(pos_hits) >= 3:
-        stance = "总水位偏上修，AI 基建仍处在扩张阶段。"
+        stance = "利好"
+        consensus_delta = "需求侧边际强化"
+        read_through = "新增信息主要支持 AI 基建继续扩张，但仍需要观察是否扩散到更多 hyperscaler 和供应链盈利预测。"
         risk_level = "中"
     elif len(risk_hits) >= 3:
-        stance = "风险词更多，需警惕 AI capex 从上修转为审慎。"
+        stance = "利空"
+        consensus_delta = "风险侧边际升温"
+        read_through = "新增信息更偏 ROI、融资成本或资源约束，需要警惕高估值硬件链先压估值。"
         risk_level = "高"
     else:
-        stance = "公开信息不足，先维持观察。"
+        stance = "中性"
+        consensus_delta = "未见足够强的新共识变化"
+        read_through = "本窗口新增证据不足以改变 AI capex 总判断。"
         risk_level = "待确认"
-    top_items = items[:5]
+    evidence = []
+    evidence_titles = set()
+    for item in dell_hits + items:
+        title_key = canonical_title(item.get("title"))
+        if item_key(item) in {item_key(existing) for existing in evidence} or title_key in evidence_titles:
+            continue
+        if title_key:
+            evidence_titles.add(title_key)
+        evidence.append(item)
+        if len(evidence) >= 5:
+            break
     return {
         "stance": stance,
+        "consensus_delta": consensus_delta,
+        "read_through": read_through,
         "risk_level": risk_level,
         "pos_hits": pos_hits,
         "risk_hits": risk_hits,
-        "top_items": top_items,
+        "top_items": evidence,
+        "dell_hits": dell_hits,
     }
+
+
+def evidence_direction(item):
+    if item.get("negative_hits") and not item.get("positive_hits"):
+        return "利空"
+    if item.get("positive_hits") and not item.get("negative_hits"):
+        return "利好"
+    if item.get("positive_hits") and item.get("negative_hits"):
+        return "多空都有"
+    if item.get("crowded_hits"):
+        return "拥挤风险"
+    return "中性"
+
+
+def canonical_title(value):
+    title = re.sub(r"\s+", " ", (value or "").lower()).strip()
+    title = re.sub(r"\s+-\s+[^-]{2,40}$", "", title)
+    return title
+
+
+def canonical_event_key(item):
+    text = normalize_text(item)
+    if "dell" in text and any(term in text for term in ["ai server", "backlog", "record earnings", "raised outlook", "guidance"]):
+        return "dell_ai_server_results"
+    if "bubble" in text and "ai capex" in text:
+        return "ai_capex_bubble_risk"
+    if "kuaishou" in text and any(term in text for term in ["monetization", "revenue", "kling"]):
+        return "kuaishou_ai_monetization"
+    if "memory" in text and any(term in text for term in ["shortage", "scarcity", "hbm"]):
+        return "ai_memory_shortage"
+    return canonical_title(item.get("title"))
+
+
+def evidence_table_rows(by_theme, limit=8):
+    rows = []
+    seen = set()
+    seen_titles = set()
+    priority = ["ai_capex", "networking_optics", "memory", "power_cooling", "ai_app_roi", "emerging_second_order"]
+    for theme_id in priority:
+        for item in by_theme.get(theme_id, []):
+            key = item_key(item)
+            title_key = canonical_event_key(item)
+            if key in seen or title_key in seen_titles:
+                continue
+            seen.add(key)
+            if title_key:
+                seen_titles.add(title_key)
+            tags = []
+            if item.get("positive_hits"):
+                tags.extend(item["positive_hits"][:2])
+            if item.get("negative_hits"):
+                tags.extend(item["negative_hits"][:2])
+            if item.get("crowded_hits"):
+                tags.append("拥挤:" + ",".join(item["crowded_hits"][:2]))
+            rows.append({
+                "theme": theme_id,
+                "item": item,
+                "direction": evidence_direction(item),
+                "tags": tags,
+            })
+            if len(rows) >= limit:
+                return rows
+    return rows
+
+
+def quote_market(quote):
+    quote = (quote or "").upper()
+    if quote.endswith((".SS", ".SZ")):
+        return "A股"
+    if quote.endswith(".HK"):
+        return "港股"
+    if quote.endswith((".KS", ".TW", ".JP")):
+        return "亚太"
+    if quote:
+        return "美股/海外"
+    return "无代码"
+
+
+def segment_action(row):
+    temp = row.get("temperature")
+    delta = row.get("delta", "")
+    crowding = row.get("crowding")
+    if temp == "Hot Consensus":
+        if "利好" in delta:
+            return "超预期复核"
+        if "利空" in delta:
+            return "风险复盘"
+        return "等待兑现"
+    if temp in ("Warming", "Hot/Warming"):
+        if crowding in ("拥挤度尚可", "待确认"):
+            return "深挖标的"
+        return "找低拥挤替代"
+    if temp == "Early Signal":
+        return "只做验证"
+    return "观察"
+
+
+def segment_readthrough(row):
+    temp = row.get("temperature")
+    delta = row.get("delta", "")
+    crowding = row.get("crowding")
+    if "利好" in delta and temp == "Hot Consensus":
+        return "新增信息支持需求，但市场已熟；要看盈利预测/订单是否继续上修。"
+    if "利空" in delta:
+        return "先查是否连续恶化，再评估是否影响订单、价格或毛利。"
+    if temp == "Hot Consensus":
+        return "逻辑清楚但拥挤，不能当 emergent；只适合做兑现差。"
+    if temp in ("Warming", "Hot/Warming"):
+        if crowding in ("拥挤度尚可", "待确认"):
+            return "有继续研究价值，重点找客户/订单/价格二次证据。"
+        return "主题在升温，但代表票也不便宜，优先找更细分或更低拥挤映射。"
+    if temp == "Early Signal":
+        return "目前只是线索，必须找到可交易映射和公司级证据。"
+    return "信息不足。"
 
 
 def iter_theme_items(by_theme):
@@ -1059,25 +1402,32 @@ def markdown_to_html(markdown_text, title):
         idx += 1
 
     css = """
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif; margin: 28px; color: #1f2937; line-height: 1.55; }
-    h1 { font-size: 28px; margin-bottom: 18px; }
-    h2 { margin-top: 30px; padding-top: 12px; border-top: 1px solid #e5e7eb; font-size: 20px; }
-    h3 { margin-top: 22px; font-size: 16px; }
-    p { margin: 7px 0; }
-    .bullet { margin-left: 8px; }
-    .table-wrap { overflow-x: auto; margin: 12px 0 24px; border: 1px solid #e5e7eb; border-radius: 8px; }
-    table { border-collapse: collapse; width: 100%; min-width: 980px; font-size: 12px; }
-    th { background: #f3f4f6; text-align: left; position: sticky; top: 0; }
-    th, td { border-bottom: 1px solid #e5e7eb; padding: 7px 9px; vertical-align: top; }
-    tr:nth-child(even) td { background: #fafafa; }
-    a { color: #2563eb; text-decoration: none; }
-    .tag.hot { color: #991b1b; font-weight: 700; background: #fee2e2; }
-    .tag.warm { color: #92400e; font-weight: 700; background: #fef3c7; }
-    .tag.ok { color: #065f46; font-weight: 700; background: #d1fae5; }
+    :root { --ink:#18212f; --muted:#667085; --line:#d9e0ea; --panel:#f7f9fc; --head:#eef3f8; --accent:#184e77; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif; margin: 0; color: var(--ink); line-height: 1.55; background: #eef2f6; }
+    body > * { max-width: 1380px; margin-left: auto; margin-right: auto; }
+    h1 { max-width: none; margin: 0 0 18px; padding: 26px 42px 22px; background: #123047; color: #fff; font-size: 28px; letter-spacing: 0; }
+    h2 { margin-top: 26px; padding: 14px 18px; border: 1px solid var(--line); border-left: 5px solid var(--accent); background: #fff; font-size: 19px; border-radius: 6px; }
+    h3 { margin-top: 22px; font-size: 15px; color: #243b53; }
+    p { margin-top: 7px; margin-bottom: 7px; padding-left: 18px; padding-right: 18px; }
+    p:nth-of-type(1), p:nth-of-type(2) { color: var(--muted); font-size: 12px; }
+    .bullet { margin: 8px auto; padding: 9px 14px; background: #fff; border: 1px solid var(--line); border-radius: 6px; }
+    .table-wrap { overflow-x: auto; margin: 12px auto 24px; border: 1px solid var(--line); border-radius: 8px; background: #fff; box-shadow: 0 1px 2px rgba(16,24,40,.04); }
+    table { border-collapse: collapse; width: 100%; min-width: 1080px; font-size: 12px; }
+    th { background: var(--head); text-align: left; position: sticky; top: 0; color: #243b53; font-weight: 700; }
+    th, td { border-bottom: 1px solid #e8edf3; padding: 7px 9px; vertical-align: top; }
+    tr:nth-child(even) td { background: #fbfcfe; }
+    tr:hover td { background: #f4f8fb; }
+    a { color: #1d4f8f; text-decoration: none; }
+    strong { color: #14213d; }
+    .tag.hot { color: #8a1c1c; font-weight: 700; background: #fde8e8; }
+    .tag.warm { color: #855a00; font-weight: 700; background: #fff3cf; }
+    .tag.ok { color: #075c47; font-weight: 700; background: #dff7ed; }
     @media print {
-      body { margin: 14mm; }
+      body { margin: 0; background: #fff; }
+      h1 { padding: 14mm 12mm 8mm; }
+      h2 { margin-top: 14px; }
       .table-wrap { overflow: visible; border: none; }
-      table { min-width: 0; font-size: 9px; page-break-inside: auto; }
+      table { min-width: 0; font-size: 8.4px; page-break-inside: auto; }
       tr { page-break-inside: avoid; page-break-after: auto; }
       h2 { page-break-after: avoid; }
     }
@@ -1120,13 +1470,14 @@ def render_pdf(html_path, pdf_path):
 def previous_report_issue_time(reports_dir, output_path):
     candidates = []
     output_abs = os.path.abspath(output_path) if output_path else None
-    if output_abs and os.path.exists(output_abs):
-        candidates.append(output_abs)
-    if os.path.isdir(reports_dir):
-        for name in os.listdir(reports_dir):
+    search_dirs = [reports_dir, os.path.join(reports_dir, "archive")]
+    for search_dir in search_dirs:
+        if not os.path.isdir(search_dir):
+            continue
+        for name in os.listdir(search_dir):
             if not re.match(r"ai-radar-\d{4}-\d{2}-\d{2}\.md$", name):
                 continue
-            path = os.path.abspath(os.path.join(reports_dir, name))
+            path = os.path.abspath(os.path.join(search_dir, name))
             if output_abs and path == output_abs:
                 continue
             candidates.append(path)
@@ -1158,16 +1509,93 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
         theme_rows.append({"theme": theme, "items": items, "signal": signal, "maturity": maturity, "market_state": market_state, "layer": layer_name})
 
     macro = ai_capex_macro_view(by_theme)
+    macro_market = macro_market_dashboard()
+    segment_rows = []
+    for segment in config.get("segments", []):
+        reps = segment_representatives(segment, market_rows)
+        crowding = segment_crowding(reps)
+        delta = segment_delta(segment, by_theme, discovery_topics)
+        layer = layers.get(segment.get("layer"), {}).get("name", segment.get("layer", "")).split("：")[0]
+        score = segment_score(segment, crowding)
+        row = {
+            "segment": segment,
+            "reps": reps,
+            "crowding": crowding,
+            "delta": delta,
+            "discovery": segment_discovery_note(segment, discovery_topics),
+            "layer": layer,
+            "score": score,
+        }
+        row["temperature"] = segment_temperature(row)
+        segment_rows.append(row)
+
+    candidates = [row for row in segment_rows if row["segment"].get("logic_strength") in ("high", "medium") and row["segment"].get("mapping_strength") in ("high", "medium") and row["crowding"] in ("拥挤度尚可", "待确认")]
+    candidates.sort(key=lambda row: row["score"], reverse=True)
+    crowded = [row for row in segment_rows if row["temperature"] == "Hot Consensus"]
+    hot_holding_quotes = {holding.get("quote") or holding.get("ticker") for holding in config.get("holdings", [])}
+    market_by_quote = {row.get("quote"): row for row in market_rows}
+    segment_by_quote = {}
+    for segment in config.get("segments", []):
+        for rep in segment.get("reps", []):
+            quote = rep.get("quote")
+            if quote:
+                segment_by_quote.setdefault(quote, segment.get("name"))
+    hot_holdings = [
+        market_by_quote.get(quote)
+        for quote in hot_holding_quotes
+        if market_by_quote.get(quote) and combined_crowding(market_by_quote.get(quote)) == "高拥挤"
+    ]
+    dell_items = [
+        item for item in by_theme.get("ai_capex", [])
+        if "dell" in normalize_text(item) and any(term in normalize_text(item) for term in ["server", "backlog", "orders", "guidance", "revenue"])
+    ]
+    front_evidence = evidence_table_rows(by_theme, limit=8)
+    lines.append("## 今日先看")
+    lines.append("")
+    lines.append(f"- **总判断**：需求侧={macro['stance']}，宏观/资金侧={macro_market['verdict']}。本轮更像“{macro['consensus_delta']}”，不是无条件的全链条需求大幅上修。")
+    if dell_items:
+        top = dell_items[0]
+        lines.append(f"- **关键事件**：Dell AI server 业绩/订单/积压进入本轮 delta，验证 AI server 需求韧性；但这是单公司/服务器链条的边际确认，不等于 hyperscaler capex consensus 被全市场大幅改写。来源：[Dell result]({top.get('link')})。")
+    else:
+        lines.append("- **关键事件**：本轮没有被自动抓到足够强的 AI server 单公司业绩事件；这类事件以后必须进入优先事件监控。")
+    lines.append(f"- **读法**：{macro['read_through']}")
+    lines.append(f"- **Macro risk**：{macro_market['message']}")
+    if candidates:
+        lines.append(f"- **可研究方向**：{', '.join(row['segment']['name'] for row in candidates[:3])}。")
+    else:
+        lines.append("- **可研究方向**：今天仍没有“逻辑强 + 映射强 + 低拥挤”的完美交集，更多是已拥挤主线的超预期复核。")
+    if hot_holdings:
+        lines.append("- **持仓风险**：" + "；".join(f"{row.get('name')} 3M {fmt_pct(row.get('returns', {}).get('3M'))}" for row in hot_holdings[:4]) + "，这些需要看业绩继续兑现，不能只看主题热度。")
+    lines.append("")
+
+    lines.append("## 本轮新增证据")
+    lines.append("")
+    lines.append("先看 update window 里真正新增的事实，再读后面的历史基准和拥挤度。方向只代表这条新闻/事实对 AI capex 链条的边际含义。")
+    lines.append("")
+    lines.append("| 方向 | 主题 | 日期 | 证据 | 关键词 |")
+    lines.append("|---|---|---|---|---|")
+    if front_evidence:
+        for row in front_evidence:
+            item = row["item"]
+            lines.append(
+                f"| {row['direction']} | {row['theme']} | {format_date(item.get('published'))} | "
+                f"[{md_escape(item.get('title'))}]({item.get('link')}) | {md_escape(', '.join(row['tags']) or 'n/a')} |"
+            )
+    else:
+        lines.append("| 中性 | n/a | n/a | 本轮没有足够强的新证据 | n/a |")
+    lines.append("")
+
     lines.append("## AI Capex Macro")
     lines.append("")
-    lines.append("先判断总水位，再看细分环节。若美国 AI capex 从继续上修变成审慎，A 股硬件链的估值会先受压；若总水位仍上修，重点就是找哪一环节继续吃到订单和盈利预测上修。")
+    lines.append("Macro 部分分三层：需求证据、市场隐含资金成本、资源/建设约束。过去的 capex 指引只作为基准，不当作今天的新利好；真正要看 update window 是否改变 consensus，以及利率/融资/资源约束是否开始压估值和项目 IRR。")
     lines.append("")
-    lines.append("| 维度 | 当前判断 | 对 A 股硬件链的含义 |")
-    lines.append("|---|---|---|")
-    lines.append(f"| 总水位 | {macro['stance']} | 支撑光模块、AI PCB、存储接口、电力/散热等核心链条，但不能自动推出所有二阶映射都有机会。 |")
-    lines.append(f"| 风险温度 | {macro['risk_level']} | 风险不是订单立刻消失，而是高 PE/远期故事先被压估值；进一步加息或长端利率上行会放大这个压力。 |")
-    lines.append("| 传导顺序 | Hyperscaler capex -> GPU/ASIC 集群 -> 网络/PCB/内存带宽 -> 电力/散热/资源约束 | 中际最直接吃网络瓶颈，沪电吃高速 PCB 复杂度，澜起吃 MRDIMM/Retimer/CXL 等架构升级。 |")
-    lines.append("| 核心证伪 | Capex 指引停止上修、AI ROI 被质疑、融资型数据中心项目放缓、长端利率继续上行 | 出现组合坏信号时，高拥挤主线先做风险复盘，不再只看静态 PE。 |")
+    lines.append("| 维度 | 方向 | 当前判断 | 投资含义 |")
+    lines.append("|---|---|---|---|")
+    lines.append(f"| Update window | {macro['stance']} | {macro['consensus_delta']} | {macro['read_through']} |")
+    lines.append(f"| 资金成本/折现率 | {macro_market['verdict']} | US 10Y 约 {fmt_num(next((row.get('price') for row in macro_market['rows'] if row['quote']=='USGG10YR'), None))}%，3M 约 {fmt_bps(macro_market['us10_3m_bps'])}；US 2Y 约 {fmt_num(next((row.get('price') for row in macro_market['rows'] if row['quote']=='USGG2YR'), None))}%，3M 约 {fmt_bps(macro_market['us2_3m_bps'])} | 利率上行会先压长久期/高 PE/远期盈利故事，也提高 private credit、项目债、greenfield data center 的 hurdle rate。 |")
+    lines.append(f"| 风险温度 | 中性偏利空 | ROI、融资成本、长端利率、电力/水/土地约束仍在发酵，风险温度={macro['risk_level']} | 风险不是订单立刻消失，而是高 PE/远期故事先压估值；如果利率或融资成本继续上行，边际项目和高估值二阶映射更脆弱。 |")
+    lines.append("| 传导顺序 | 中性 | Hyperscaler capex -> GPU/ASIC 集群 -> 网络/PCB/内存带宽 -> 电力/散热/资源约束 | 越靠近订单和瓶颈，兑现要求越高；越远的二阶映射，需要更强证据，不能只靠主题外溢。 |")
+    lines.append("| 核心证伪 | 利空触发 | Capex 指引停止上修、AI ROI 被明确质疑、融资型数据中心项目放缓、长端利率继续上行 | 出现组合坏信号时，高拥挤主线先做风险复盘，不再只看静态 PE。 |")
     lines.append("")
     facts = config.get("ai_capex_macro_facts", [])
     if facts:
@@ -1186,67 +1614,69 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
     if macro["pos_hits"] or macro["risk_hits"]:
         lines.append(f"- 正向关键词：{', '.join(macro['pos_hits'][:8]) if macro['pos_hits'] else 'n/a'}")
         lines.append(f"- 风险关键词：{', '.join(macro['risk_hits'][:8]) if macro['risk_hits'] else 'n/a'}")
+    if macro_market["risk_notes"]:
+        lines.append("- Bloomberg 市场信号：")
+        for note in macro_market["risk_notes"][:6]:
+            lines.append(f"  - {note}")
+    if macro_market["rows"]:
+        lines.append("")
+        lines.append("**Macro / financing dashboard（Bloomberg）**")
+        lines.append("")
+        lines.append("| 指标 | 桶 | 最新 | 1M | 3M | 6M | 1Y | 读法 |")
+        lines.append("|---|---|---:|---:|---:|---:|---:|---|")
+        for row in macro_market["rows"]:
+            returns = row.get("returns", {})
+            read = ""
+            if row["quote"] in ("USGG10YR", "USGG2YR"):
+                read = "融资/折现率压力" if (returns.get("3M") or 0) > 8 else "利率压力有限"
+            elif row["quote"] == "SOX":
+                read = "AI 硬件 beta 拥挤" if (returns.get("3M") or 0) > 40 else "硬件 beta 正常"
+            elif row["quote"] == "VIX":
+                read = "风险偏好尚可" if (returns.get("1M") or 0) < 0 else "波动压力上升"
+            elif row["quote"] in ("LUACOAS", "LF98OAS"):
+                read = "信用利差压力上升" if (returns.get("1M") or 0) > 5 else "信用融资环境尚可"
+            elif row["quote"] in ("HG1", "NG1", "CL1"):
+                read = "资源/建设成本上行" if (returns.get("1M") or 0) > 8 else "成本压力未明显恶化"
+            else:
+                read = "风险偏好/流动性参考"
+            lines.append(
+                f"| {row['name']} | {row['bucket']} | {fmt_num(row.get('price'))} | "
+                f"{fmt_pct(returns.get('1M'))} | {fmt_pct(returns.get('3M'))} | {fmt_pct(returns.get('6M'))} | {fmt_pct(returns.get('1Y'))} | {read} |"
+            )
+    lines.append("")
+    lines.append("**结构性 macro risk 参考**")
+    lines.append("")
+    lines.append("| 主题 | 结论 | 来源 |")
+    lines.append("|---|---|---|")
+    for ref in MACRO_RISK_REFERENCES:
+        lines.append(f"| {ref['topic']} | {md_escape(ref['point'])} | [{ref['source']}]({ref['url']}) |")
+    lines.append("")
     if macro["top_items"]:
         lines.append("- 今日公开信息样本：")
         for item in macro["top_items"][:4]:
             lines.append(f"  - {format_date(item.get('published'))} [{md_escape(item.get('title'))}]({item.get('link')})")
     lines.append("")
 
-    segment_rows = []
-    for segment in config.get("segments", []):
-        reps = segment_representatives(segment, market_rows)
-        crowding = segment_crowding(reps)
-        delta = segment_delta(segment, by_theme, discovery_topics)
-        layer = layers.get(segment.get("layer"), {}).get("name", segment.get("layer", "")).split("：")[0]
-        score = segment_score(segment, crowding)
-        row = {"segment": segment, "reps": reps, "crowding": crowding, "delta": delta, "layer": layer, "score": score}
-        row["temperature"] = segment_temperature(row)
-        segment_rows.append(row)
-
-    lines.append("## Segment 全景")
+    lines.append("## Segment Matrix")
     lines.append("")
-    lines.append("先看所有相关 segment，再找“逻辑强、映射强、拥挤度尚可”的交集。")
+    lines.append("这张表把 temperature 直接并入 segment 判断：Hot Consensus=市场已经充分讨论，只做超预期复核；Warming=证据在升温，找低拥挤映射；Early Signal=只有线索，不能直接交易。")
     lines.append("")
-    lines.append("| Segment | 层级 | 温度 | 逻辑 | 映射 | 拥挤度 | 最新 delta | 代表票 |")
+    lines.append("| Segment | 层级 | 温度 | 本轮方向 | 拥挤度 | 动作 | 怎么读 | 代表票 |")
     lines.append("|---|---|---|---|---|---|---|---|")
     for row in segment_rows:
         segment = row["segment"]
         rep_text = ", ".join([rep.get("name", rep.get("quote", "")) for rep in segment.get("reps", [])[:4]])
         lines.append(
-            f"| {segment['name']} | {row['layer']} | {row['temperature']} | {segment.get('logic_strength')} | {segment.get('mapping_strength')} | "
-            f"{row['crowding']} | {row['delta']} | {rep_text} |"
+            f"| {segment['name']} | {row['layer']} | {row['temperature']} | {row['delta']} | "
+            f"{row['crowding']} | {segment_action(row)} | {segment_readthrough(row)} | {rep_text} |"
         )
     lines.append("")
-
-    lines.append("## Theme Temperature")
-    lines.append("")
-    lines.append("Hot 不代表不能涨，但不能叫 emergent；Warming 才适合继续找标的；Early 只是线索，需要人工验证。")
-    lines.append("")
     hot = [row for row in segment_rows if row["temperature"] == "Hot Consensus"]
-    warming = [row for row in segment_rows if row["temperature"] in ("Warming", "Hot/Warming")]
-    early = [row for row in segment_rows if row["temperature"] == "Early Signal"]
-    if hot:
-        lines.append("**Hot Consensus：只做趋势/超预期复核，不当 early theme**")
-        for row in hot[:10]:
-            lines.append(f"- {row['segment']['name']}：{row['crowding']}，{row['segment']['logic']}")
-        lines.append("")
-    if warming:
-        lines.append("**Warming：可继续验证，重点找未拥挤标的**")
-        for row in warming[:10]:
-            lines.append(f"- {row['segment']['name']}：{row['crowding']}，{row['segment']['logic']}")
-        lines.append("")
-    if early:
-        lines.append("**Early Signals：不是交易结论，只是人工深挖线索**")
-        for row in early[:10]:
-            lines.append(f"- {row['segment']['name']}：{row['crowding']}，{row['segment']['logic']}")
-        lines.append("")
 
     lines.append("## 结论")
     lines.append("")
     lines.append("理想目标：逻辑强度高、映射强度高、拥挤度不是高拥挤。若没有完美交集，就按“可研究 / 只能拥挤复核 / 先排除”分层。")
     lines.append("")
-    candidates = [row for row in segment_rows if row["segment"].get("logic_strength") in ("high", "medium") and row["segment"].get("mapping_strength") in ("high", "medium") and row["crowding"] in ("拥挤度尚可", "待确认")]
-    candidates.sort(key=lambda row: row["score"], reverse=True)
     if candidates:
         lines.append("**可优先研究：**")
         for row in candidates[:8]:
@@ -1254,7 +1684,6 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
             lines.append(f"- **{segment['name']}**：{row['layer']}，拥挤度={row['crowding']}。{segment['logic']}")
     else:
         lines.append("**可优先研究：** 暂无完全满足条件的 segment。")
-    crowded = [row for row in segment_rows if row["temperature"] == "Hot Consensus"]
     if crowded:
         lines.append("")
         lines.append("**只能拥挤复核，不当 early theme：**")
@@ -1264,25 +1693,26 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
 
     lines.append("## 代表票候选")
     lines.append("")
-    lines.append("先从可研究 segment 里找票；高拥挤 segment 的票只做超预期复核。")
+    lines.append("只列“逻辑/映射较强，且拥挤度没有明显爆掉”的候选。没有候选时，不硬凑票。")
     lines.append("")
-    lines.append("| Segment | 标的 | 代码 | 3M | 1Y | Fwd P/E | EV/EBITDA | 拥挤度 |")
-    lines.append("|---|---|---|---:|---:|---:|---:|---|")
-    for row in candidates[:8]:
-        for rep in row["reps"][:4]:
-            returns = rep.get("returns", {})
-            lines.append(
-                f"| {row['segment']['name']} | {rep.get('name')} | {rep.get('quote')} | "
-                f"{fmt_pct(returns.get('3M'))} | {fmt_pct(returns.get('1Y'))} | {fmt_num(rep.get('forward_pe'))} | "
-                f"{fmt_num(rep.get('ev_to_ebitda'))} | {combined_crowding(rep)} |"
-            )
-    if not candidates:
-        lines.append("| n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |")
+    if candidates:
+        lines.append("| Segment | 标的 | 代码 | 3M | 1Y | 27E P/E | 28E P/E | EV/EBITDA | 拥挤度 |")
+        lines.append("|---|---|---|---:|---:|---:|---:|---:|---|")
+        for row in candidates[:8]:
+            for rep in row["reps"][:4]:
+                returns = rep.get("returns", {})
+                lines.append(
+                    f"| {row['segment']['name']} | {rep.get('name')} | {rep.get('quote')} | "
+                    f"{fmt_pct(returns.get('3M'))} | {fmt_pct(returns.get('1Y'))} | {fmt_num(rep.get('pe_2027e'))} | {fmt_num(rep.get('pe_2028e'))} | "
+                    f"{fmt_num(rep.get('ev_to_ebitda'))} | {combined_crowding(rep)} |"
+                )
+    else:
+        lines.append("本轮没有满足条件的新候选。结论是：主线仍强，但代表票大多已经拥挤；今天更适合做持仓兑现复核和二阶线索验证。")
     lines.append("")
 
-    lines.append("## 搜索热度线索")
+    lines.append("## 搜索/新闻线索")
     lines.append("")
-    lines.append("这部分只反映搜索/新闻关键词，不自动等同于 emergent。若对应 segment 已经 Hot，会被排除在 Early 之外。")
+    lines.append("这是 update window 的关键词雷达，不是投资结论。它只回答“哪里开始出现更多讨论”，真正能否变成交易机会，要回到上面的温度、映射和拥挤度。")
     visible_topics = [topic for topic in discovery_topics if topic["hits"]]
     if visible_topics:
         for topic in sorted(visible_topics, key=lambda row: (len(row["hits"]), -row["crowded_terms"]), reverse=True)[:5]:
@@ -1296,7 +1726,7 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
 
     lines.append("## 低拥挤观察篮")
     lines.append("")
-    lines.append("这些不是推荐买入，只是当前观察池里“涨幅/估值没有明显爆掉”的复核对象。")
+    lines.append("这是从 holdings/watchlist 中筛出的低拥挤复核对象，不是基于新闻热度自动推荐；作用是避免只盯已经涨完的 Hot Consensus。")
     lines.append("")
     lines.append("| 标的 | 代码 | 主题 | 3M | 1Y | 综合拥挤度 |")
     lines.append("|---|---|---|---:|---:|---|")
@@ -1317,7 +1747,6 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
 
     lines.append("## 持仓映射")
     lines.append("")
-    market_by_quote = {row.get("quote"): row for row in market_rows}
     for holding in config.get("holdings", []):
         own_row = market_by_quote.get(holding.get("quote") or holding.get("ticker"), {})
         own_returns = own_row.get("returns", {})
@@ -1336,22 +1765,24 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
 
     lines.append("## 股价拥挤度")
     lines.append("")
-    lines.append("这张表是为了防止把已经涨完一大段、估值又很贵的方向误判成 emergent。Yahoo 没有提供未来两年一致预期时，先用公开 forward P/E 和 EV/EBITDA 近似；缺口会标出来。")
+    lines.append("覆盖范围来自 holdings、watchlist 和每个 segment 的代表票；不是全市场覆盖。用途是按 segment 和市场检查代表票是否已经拥挤，避免把已充分定价的主线误判成新机会。")
     lines.append("")
-    lines.append("| 标的 | 代码 | 主题 | 最新日 | 1M | 3M | 1Y | Fwd P/E | TTM P/E | EV/EBITDA | EV/Sales | 综合 |")
-    lines.append("|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---|")
+    lines.append("| Segment | 市场 | 标的 | 代码 | 最新日 | 1M | 3M | 1Y | 27E P/E | 28E P/E | Fwd P/E | TTM P/E | EV/EBITDA | EV/Sales | 综合 |")
+    lines.append("|---|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|")
     sorted_rows = sorted(
         [row for row in market_rows if row.get("returns")],
-        key=lambda row: (row["returns"].get("3M") if row["returns"].get("3M") is not None else -999),
-        reverse=True,
+        key=lambda row: (
+            segment_by_quote.get(row.get("quote"), "zz"),
+            quote_market(row.get("quote")),
+            -(row["returns"].get("3M") if row["returns"].get("3M") is not None else -999),
+        ),
     )
     for row in sorted_rows:
         returns = row.get("returns", {})
-        themes = ",".join(row.get("themes", []))
         lines.append(
-            f"| {row.get('name')} | {row.get('quote')} | {themes} | {row.get('date', 'n/a')} | "
+            f"| {segment_by_quote.get(row.get('quote'), 'Portfolio/Watchlist')} | {quote_market(row.get('quote'))} | {row.get('name')} | {row.get('quote')} | {row.get('date', 'n/a')} | "
             f"{fmt_pct(returns.get('1M'))} | {fmt_pct(returns.get('3M'))} | {fmt_pct(returns.get('1Y'))} | "
-            f"{fmt_num(row.get('forward_pe'))} | {fmt_num(row.get('trailing_pe'))} | {fmt_num(row.get('ev_to_ebitda'))} | {fmt_num(row.get('ev_to_revenue'))} | {combined_crowding(row)} |"
+            f"{fmt_num(row.get('pe_2027e'))} | {fmt_num(row.get('pe_2028e'))} | {fmt_num(row.get('forward_pe'))} | {fmt_num(row.get('trailing_pe'))} | {fmt_num(row.get('ev_to_ebitda'))} | {fmt_num(row.get('ev_to_revenue'))} | {combined_crowding(row)} |"
         )
     lines.append("")
 
@@ -1401,6 +1832,98 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
     return "\n".join(lines)
 
 
+def build_readthrough(config, by_theme, market_rows, discovery_topics, report_issued_at, delta_since):
+    macro = ai_capex_macro_view(by_theme)
+    macro_market = macro_market_dashboard()
+    market_by_quote = {row.get("quote"): row for row in market_rows}
+    lines = []
+    lines.append(f"# AI Capex Radar Readthrough - {report_issued_at:%Y-%m-%d}")
+    lines.append("")
+    lines.append(f"Report issued: {format_timestamp(report_issued_at)}")
+    lines.append(f"Delta window: {format_timestamp(delta_since)} -> {format_timestamp(report_issued_at)}")
+    lines.append("")
+
+    lines.append("## 一句话")
+    lines.append("")
+    lines.append(
+        "今天不是“AI capex 全面重新上修”的日子，而是 Dell 把 AI server 需求韧性又确认了一次。"
+        "这对服务器、光模块、PCB、内存接口是利好，但这些方向很多已经很拥挤；同时利率和项目融资成本在变贵，"
+        "所以市场会更挑剔：只奖励真正继续超预期的公司。"
+    )
+    lines.append("")
+
+    lines.append("## 今天真正更新了什么")
+    lines.append("")
+    dell_items = [
+        item for item in by_theme.get("ai_capex", [])
+        if "dell" in normalize_text(item) and any(term in normalize_text(item) for term in ["server", "backlog", "guidance", "revenue", "record"])
+    ]
+    if dell_items:
+        item = dell_items[0]
+        lines.append(f"- **Dell 事件**：Dell AI server 相关业绩、订单/积压和指引进入本轮窗口。来源：[{md_escape(item.get('title'))}]({item.get('link')})。")
+    else:
+        lines.append("- **Dell 事件**：本轮没有抓到足够强的 Dell/AI server 新证据。")
+    lines.append(f"- **需求侧判断**：{macro['stance']}。这更像“{macro['consensus_delta']}”，不是全市场共识被大幅改写。")
+    lines.append(f"- **资金侧判断**：{macro_market['verdict']}。{macro_market['message']}")
+    lines.append("- **信用利差**：IG/HY OAS 当前没有明显恶化，说明短期不是信用市场关门；压力主要来自国债利率和估值拥挤。")
+    lines.append("")
+
+    lines.append("## 为什么利率重要")
+    lines.append("")
+    lines.append(
+        "AI data center 是很重资产的生意：买 GPU、建机房、签电力、租/建数据中心，都要先花很多钱。"
+        "当 5Y/10Y/30Y 利率上行时，项目融资成本和估值折现率都会上去。"
+        "这不代表订单马上消失，但会让市场更不愿意给远期故事高估值。"
+    )
+    lines.append("")
+    lines.append("| 指标 | 当前读法 | 对 AI capex 的含义 |")
+    lines.append("|---|---|---|")
+    lines.append(f"| US 10Y | 3M 约 {fmt_bps(macro_market.get('us10_3m_bps'))} | 长久期成长股和高 PE 硬件链估值承压。 |")
+    lines.append(f"| US 5Y | 3M 约 {fmt_bps(macro_market.get('us5_3m_bps'))} | 更贴近项目融资/中期债务成本，影响 data center IRR。 |")
+    lines.append(f"| US 30Y | 3M 约 {fmt_bps(macro_market.get('us30_3m_bps'))} | 影响 REIT、utility、长期基础设施资产估值。 |")
+    lines.append(f"| IG/HY OAS | 1M 约 {fmt_bps(macro_market.get('ig_oas_1m_bps'))} / {fmt_bps(macro_market.get('hy_oas_1m_bps'))} | 如果走阔，说明信用融资变差；当前更像信用环境尚可。 |")
+    lines.append("")
+
+    lines.append("## 应该怎么看供应链")
+    lines.append("")
+    lines.append("- **AI server / optical / PCB**：Dell 是正面验证，但这些已经是 Hot Consensus。正确动作是复核订单和盈利预测是否继续上修，不是因为新闻标题就全链条追高。")
+    lines.append("- **HBM / memory / retimer**：产业逻辑仍强，但本窗口没有同等级的新确认；更适合等财报、价格、交期和订单数据。")
+    lines.append("- **Power / cooling / grid**：逻辑不是“今天 Dell 利好所以全涨”，而是数据中心建设继续推高 power availability 的稀缺性。现在新增的 CEG/VST/NEE 可以作为电力侧观察 proxy。")
+    lines.append("- **Data center REIT**：EQIX/DLR 可以看需求是否真的转成租金/开发收益，但估值已经不便宜，且对长端利率敏感。")
+    lines.append("- **AI applications / ROI**：这是 capex 能否长期持续的最终答案。腾讯、快手、Microsoft、ServiceNow 这类要看 AI 是否带来收入，而不是只看投入。")
+    lines.append("")
+
+    lines.append("## 持仓含义")
+    lines.append("")
+    for holding in config.get("holdings", []):
+        quote = holding.get("quote") or holding.get("ticker")
+        row = market_by_quote.get(quote, {})
+        returns = row.get("returns", {})
+        crowding = combined_crowding(row) if row else "无行情"
+        if quote in ("300308.SZ", "002463.SZ", "688008.SS"):
+            implication = "主线逻辑被 Dell 支撑，但自身已高拥挤，后面必须靠订单/利润继续兑现。"
+        elif quote in ("0700.HK", "1024.HK"):
+            implication = "更偏 ROI/应用侧，关键是 AI 是否真正带来收入和利润，而不是 capex 本身。"
+        elif quote == "300750.SZ":
+            implication = "AI 电力/储能是加分项，不应把它机械当作纯 AI capex 标的。"
+        else:
+            implication = "目前没有明确 AI 直接映射，按原本基本面框架看。"
+        lines.append(
+            f"- **{holding['name']} ({quote})**：拥挤度={crowding}，3M {fmt_pct(returns.get('3M'))}，1Y {fmt_pct(returns.get('1Y'))}。{implication}"
+        )
+    lines.append("")
+
+    lines.append("## 下一步要盯什么")
+    lines.append("")
+    lines.append("- Hyperscaler 是否跟随 Dell 出现更强 capex / backlog / data center capacity 上修。")
+    lines.append("- SOX、光模块、PCB、内存接口代表票是否继续涨但盈利预测没有同步上修。")
+    lines.append("- US 5Y/10Y/30Y 是否继续上行；如果继续上行，高估值和 REIT/utility 会更敏感。")
+    lines.append("- IG/HY OAS 是否开始走阔；如果走阔，说明融资压力从利率扩散到信用风险。")
+    lines.append("- Power availability、grid interconnection、gas/nuclear/utility 合同是否出现新的公司级订单。")
+    lines.append("")
+    return "\n".join(lines)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default=os.path.join(ROOT, "config.json"))
@@ -1439,22 +1962,46 @@ def main():
         report_issued_at,
         delta_since,
     )
+    readthrough = build_readthrough(
+        config,
+        by_theme,
+        market_rows,
+        discovery_topics,
+        report_issued_at,
+        delta_since,
+    )
 
     with open(output, "w", encoding="utf-8") as f:
         f.write(report)
+    readthrough_output = os.path.splitext(output)[0] + "-readthrough.md"
+    with open(readthrough_output, "w", encoding="utf-8") as f:
+        f.write(readthrough)
     html_output = os.path.splitext(output)[0] + ".html"
     pdf_output = os.path.splitext(output)[0] + ".pdf"
+    readthrough_html_output = os.path.splitext(output)[0] + "-readthrough.html"
+    readthrough_pdf_output = os.path.splitext(output)[0] + "-readthrough.pdf"
     with open(html_output, "w", encoding="utf-8") as f:
         f.write(markdown_to_html(report, config.get("report_title", "AI Capex Radar")))
+    with open(readthrough_html_output, "w", encoding="utf-8") as f:
+        f.write(markdown_to_html(readthrough, f"{config.get('report_title', 'AI Capex Radar')} Readthrough"))
     pdf_ok = False
     try:
         pdf_ok = render_pdf(html_output, pdf_output)
     except Exception as exc:
         print(f"PDF export failed: {exc}")
+    readthrough_pdf_ok = False
+    try:
+        readthrough_pdf_ok = render_pdf(readthrough_html_output, readthrough_pdf_output)
+    except Exception as exc:
+        print(f"Readthrough PDF export failed: {exc}")
     print(output)
+    print(readthrough_output)
     print(html_output)
+    print(readthrough_html_output)
     if pdf_ok:
         print(pdf_output)
+    if readthrough_pdf_ok:
+        print(readthrough_pdf_output)
 
 
 if __name__ == "__main__":
