@@ -1,0 +1,3004 @@
+{
+  "generated_at": "2026-05-31T14:25:49.166427",
+  "delta_window": {
+    "start": "2026-05-29T08:58:14.200854",
+    "end": "2026-05-31T14:25:49.166427"
+  },
+  "policy": {
+    "purpose": "Evidence intelligence supports the existing AI capex framework; it does not create a separate trading score.",
+    "tiers": [
+      "primary_evidence",
+      "trusted_news",
+      "search_intel",
+      "kol_social",
+      "manual_evidence"
+    ],
+    "scopes": [
+      "direct_company_evidence",
+      "sector_or_theme_evidence",
+      "macro_market_context",
+      "background_or_noise"
+    ]
+  },
+  "counts": {
+    "raw_items": 1489,
+    "retained_items": 56,
+    "discovery_items": 21,
+    "errors": 0,
+    "trusted_site_raw_items": 167,
+    "source_lane_raw_items": 173,
+    "primary_index_raw_items": 133,
+    "primary_baseline_items": 133
+  },
+  "raw_counts": {
+    "source_channels": {
+      "standard_search": 1183,
+      "mainstream_financial_search": 36,
+      "industry_vertical_search": 36,
+      "company_official_search": 42,
+      "china_market_search": 19,
+      "china_mainstream_search": 5,
+      "counter_narrative_search": 12,
+      "social_kol_search": 6,
+      "china_public_news_direct": 17,
+      "primary_evidence_index": 133
+    },
+    "coverage_lanes": {
+      "standard_search": 1183,
+      "mainstream_financial": 36,
+      "industry_vertical": 36,
+      "company_official": 42,
+      "china_market": 19,
+      "china_mainstream": 5,
+      "counter_narrative": 12,
+      "social_kol": 6,
+      "china_public_news_direct": 17,
+      "primary_evidence": 133
+    },
+    "source_tiers": {
+      "search_intel": 974,
+      "kol_social": 134,
+      "trusted_news": 198,
+      "primary_evidence": 183
+    },
+    "time_scopes": {
+      "delta_or_unclassified": 1356,
+      "primary_baseline": 133
+    }
+  },
+  "coverage_matrix": {
+    "standard_search": {
+      "raw": 1183,
+      "retained": 38,
+      "source_tiers": {
+        "search_intel": 974,
+        "kol_social": 127,
+        "trusted_news": 74,
+        "primary_evidence": 8
+      },
+      "evidence_scopes": {
+        "sector_or_theme_evidence": 20,
+        "direct_company_evidence": 5,
+        "background_or_noise": 10,
+        "macro_market_context": 3
+      },
+      "thesis_effects": {
+        "supports_thesis": 2,
+        "discovery_or_neutral": 33,
+        "refutes_or_risks_thesis": 1,
+        "crowding_signal": 2
+      }
+    },
+    "mainstream_financial": {
+      "raw": 36,
+      "retained": 9,
+      "source_tiers": {
+        "trusted_news": 35,
+        "kol_social": 1
+      },
+      "evidence_scopes": {
+        "direct_company_evidence": 3,
+        "background_or_noise": 3,
+        "sector_or_theme_evidence": 2,
+        "macro_market_context": 1
+      },
+      "thesis_effects": {
+        "supports_thesis": 2,
+        "discovery_or_neutral": 6,
+        "crowding_signal": 1
+      }
+    },
+    "industry_vertical": {
+      "raw": 36,
+      "retained": 1,
+      "source_tiers": {
+        "trusted_news": 36
+      },
+      "evidence_scopes": {
+        "background_or_noise": 1
+      },
+      "thesis_effects": {
+        "discovery_or_neutral": 1
+      }
+    },
+    "company_official": {
+      "raw": 42,
+      "retained": 0,
+      "source_tiers": {
+        "primary_evidence": 42
+      },
+      "evidence_scopes": {},
+      "thesis_effects": {}
+    },
+    "china_market": {
+      "raw": 19,
+      "retained": 1,
+      "source_tiers": {
+        "trusted_news": 19
+      },
+      "evidence_scopes": {
+        "macro_market_context": 1
+      },
+      "thesis_effects": {
+        "discovery_or_neutral": 1
+      }
+    },
+    "china_mainstream": {
+      "raw": 5,
+      "retained": 0,
+      "source_tiers": {
+        "trusted_news": 5
+      },
+      "evidence_scopes": {},
+      "thesis_effects": {}
+    },
+    "china_official": {
+      "raw": 0,
+      "retained": 0,
+      "source_tiers": {},
+      "evidence_scopes": {},
+      "thesis_effects": {}
+    },
+    "china_broker_research": {
+      "raw": 0,
+      "retained": 0,
+      "source_tiers": {},
+      "evidence_scopes": {},
+      "thesis_effects": {}
+    },
+    "china_industry": {
+      "raw": 0,
+      "retained": 0,
+      "source_tiers": {},
+      "evidence_scopes": {},
+      "thesis_effects": {}
+    },
+    "china_social": {
+      "raw": 0,
+      "retained": 0,
+      "source_tiers": {},
+      "evidence_scopes": {},
+      "thesis_effects": {}
+    },
+    "china_public_news_direct": {
+      "raw": 17,
+      "retained": 6,
+      "source_tiers": {
+        "trusted_news": 17
+      },
+      "evidence_scopes": {
+        "direct_company_evidence": 2,
+        "macro_market_context": 4
+      },
+      "thesis_effects": {
+        "discovery_or_neutral": 6
+      }
+    },
+    "counter_narrative": {
+      "raw": 12,
+      "retained": 0,
+      "source_tiers": {
+        "trusted_news": 12
+      },
+      "evidence_scopes": {},
+      "thesis_effects": {}
+    },
+    "social_kol": {
+      "raw": 6,
+      "retained": 1,
+      "source_tiers": {
+        "kol_social": 6
+      },
+      "evidence_scopes": {
+        "background_or_noise": 1
+      },
+      "thesis_effects": {
+        "discovery_or_neutral": 1
+      }
+    },
+    "primary_evidence": {
+      "raw": 133,
+      "retained": 0,
+      "source_tiers": {
+        "primary_evidence": 133
+      },
+      "evidence_scopes": {},
+      "thesis_effects": {}
+    }
+  },
+  "raw_sample_by_lane": {
+    "standard_search": [
+      {
+        "title": "North American AI Data Center Expansion Drives 2026 CapEx of Top Nine CSPs to US$830 Billion, Says TrendForce",
+        "link": "https://finance.yahoo.com/sectors/technology/articles/north-american-ai-data-center-120000137.html",
+        "published": "2026-05-06T08:56:00",
+        "source": "Bing News",
+        "query": "Microsoft AI capex guidance data center",
+        "query_dimension": null,
+        "source_channel": null,
+        "source_tier": "search_intel"
+      },
+      {
+        "title": "Big Tech Is On Track To Spend $750 Billion On AI This Year",
+        "link": "https://www.forbes.com/sites/aliciapark/2026/04/30/big-tech-is-on-track-to-spend-750-billion-on-ai-this-year",
+        "published": "2026-04-30T08:44:00",
+        "source": "Bing News",
+        "query": "Microsoft AI capex guidance data center",
+        "query_dimension": null,
+        "source_channel": null,
+        "source_tier": "search_intel"
+      },
+      {
+        "title": "One chart reveals how Big Tech is spending up to $725 billion in an AI arms race",
+        "link": "https://www.businessinsider.com/big-tech-earnings-microsoft-ai-investment-capex-plan-2026-4",
+        "published": "2026-04-29T16:18:00",
+        "source": "Bing News",
+        "query": "Microsoft AI capex guidance data center",
+        "query_dimension": null,
+        "source_channel": null,
+        "source_tier": "search_intel"
+      },
+      {
+        "title": "AI Hyperscalers Are Taking on Debt, But the Broader Market Looks More Leveraged",
+        "link": "https://finance.yahoo.com/markets/stocks/articles/ai-hyperscalers-taking-debt-broader-160002115.html?fr=sycsrp_catchall",
+        "published": "2026-05-30T16:01:00",
+        "source": "Bing News",
+        "query": "Microsoft AI capex guidance data center",
+        "query_dimension": null,
+        "source_channel": null,
+        "source_tier": "search_intel"
+      },
+      {
+        "title": "Microsoft: The AI Capex Risk Looks Mostly Priced In",
+        "link": "https://seekingalpha.com/article/4908387-microsoft-the-ai-capex-risk-looks-mostly-priced-in",
+        "published": "2026-05-24T07:39:00",
+        "source": "Bing News",
+        "query": "Microsoft AI capex guidance data center",
+        "query_dimension": null,
+        "source_channel": null,
+        "source_tier": "kol_social"
+      },
+      {
+        "title": "Hyperscalers lift 2026 AI capex to $725B despite market jitters",
+        "link": "https://www.msn.com/en-us/news/other/hyperscalers-lift-2026-ai-capex-to-725b-despite-market-jitters/gm-GM45E5DDAF",
+        "published": "2026-04-30T19:24:00",
+        "source": "Bing News",
+        "query": "Microsoft AI capex guidance data center",
+        "query_dimension": null,
+        "source_channel": null,
+        "source_tier": "search_intel"
+      },
+      {
+        "title": "Should Microsoft’s US$190 Billion AI Infrastructure Bet Reshape the Risk‑Reward Balance for MSFT Investors?",
+        "link": "https://uk.finance.yahoo.com/news/microsoft-us-190-billion-ai-001620053.html",
+        "published": "2026-04-30T17:16:00",
+        "source": "Bing News",
+        "query": "Microsoft AI capex guidance data center",
+        "query_dimension": null,
+        "source_channel": null,
+        "source_tier": "search_intel"
+      },
+      {
+        "title": "XOVR ETF: Watch hyperscaler AI capex before summer 2026 earnings season",
+        "link": "https://www.msn.com/en-us/money/technology/xovr-etf-watch-hyperscaler-ai-capex-before-summer-2026-earnings-season/ar-AA23X3pQ",
+        "published": "2026-05-24T11:30:52",
+        "source": "Bing News",
+        "query": "Microsoft AI capex guidance data center",
+        "query_dimension": null,
+        "source_channel": null,
+        "source_tier": "search_intel"
+      },
+      {
+        "title": "Benedict Evans Says AI Capex Is Eating The World And Investors Still Have No Map",
+        "link": "https://www.forbes.com/sites/josipamajic/2026/05/19/benedict-evans-says-ai-capex-is-eating-the-world-and-investors-still-have-no-map",
+        "published": "2026-05-19T04:57:00",
+        "source": "Bing News",
+        "query": "Microsoft AI capex guidance data center",
+        "query_dimension": null,
+        "source_channel": null,
+        "source_tier": "search_intel"
+      },
+      {
+        "title": "Big Tech is spending up to $725 billion on AI. This chart shows how they stack up. - Business Insider",
+        "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNNFVQbUU4OWZCQWNHQkVxTEotY2dRZzRVR2FiTVVWMHVXV1EzZXRjVTZoMjctX0RDd2kxak5NRjhqLUdPRC1zZ2JSb19sLTV6bGo1RzY2WHMtMFc4OS1MV3BXVGNfVUR3S21JbTlSVjVxZmQwMm9hUXRKTVkzdmZ6eVBDR2lfZldxOU9uQ0otVXR5ZjNBcVE?oc=5",
+        "published": "2026-04-29T07:00:00",
+        "source": "Google News",
+        "query": "Microsoft AI capex guidance data center",
+        "query_dimension": null,
+        "source_channel": null,
+        "source_tier": "search_intel"
+      },
+      {
+        "title": "AI Capex 2026: The $690B Infrastructure Sprint - The Futurum Group",
+        "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNdGRGVnNsZk5JbzE4OGItMmEtSGkzX0ttS0Vud25lbkl6NUpwLWRQYmk5V2Q4SlR2MlNuaDc0YzluSThiVHBrc1pnb1M4aTlCMnQ1U2dTcEpuazV4eTh5NF9KZ3pabzRma2FLYVhIcVUyd2dwYVZqc2lkN0VIOVlrTnZBdUhnQQ?oc=5",
+        "published": "2026-02-12T08:00:00",
+        "source": "Google News",
+        "query": "Microsoft AI capex guidance data center",
+        "query_dimension": null,
+        "source_channel": null,
+        "source_tier": "search_intel"
+      },
+      {
+        "title": "Big Tech AI Capex Tops $650 Billion as Q1 Earnings Beats Pressure Bitcoin Risk Trade - Yahoo Finance",
+        "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPSDVreWpUdWRZbFpId2JoUDVFUDlERWhvelQ1T1RaZ2tNTWgwUGJlN2VkWW9kZVFXY2pIdm1fZzZ5SEo4d2MwUW55TVVYblRoaXhMcDljOXc4bU1ZejRqVGZkbDdTdVVmMHJqVDVoZzM3WWo5WWNEbjlNbEc4V3J5TThOeTdBVS1oS25mbGYtaUhsRVF1Smc?oc=5",
+        "published": "2026-04-29T07:00:00",
+        "source": "Google News",
+        "query": "Microsoft AI capex guidance data center",
+        "query_dimension": null,
+        "source_channel": null,
+        "source_tier": "search_intel"
+      }
+    ],
+    "mainstream_financial": [
+      {
+        "title": "Dell shares soar 30% as AI server demand, price hikes power stellar quarter - Reuters",
+        "link": "https://news.google.com/rss/articles/CBMivAFBVV95cUxPcVJqdDdzRnFib0ZkeU1rd1F6WlZrOHF4cTB2MGVoLUhqRlNJNzY1RXY0MHBpcHhNUXBQODVMSlNRd0c5N292QnRTcUZpRkpvR2dVYnVLSm1YalVEUkZ0blV6UllTZTJPaUtlU2VfbDZjWk1ESWYwcGtwRzAzWHV3UjN0dS1Oc1ExNXNLSHVmRmRBQy1xOWFyN3ZaNjFFdDVzYWxEcGN4UTBmdUs1bV9ySnpBaTVRSkdQMkZqcg?oc=5",
+        "published": "2026-05-29T15:57:39",
+        "source": "Google News",
+        "query": "site:reuters.com (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+        "query_dimension": "reuters_ai_capex",
+        "source_channel": "mainstream_financial_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Dell lifts forecasts as AI data center buildout fuels demand, shares soar - Reuters",
+        "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQNWxyUWRscVNpSnZteGdBOWQwbnNMVTJMYTZwS3NZTmtoSk83T1Zia3k3TVV3Vlg5SVBiUHdaMld0VUwzeVFLdXBQeElmNy11My1IWWZlSVptaXZoVlcxdnlPSHJLLU9EN1B3UFc3ZElhM09ORzFmSlJfMDY1b1E5SUxTOXJmOGt4UTNjcmtTdkdwRXI0WWNlMGhwT0U4SUFkZkFEWkFFRXhTQWc5OUdr?oc=5",
+        "published": "2026-05-28T20:08:00",
+        "source": "Google News",
+        "query": "site:reuters.com (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+        "query_dimension": "reuters_ai_capex",
+        "source_channel": "mainstream_financial_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Investors stay calm as AI capex boom eclipses dotcom mania - Reuters",
+        "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNRHduSXhpVDRyZk1KaktVUHFlX3JqWmhPTUI1dldCVmpNMEU3dGhTVVpucmRHN3JCemdXazJPR3ZXVWNFRTN5SjFCT1VQTUZFNzN0WTF0S0ctMk9Wbjd0bW1HLVNKWVNieTd2WnVxaDF5WlZ1XzYtMHFZaWNmRlhxSXMtY3g3VHRkYzFIWDdpLXNtOVJ5dGd2YzNDT1ZpQzZUenUxX0hTSzVBNlNGMUFBQVZZN2gxbDZaQjNtMFBTaG1YUQ?oc=5",
+        "published": "2026-05-27T23:30:21",
+        "source": "Google News",
+        "query": "site:reuters.com (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+        "query_dimension": "reuters_ai_capex",
+        "source_channel": "mainstream_financial_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "What if the AI boom goes into reverse?: Joachim Klement - Reuters",
+        "link": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQR1oxcEVqX0V2MkhMeEZfajY1ZWpPMnF4Q3hPWm1MYTlMeTlDRHEzNTdKa1hNR1RmeHhfbExhd2pxNVRBU1pWOUVHb3NQclBmYWZ4Tk41cEhWcG5BYUpyOHEtYVRzaFk5ZWt0MHNjZ1JmSXUtY0NnU0JmdEhiODdOcm5uSko0T29Ldy1TWFJiT0hFandJSFBjYjFvRzNjdjQydzdZYQ?oc=5",
+        "published": "2026-05-29T12:22:23",
+        "source": "Google News",
+        "query": "site:reuters.com (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+        "query_dimension": "reuters_ai_capex",
+        "source_channel": "mainstream_financial_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Energy use forcing rethink of AI chip design, TSMC says - Reuters",
+        "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNcjJKbGp1c1gwbmt4T2l4UUZpQlhwNm9HSWpiX3M3akl3RDYtbTl4bjc3RDIwd0UyQXZuZkVYMVpwWkYtYU44ODZvQ1ZoLXFFWjFmNld4cjFDWFRRTXB4ZHhkcU1UeUVOYkxWaVpQOHAtSlZDWkxoZ18xRkJ6M013cmZDZlcyeVRqU21NVDZLeEdRZWVNOG5CUTY0STZvbk9KYkMwX0s0TFVPQS1vdUEzWThR?oc=5",
+        "published": "2026-05-28T16:19:43",
+        "source": "Google News",
+        "query": "site:reuters.com (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+        "query_dimension": "reuters_ai_capex",
+        "source_channel": "mainstream_financial_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "At Computex, Nvidia and Taiwan's expanding role in AI infrastructure set to take centre stage - Reuters",
+        "link": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNdDJHQWFLSm1mOFd1YzM1d2d6RGJjemZiTGNISy11Tlhab1NMU1k2RUFIM29ab1d4NmZnemRwQjU2dnpta2Y5U3JmdDhrZVozMUVuQXdfaUh6Z1Uwai1MVU5JeHVfd21xQ0JRLUc4TWFtQ0o3enlNaEgtcWxMTWw5ODZwcjJCZ3AyWEl4R0RydkF1Z1BsS2hFblk2OWJDNUVfVHpnYWdYcnFyQUdJMWk1ODVBcXVYMlg4c2FEQ2p2NXVjbjVR?oc=5",
+        "published": "2026-05-29T08:24:58",
+        "source": "Google News",
+        "query": "site:reuters.com (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+        "query_dimension": "reuters_ai_capex",
+        "source_channel": "mainstream_financial_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Dell stock skyrockets 32% for its best day ever as AI server revenue soars - CNBC",
+        "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTFA3OExqRmFTZ2g1b0t3dC1vY3R2SVR1U0JJTmJtNnp3OGdFZmRpTkFOUnp2WnQ3RmpnbnJiaGZSekk2MlNvYV9KaHFDZ1F4cUxkVlEtMWp5MzNmOE5TeDI1a1Y2bE40Q09OYW5mdDh5UzBMZEhlRGfSAXtBVV95cUxNMm1vRmUxTDQwTHZXa0t4eTEzalRfWTBIV2tGLS1fdFh5c1pYa0N6WFAwY0RWMG83NUFQajBLY3VXSlROdVNTaUF5cnI5YkR0R3dTQUZoNUxSdHhVZlk1cFlxcXNMYTBVWUJyMVR0M0dWYThaNzU2bXVYd2c?oc=5",
+        "published": "2026-05-29T13:41:07",
+        "source": "Google News",
+        "query": "site:cnbc.com (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+        "query_dimension": "cnbc_ai_capex",
+        "source_channel": "mainstream_financial_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Johnson Matthey: Buying Cormetech is play on AI data center build-out - CNBC",
+        "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQeXM4QXlMRHBieFl4QXllQmpWTlBxMHMyMmcwNDRmUFN2TmVpZF9Yb1VGSlNLOWVXZTNRS2FxME1oN0VDVXVsVXp2ZVRBamNvazZQS1ZVN2RiUWtfdEJCc0VfZURmYVluYXNZdGlqY0o2eGY1cUpwRnZaSjNNN0x0YUlpd0toVF9Mem1SYjlNNDhqdGc5N2V3NWxLYS15T244eWR4dm9raEZ5ZktiMV80VQ?oc=5",
+        "published": "2026-05-29T07:52:00",
+        "source": "Google News",
+        "query": "site:cnbc.com (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+        "query_dimension": "cnbc_ai_capex",
+        "source_channel": "mainstream_financial_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Dell shocks Wall Street with booming AI server sales. Where analysts see it headed next - CNBC",
+        "link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNMzBhTFR2VjZSa0Y2bnNaSEwtOHM4b2JSVG5ya2N0cDk4eF9uMU1hOHhwLWdTRlgtZWx1bmVFMUVvY012ZmtLV25UaUpWYzNZMHZpVzdBRkNUV0FYdzFEOGp3TWxsdDJBdWpDM0R1b3hfNk8tYWZ6LUhIanl2OFlYZjB4Y1dwamI0XzlTbDRtQjAxNDBSVHVzM1UzOHdOOC1lWGZj?oc=5",
+        "published": "2026-05-29T16:24:48",
+        "source": "Google News",
+        "query": "site:cnbc.com (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+        "query_dimension": "cnbc_ai_capex",
+        "source_channel": "mainstream_financial_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Dell shares jump 39% after server maker reports fastest sales growth since return to public market in 2018 - CNBC",
+        "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE42RTdtM1pVYzlZNll2UHV3eWx0YnpPVk9MZFktS2FLcDV6QWFhTTNpQl9naXpmUG9XYkl5dkxLb3Bnc3lYa0plQTZBUlc2dnZrcFU3V2xneEZtOFFhWkxpWTBhTUxfbWhmM0pIM2VHT280V3fSAXhBVV95cUxObXIwZjNveUtFSU9zTVZPdHZFRDBuamNzLTNQYmU4ak5kZ2Z6QUpORDFZN3pqdG10Tmh1bHJ3UkMxRXJZSG9adGl4UW5pUzBTd05SZVFUQmtZdUNRa0UxQW9SYnRJUGM5VEJZQWJlTVBtcXdJem5hXy0?oc=5",
+        "published": "2026-05-28T20:07:18",
+        "source": "Google News",
+        "query": "site:cnbc.com (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+        "query_dimension": "cnbc_ai_capex",
+        "source_channel": "mainstream_financial_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "SoftBank plans 75 billion euros of AI investments in France, as Europe struggles to catch up with U.S. and China - CNBC",
+        "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQeGdvazJVU0FLWWxqTjhBWS1CM2IyZThDc29uckwwc0h1US1Cd0NRcWpnLXpUNmpkck5Dc29MQmpxLXk4TDFNWlhUUHQ5YlAzTjk2Q2d0eW5GMVI4V29ZYWdXMjRnWC0zb3Z6NVp2Vll6TDlNV2gtb2tmTXBkQWE3RWFzaGQzczBuTlhhU1I3Z19WcG1hQ2hhYWVIYlFoQm9UWXVxRVVBRErSAa4BQVVfeXFMTTRzWVdjYzFEdTJZME5BSUxDaXBsd2pfLVdVMS12NFljOTFNN2MxS2hJNk95WTFlSnpvTm0tOGY4LTBmSTJXbXNLQk5uNXBidjJLWjZFYklLUW9ldGUwOXROTlM2M01GS2xNU2pHVS15UWs2aWY0b1YzUzdBaU9oelVNTlZYYUNOU2JDR2tFR2gyM3l6YlRVblVoOHhRamRDQnV3R3liVlA2UnQ3Y1l3?oc=5",
+        "published": "2026-05-31T07:26:59",
+        "source": "Google News",
+        "query": "site:cnbc.com (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+        "query_dimension": "cnbc_ai_capex",
+        "source_channel": "mainstream_financial_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Mistral to explore designing own chips, CEO says, as it ramps up infrastructure build - CNBC",
+        "link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNZDlpRHBueXJOSFhUN01wcFZvYkxMdmRTdWVSNGFsdE5TTjA4b04zMVh3SjBBSjZPTjMwRWZrQWpiMllaVDh1bFo4bi1heDMzQ25yNTdmOWxWRjNuLWYtR2ZzOUN0aUVsWGNKWmpsSm5tbEJiSE8teHVHS19valRnSEsyQUt1a1d4Nzc2aHdGeU_SAZYBQVVfeXFMUHhvd0dISmZYUV9pb2JmU2NvWFg4VjBvM2hkQi1Ld0NyZ2h2UnhjTE81YzNsd2pROHA5ZTJWNlc2WU5vV1VkZ2hIWFlvNjNmT1BUemNmQTh2YkJuQ0ktbUpnVEJmTHk0UnMzWXZPNzZGOEdxbnZFbVpIRGlMbFhnT3hWbWZsUXA0VUc0UmxCLWRHUzBnekJR?oc=5",
+        "published": "2026-05-28T08:45:14",
+        "source": "Google News",
+        "query": "site:cnbc.com (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+        "query_dimension": "cnbc_ai_capex",
+        "source_channel": "mainstream_financial_search",
+        "source_tier": "trusted_news"
+      }
+    ],
+    "industry_vertical": [
+      {
+        "title": "Applied Digital signs 430MW data center lease with unnamed hyperscaler - Data Center Dynamics",
+        "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxObDBBVlg2OGhfaUdlUnhNcVdYcW4tYjdHTENTelRyRFRJUExOeGdQSTdlTU1mNGRrZzU3azZVSFYzZ1Z3SnlSR2U1anNybU5NZ0lhQ09RZU0wakVqamlaSWFTTDZpanoyY1RxQTJfY183Sk1BSGl4WmdFOEVEX2J3TjVGclFmTnlkZkhrakNxUUd3c2Rtb0xiM2FuR2FCcmxPel84MXozR2d4UjlHNG5QX1NLRU8?oc=5",
+        "published": "2026-05-28T10:22:06",
+        "source": "Google News",
+        "query": "site:datacenterdynamics.com (\"AI\" OR hyperscale) (\"power\" OR \"data center\" OR cooling)",
+        "query_dimension": "dcd_data_center",
+        "source_channel": "industry_vertical_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "DigitalBridge to acquire energy investor ArcLight Capital for $1bn - Data Center Dynamics",
+        "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOcTllWUptdGM5d2RISng2R3I0NFJYNXdRaHBHWm00SlJxX2tPeXFyZS1lWmZXZFh4bVkwLTNmM3RRS0FZS2V2dWcycVFhWHBCbjdDODRoaFdpOXByM3U5NzRTY0tBZUNmY0Z0UE5JejRxQVZlLXhtTFh1SHVkVkJ5QlZ0ZkwzUkw3andlWWJrUVBHVnhvaTd1akx3MlU2R3p6S1kyQ2VUcUR1ZmljSWc?oc=5",
+        "published": "2026-05-27T16:42:58",
+        "source": "Google News",
+        "query": "site:datacenterdynamics.com (\"AI\" OR hyperscale) (\"power\" OR \"data center\" OR cooling)",
+        "query_dimension": "dcd_data_center",
+        "source_channel": "industry_vertical_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Liquid cooling firm Accelsius appoints former Vertiv president John Hewitt as CEO - Data Center Dynamics",
+        "link": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNSW1fM3hrb1lUVWtDM3BmM2NabE1VQlRldmxLVEhkMS1TLUZWSEdnRDM2V2tydnlzYjhTcU1iMUJYMU9JckRtRXBVc29qVUdBNjlscG1pT2d4T29NMzZpeVpRb0lKWl91dmpjSUN0WHd4bnkxTUtsZ0JMZ3JyZW9JTTdXRERSTWZuUHdSckpRMEc1NTdVWkRmaVp6VUVBdV9jaHcySkRGX3B2UWRMemF4MUZLUkdsUC1WM28zUlFWRGVGdUU?oc=5",
+        "published": "2026-05-27T15:12:49",
+        "source": "Google News",
+        "query": "site:datacenterdynamics.com (\"AI\" OR hyperscale) (\"power\" OR \"data center\" OR cooling)",
+        "query_dimension": "dcd_data_center",
+        "source_channel": "industry_vertical_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "25MW AI data center to be built in McMinnville, Tennessee - Data Center Dynamics",
+        "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQQ0ZzTURHVHVSOEZwdlJOZ2V1ZW1FVDIzTHVkbkpkc1B3Ul9iVjloekdCV092TnBxWlliRjBNQ0pCdU1vcTFEbXN6dHFjNVFhd0k3VkVIbllRMXFkTGhYRjFId2ZfNnVWM3ozOFVsWkZfd3RGWWxWUDNyQktpbUpxWVMzWnBzVDdRNXBJZllZSzQtcGE1QWgycUhxelBaNjFtRUE?oc=5",
+        "published": "2026-05-27T16:37:57",
+        "source": "Google News",
+        "query": "site:datacenterdynamics.com (\"AI\" OR hyperscale) (\"power\" OR \"data center\" OR cooling)",
+        "query_dimension": "dcd_data_center",
+        "source_channel": "industry_vertical_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Rowan closes $3bn green financing for Texas data center campus - Data Center Dynamics",
+        "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPeUJxREh4S2x4V1ZQM0N4Slc0S19hN0tWWnFFZmpIQzQ3NnRFaUZuNXJ0R1pJSmxPbmZIVnM5TzJmcWRqanFmVERvZ1FKNTRTbnpSQ1VFdDJlTjRKS0wwZGd1WHoySEtrUUZhek5GalNuNml3WV80VWRyRm5pdUZ6TDZvV1BxVlJSTVBDcXAyU203X3gtYW5rbkJiUHJYNEFDZ042Rlk2QTk?oc=5",
+        "published": "2026-05-28T15:51:49",
+        "source": "Google News",
+        "query": "site:datacenterdynamics.com (\"AI\" OR hyperscale) (\"power\" OR \"data center\" OR cooling)",
+        "query_dimension": "dcd_data_center",
+        "source_channel": "industry_vertical_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Half of planned US data centers “highly exposed” to natural disaster, $800bn in investments at risk - report - Data Center Dynamics",
+        "link": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxQdFZ2MWxOaE9PWk1SbXFYS1hHaW1mUjZuTmc5UHdPMTBYbHdCai00X1h0X3JLQ0xiNFVBVDA2czh3UXpwY3lSYTZiRy1xVU1ZM1plSUNBSFIwS0I3MzJsV3AwNjFfRksyQmFKTWlHb0gxdGtRZjlVYWtaQkxxcmloUmUyZ2kwN3RGT2ZYai1fMGJvQ2RXZnB5NFM0a1paam4yVVN1Sl94bXZxajl4UDNUN1dORG5lN1RlOWFteXNNaW0tVW5remhteG5JWmFJMDhpRGZTTU5NTmVQZzlscEp3?oc=5",
+        "published": "2026-05-26T15:01:52",
+        "source": "Google News",
+        "query": "site:datacenterdynamics.com (\"AI\" OR hyperscale) (\"power\" OR \"data center\" OR cooling)",
+        "query_dimension": "dcd_data_center",
+        "source_channel": "industry_vertical_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Data and Artificial Intelligence V2 - S&P Global",
+        "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxObEJIQXlqaG1ha0VhRjdIY1JDTnlyVkdoZEVVNjNkdGRjWk9vdU9kODItaTJ0V1pXMlhfakgxcjc1V1J5ZWtoREhQeWdTdHdoT004SzhMNkNrcjI0YXUzaVNLd0FVSC1iUk91Tk1fUVhPY2RPLXEtVWdFcF9yRlQxZA?oc=5",
+        "published": "2026-04-22T01:46:30",
+        "source": "Google News",
+        "query": "site:spglobal.com (\"data center\" OR AI) (power OR grid OR energy)",
+        "query_dimension": "spglobal_power",
+        "source_channel": "industry_vertical_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Market Intelligence - S&P Global",
+        "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9lSGdFd3JXOXNyTFgwakphTnN2RUhzMkxqdDlVdzMwSURVRUJ6dWtXRXFvVmdMTUZSejVKMDQ5dlE2UGhqN2pLUXhpZVVUVTJJWTFPZEpWRnRTRXc?oc=5",
+        "published": "2024-09-28T12:29:04",
+        "source": "Google News",
+        "query": "site:spglobal.com (\"data center\" OR AI) (power OR grid OR energy)",
+        "query_dimension": "spglobal_power",
+        "source_channel": "industry_vertical_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Careers - S&P Global",
+        "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9uU3NtaXN3MHpEamllTUt6VUlCVks3elZiTFdDV1VyOXFSUGtNRjJPX1c5eEowVlZ6Y1NIQXRoTHRYZ1AtNGc4ekZ1MGQ0RjJPemtlVXNFWldWN002ZExrektzbzg?oc=5",
+        "published": "2024-05-18T12:13:57",
+        "source": "Google News",
+        "query": "site:spglobal.com (\"data center\" OR AI) (power OR grid OR energy)",
+        "query_dimension": "spglobal_power",
+        "source_channel": "industry_vertical_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Panjiva Supply Chain Intelligence - S&P Global",
+        "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxNNnBkd3p3aUZxajhGbS16OFptSmxYLVptVTFRSFhBNkg3RDZVcmNpa19OTGJHMndtRVpQMVozQ2JDYkVuMXp1QVNGRHlFSjBLV2NvNzhFM01PMldmczJOQ3hld2I4Y3pYMm55XzloNXNyQ2x4b1pMUWZGSFJ2bmF3aXNCZ0RmMHB4dWo2elAtcFktcmFLdWFtdV8tZWRMVzNISkE?oc=5",
+        "published": "2024-09-28T12:29:06",
+        "source": "Google News",
+        "query": "site:spglobal.com (\"data center\" OR AI) (power OR grid OR energy)",
+        "query_dimension": "spglobal_power",
+        "source_channel": "industry_vertical_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Essential Intelligence | S&P Global - S&P Global",
+        "link": "https://news.google.com/rss/articles/CBMiQEFVX3lxTE9XT2FTRVdkSEVuUzFYTTJGTTNMNlhnM3NvT2tlWFFZaUQ3aGpMckM0SGl2TE4tdjg1UXU5ck5feFc?oc=5",
+        "published": "2018-09-22T00:42:38",
+        "source": "Google News",
+        "query": "site:spglobal.com (\"data center\" OR AI) (power OR grid OR energy)",
+        "query_dimension": "spglobal_power",
+        "source_channel": "industry_vertical_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "S&P Cotality Case-Shiller Index Reports Annual Gain in March 2026 - Index Announcements | S&P Dow Jones Indices - S&P Global",
+        "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxPRkppTkFFVjBjRnpvRG15dTlqaThzT3lMeXJtdU5MczZZWXREUmxBeV81ZmhSSWk1SVN1RU1DZGE0dUZGalFZTHBYSWxPN3RhSERBU0FxZTQzQjNkeFFEdnZ1WUJpa3I5TGMtQ3A5NTlVSmRZRWFBZElKOHNFV3RWeWxvcXVONVRidkhXNHZoLWFQalNoaXhZSndzMTdtdEkxMnNwWEVrN0twRXdqWnNhbTdwSWNFVl9yUjZrbWUwM3V0dnBqVXc?oc=5",
+        "published": "2026-05-26T13:00:00",
+        "source": "Google News",
+        "query": "site:spglobal.com (\"data center\" OR AI) (power OR grid OR energy)",
+        "query_dimension": "spglobal_power",
+        "source_channel": "industry_vertical_search",
+        "source_tier": "trusted_news"
+      }
+    ],
+    "company_official": [
+      {
+        "title": "DigitalBridge and ArcLight Announce Strategic Combination to Form a Leading Alternative Asset Manager at the Convergence of Power, AI, and Digital Infrastructure - Business Wire",
+        "link": "https://news.google.com/rss/articles/CBMivAJBVV95cUxPYk5kUldkVXgzQWxOMTc0Mk5qM3J5RFdHbXJUaU9BVFN0cnB4S1AySV81UkR6TVZhQVd1WDNUaFNYWTJqNk92UjgzbUk0TWk0RTRHMDdqODluOWtjVmZER00xMkg3SEJJMUZwVzFuYU5mcC1NUzVmZ3pxOXZrU3k4MXZQTElpQzMtUUk2U1FXak5zdWZxVEFnM3dJdUlJTllSdmFQRnNDaW1xNy1lZ3Q5aXlhc2YweDVseEJiY3V6UjRORmxSLW9lN28xcTRhRjM2MEFBMUxQOHpqN2RlVjI3MEhCcndPVHZIUHFxTmFtU3B3cm5YdDQ1dHBYYndHQVgzekZrclRvN0NySUFla0tYMEJadnBTTWVEVHpOYnlPQjNJVHdEczBuXzJUY0dnMmdzNVQ3N2RXVUk0VzM3?oc=5",
+        "published": "2026-05-27T12:30:00",
+        "source": "Google News",
+        "query": "site:businesswire.com (\"AI\" OR \"data center\") (server OR power OR cooling OR optical)",
+        "query_dimension": "businesswire_ai_infra",
+        "source_channel": "company_official_search",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Nextpower Announces Entry into Battery Energy Storage (BESS) and AI Data Center Markets with Definitive Agreement to Acquire Prevalon Energy, Increases Fiscal Year 2027 Outlook - Business Wire",
+        "link": "https://news.google.com/rss/articles/CBMizwJBVV95cUxQb0RMNTM2MGRqNFdQaWZDNC1MSzdtaHR3bzNzckF2UTlDcVpRbXA5ZXEyN2l3UEd4R2wzZG9VM0VQZnNEM2Y3bTl2dWNiVEJDQU55S1hpaExxaXJfWlFvTWVtald0UHJsUC1keVdnaEtwZHpyZ1NVaEhUMGtReFV2VXhRY1BVWFUtMEpINk1TcWlSaFBKOGg1RGIzWUxJck1kcWtnWDNsR1FyS0c5aEdwMlhJRUhXTldhRll2R05nSFFlUG8wcENnS05FRHgxNXJyb1M3WEw1cTJEU29FbHVtVXVGbGE3YmdXUXVLWEhwTlVId0FwRllrcTQ4QkRTOFVOS3c3VV9fYWs4ZmFzNzUxSXpRQzdYb3NjNXV6MHNmY1RUdFVtSjZMeXQ5elRFdmlCa3NpS2pjZUVySkR1UlNoS2k0WThTNlNvUFJobnVfOA?oc=5",
+        "published": "2026-05-28T20:05:00",
+        "source": "Google News",
+        "query": "site:businesswire.com (\"AI\" OR \"data center\") (server OR power OR cooling OR optical)",
+        "query_dimension": "businesswire_ai_infra",
+        "source_channel": "company_official_search",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Dell Technologies Delivers First Quarter Fiscal 2027 Financial Results - Business Wire",
+        "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQdVc2eUdnOVlOdmliZUJhSlFoY2lMYkNXcGQxUVItOEowU1hjT1pOWTFjV1NlVWQxalZiNDhzLTNpM0hSLWtUVURGN3AzMjJwMzVEVGFpWkVjZS12VHBZMG96RDJUbEZHU3VSbjlVejExZ3g3VXpacWZPUDNDZDhZQW5QRGtOTVZPNXRIWXh6eGhESnJGVG91YVNrMVB5WVpkRE9NeUxhQU9faXRQVExTVW5OZ3VmZGpBYjMwemotWkxzR29SX0E?oc=5",
+        "published": "2026-05-28T20:05:00",
+        "source": "Google News",
+        "query": "site:businesswire.com (\"AI\" OR \"data center\") (server OR power OR cooling OR optical)",
+        "query_dimension": "businesswire_ai_infra",
+        "source_channel": "company_official_search",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "DG Matrix Reveals Interport SST for the NVIDIA MGX Ecosystem, Delivering 800 VDC Power for AI Factories - Business Wire",
+        "link": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxPZ0puZzNxRmtnaTdHWTJKRHNjbFBfMkhoRnVySU1zYTAxTnVNcGlXb1JPZ3Z4djNBcm4wNzZoYjc3QS1ESkNTTnlhMFR2M1M3dmctOWw5Z2hrekg2Yko5cnJoSFdIaTQxRHY4RGppVk9YT0h5RUNvOGFRVTljd0ZUNm5PMmJ3U1lmMkRrVVJXYURPakdSZ2lhRS1uUGNmM3JqdkJjM0pnQXdIT3l3b2duejVPcnF5SThPaXhxODE4a2tGTVdaZEI0REhUc1VhN2pobW9vLUtfLUNZVnl4QWttcjgxZTgyYTJvcm1uYW1lYTc?oc=5",
+        "published": "2026-05-28T12:00:00",
+        "source": "Google News",
+        "query": "site:businesswire.com (\"AI\" OR \"data center\") (server OR power OR cooling OR optical)",
+        "query_dimension": "businesswire_ai_infra",
+        "source_channel": "company_official_search",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Credo Completes Acquisition of DustPhotonics - Business Wire",
+        "link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQcU9IWmVNUTYxQ2VnbGdEWmk0OHhUeWJzTVp3WHNfVkVmV1pMSXFoU0NnRV85YV96M1M4d0VZckNZUkxIUGV1SXhrX0lGei0xLWpDQ3Z0OU5YaHNSV2p5dkozY2RlNHkxNFdTcXpUejZXaGkyX2dEa25UNy1yUktJUmtWeU03b0FOWFZkQW1VQlhiYkJmSXVQMC0yN3ZxcGJXMTh3?oc=5",
+        "published": "2026-05-28T13:21:00",
+        "source": "Google News",
+        "query": "site:businesswire.com (\"AI\" OR \"data center\") (server OR power OR cooling OR optical)",
+        "query_dimension": "businesswire_ai_infra",
+        "source_channel": "company_official_search",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Alipay Launches Next-Generation AI Payment Infrastructure, Debuts AI Wallet and Token Pay to Power Agentic Economy - Business Wire",
+        "link": "https://news.google.com/rss/articles/CBMi_wFBVV95cUxOdVo2eWNEZXVja2VUM2F0elRnZTJRQkZOVlV2SXdyRXhpU1JwZEhtVVY2U0p4d04zUFg1b1lvYTNUUHR5MzhTRjcwOEZEQmw4UXBtdTBtSVBDdFRiejZhWFk0WWV6Tnk5SXpFVGxEbF9WbUZ6dkdGVWhoRkxyZ1N0M08wc3NQMklxV2lybTZSZVBTellzQmRzaGpQVVI0YXRJUjhZY1k3OUwzclIyUmhfSVE5SVlDaGJBTVJsS3lhSThJRDRHTDQ3MG5ZNnJxY1RPNkhBaWxpQ1FwaVIzRExueTZuYmxqWW51b3QzYUpXZjI4WVNueUVKSmkzakViWGc?oc=5",
+        "published": "2026-05-26T15:20:32",
+        "source": "Google News",
+        "query": "site:businesswire.com (\"AI\" OR \"data center\") (server OR power OR cooling OR optical)",
+        "query_dimension": "businesswire_ai_infra",
+        "source_channel": "company_official_search",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Supermicro Collaborates with Taiwanese Authorities to Prevent Illicit Diversion of Server Technology - PR Newswire",
+        "link": "https://news.google.com/rss/articles/CBMi7AFBVV95cUxQbHJ2Ykl1MUkyYlpTa2xHODNFWU5UTFU2cjY1b2ZBclhScjJtMnFuUXVsbFVjcnhYMGU5eWlNSm84VkM1Q1I4Uk1sLUJqeW5OS3ZoUmtZLVdZSFRsYlFnTVYwMDFDQUZnWGhwUGx5RzFvVmg4RVhTWW5nZEJ3M1QweW9YcGV4T21FM1pyM2dMT21QTnZOMHAybjRhNUEtTm5kUE04ZUVFbE94eUFBQ291VUwtTVE3M1NuSFdxejU3VDRUSXcyN1pjNFMySlFmOUlzZFZxSV9oTzFPY1NTR08xSnZ5c1FCWms4d2VUSw?oc=5",
+        "published": "2026-05-28T13:08:00",
+        "source": "Google News",
+        "query": "site:prnewswire.com (\"AI\" OR \"data center\") (server OR power OR cooling OR optical)",
+        "query_dimension": "prnewswire_ai_infra",
+        "source_channel": "company_official_search",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Hoth Therapeutics Becomes Rocket One Inc. (Nasdaq: RKTO), Targeting the Space Economy with Next-Generation Nanomagnetic AI Chip Technology and Ultra-Low-Power, Radiation-Tolerant Computing for Space and Defense Applications - PR Newswire",
+        "link": "https://news.google.com/rss/articles/CBMiiANBVV95cUxOZkpzLTlXUVlpLWVRWVN1RmV4YS0zMS0yZkF0S2llXzJKQVBxaWlDa1dMQlVFSklVUG1aeWpDVUMwZEF0dHdUZUhoenJ6SzJVQlFCbU5BempodDVxTVljUkRTVVZOYnlKQ2w3Wk4tU0d1MC1YV2VtVlV6Wms1cXN1MVZnX3ZhdExvdnlDXzcyOXdXa3BrMFdCSUFIOW5HQUNzRmlMTGtGdFh2RzVFb3V3bmlXdnRsV2tpcUJuT0tjVEc5RWlyLVFwRVU3eUxFbDVMUUZlT0ZHS2oxYTNCdXB3WDQwSnpJUU1HcXBNakRzQ09RTURlLXdfYTNxSzBRM0daYlNVLVZmeFl3LTVEbHRHUmlkLVF0NGo4cUFpWjByTjZSRm9ENVFxUVFfMXpPb051dG5lM1RkbFFiVHY0bWo1OUwwQlFXbktKdGZ2dGRmMTMwdHM5REs1VEhjamRuUlVWdE5lY0YzTTVFaDZBLXVmM1ZxOEtYVEhMYnEyNDRBUERTUkxNSllnNg?oc=5",
+        "published": "2026-05-27T12:11:00",
+        "source": "Google News",
+        "query": "site:prnewswire.com (\"AI\" OR \"data center\") (server OR power OR cooling OR optical)",
+        "query_dimension": "prnewswire_ai_infra",
+        "source_channel": "company_official_search",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Beelink Unveils Wildcat Lake Lineup Powered by Intel 18A - PR Newswire",
+        "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxOVUNCenlBOTVSNTVBd0dzWDFtYW5WcTdLNXJlTFEzb3VxMTM1SWRGSWdLdnppWWhWRzc0dzZLWGlJSkRQZnlNMEFrQzFZUUVrUUdhMklSR0txc05CanlBWHViNzdvWUJFYXpJdVpYUUxsdnljeVNwNlpMekNxQ2NEcUM0STRROGlwOGk2Vlh5UHRaZHo2SDFZMUJiSE13SVBoUnNydWcyMU9GV2t3Q1FETS1R?oc=5",
+        "published": "2026-05-27T08:02:00",
+        "source": "Google News",
+        "query": "site:prnewswire.com (\"AI\" OR \"data center\") (server OR power OR cooling OR optical)",
+        "query_dimension": "prnewswire_ai_infra",
+        "source_channel": "company_official_search",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Lightera and Nokia Announce Collaboration to Accelerate Optical LAN Adoption in Europe - PR Newswire",
+        "link": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxOejR5bk14Vm1ERkRtWG9GRnZob09hU2RqQ0dHd3U3ckpZaEVNRHhQSzZ5NDBhZDZhNWpBa0VBVGVTOGEtd0FHanZGRGJ2WmpTY05nY2JSZkFKWU5KeDdsYTBEMExZRUZHWEJ6SXgzMWtRYkMzRjg3MmQtbmx5aWtCV1BnajdFRFBnLVBOQ0U3d0dEMmVuVDkxeGFUSkoyanh3V2xXNmM5c0RVdHlaMEtHY0M1eU5jbTVMcmVJZHRLTDlCdEVlajhVOUROeDR0eWpndzllYkRWME1mZw?oc=5",
+        "published": "2026-05-27T07:00:00",
+        "source": "Google News",
+        "query": "site:prnewswire.com (\"AI\" OR \"data center\") (server OR power OR cooling OR optical)",
+        "query_dimension": "prnewswire_ai_infra",
+        "source_channel": "company_official_search",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Schneider Electric progresses phased-delivery of over $290M in AI Infrastructure Solutions, including Motivair technologies, at TeraWulf's Google-Backed Lake Mariner Campus - PR Newswire",
+        "link": "https://news.google.com/rss/articles/CBMixwJBVV95cUxNcXB2SDYtSEIzdUNlTE92TV84bXltYlRtUFhNWC1QMjNubHdHaHhuVTVlWDlPN19UNWM0OUk5NE0ydlNBa0pUdjhaT0wxRjNrOW81RjFvNGFoMklRZGprX09POTd2TExBemV2SkRKT2t4NTVfVDNpSExnb0k2ZEYyQkxVQmQzWTVRZloyNkgtUVp3ZG9Wd2ZqNnRGaVB3UzdaZmM1dWxXZU5XNlFoT1pNRDJFMGQtZXg1NUVZMmhpSGhmUDBaMzlwQURWbHliSnQyc01lbFg5eWVJcF94cEM4cElKaUVLZVZJUVJ0aFdEVkZsZ21zMGQ0N0hqclBSS3NNNFV5WTR6V1VrSng0aUMyb21yb3g2VHI3M2JlRlBSTWZ6a2hmcUJONm9rYzBDWHdEM0s4aVJHNWhVLU1RcnBEcER0ZmlpdWc?oc=5",
+        "published": "2026-05-26T11:00:00",
+        "source": "Google News",
+        "query": "site:prnewswire.com (\"AI\" OR \"data center\") (server OR power OR cooling OR optical)",
+        "query_dimension": "prnewswire_ai_infra",
+        "source_channel": "company_official_search",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "SK hynix unveils 'iHBM' thermal solution to boost AI performance - PR Newswire",
+        "link": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNOFlHMGl6MGFjdy1VbHJpZWp4MXJVVUp1MlA2aTdHMlpjYnN4T0dWSXdYcU5sR3pfWTdNVVdxTldWSGFfcnc4OG1rdFRCYjVadjJ4eEVvdjVWaDVCdEoyelY4QlpZZXhjeWhmQ2M1UFR2dWd6NFVUUDJtWEZqNDVPdlB4Y1JvTUpGNkNUYnIyVnMtdEVWS1FvU3labG1uVjV5eFVyT1NZWHF4MkFSVnYtMy1USy13LU1Dbnc?oc=5",
+        "published": "2026-05-25T23:39:00",
+        "source": "Google News",
+        "query": "site:prnewswire.com (\"AI\" OR \"data center\") (server OR power OR cooling OR optical)",
+        "query_dimension": "prnewswire_ai_infra",
+        "source_channel": "company_official_search",
+        "source_tier": "primary_evidence"
+      }
+    ],
+    "china_market": [
+      {
+        "title": "19亿元，算力“国家队”斩获算力大订单！多家公司签订算力合同，这些股业绩要起飞？",
+        "link": "https://finance.sina.com.cn/wm/2026-05-30/doc-inhzrrex7178016.shtml",
+        "published": "2026-05-29T16:52:00",
+        "source": "Bing News",
+        "query": "AI服务器 数据中心 算力 A股 财联社 证券时报",
+        "query_dimension": "china_ai_server",
+        "source_channel": "china_market_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "AI算力需求爆发！算力产业链全线走强 七大概念股盘点（名单）",
+        "link": "https://news.qq.com/rain/a/20250731A06URH00",
+        "published": "2025-07-31T09:24:00",
+        "source": "Bing News",
+        "query": "AI服务器 数据中心 算力 A股 财联社 证券时报",
+        "query_dimension": "china_ai_server",
+        "source_channel": "china_market_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "国产算力崛起！五大AI芯片公司年营收预期翻倍 港股两大龙头股涨超16%",
+        "link": "https://news.qq.com/rain/a/20260416A05BLV00",
+        "published": "2026-04-16T08:41:00",
+        "source": "Bing News",
+        "query": "AI服务器 数据中心 算力 A股 财联社 证券时报",
+        "query_dimension": "china_ai_server",
+        "source_channel": "china_market_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "宝鼎科技：公司无AI覆铜板 未发现在AI服务器及算力领域应用",
+        "link": "https://finance.sina.com.cn/jjxw/2026-05-26/doc-inhzfshn1411805.shtml",
+        "published": "2026-05-26T05:52:00",
+        "source": "Bing News",
+        "query": "AI服务器 数据中心 算力 A股 财联社 证券时报",
+        "query_dimension": "china_ai_server",
+        "source_channel": "china_market_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "AI算力“必选项”！液冷概念爆发 龙头股8连板！融资客提前埋伏这些票",
+        "link": "https://fund.eastmoney.com/a/202604203710382467.html",
+        "published": "2026-04-20T04:25:00",
+        "source": "Bing News",
+        "query": "AI服务器 数据中心 算力 A股 财联社 证券时报",
+        "query_dimension": "china_ai_server",
+        "source_channel": "china_market_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "AI算力核心股名单出炉，最牛暴涨超8倍，光模块龙头业绩炸裂",
+        "link": "https://www.yicai.com/news/102452794.html",
+        "published": "2025-01-22T15:14:00",
+        "source": "Bing News",
+        "query": "AI服务器 数据中心 算力 A股 财联社 证券时报",
+        "query_dimension": "china_ai_server",
+        "source_channel": "china_market_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "光模块两大龙头股盘中大跌！四个原因",
+        "link": "https://finance.sina.com.cn/jjxw/2026-02-04/doc-inhkrpqr3762897.shtml",
+        "published": "2026-02-04T04:56:00",
+        "source": "Bing News",
+        "query": "光模块 PCB 数据中心 AI A股 财联社 证券时报",
+        "query_dimension": "china_optical_pcb",
+        "source_channel": "china_market_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "复盘本周美股-映射AI电力/算力出海逻辑辨析（HRSG、液冷、光模块、PCB）",
+        "link": "https://news.qq.com/rain/a/20251220A05ZUH00",
+        "published": "2025-12-20T12:41:00",
+        "source": "Bing News",
+        "query": "光模块 PCB 数据中心 AI A股 财联社 证券时报",
+        "query_dimension": "china_optical_pcb",
+        "source_channel": "china_market_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "【财经分析】2025年AI算力成核心主线：多只概念股迎来“高光时刻” 盈利兑现获得持续溢价",
+        "link": "https://finance.sina.com.cn/jjxw/2025-12-31/doc-inhesnwr5336737.shtml",
+        "published": "2025-12-31T08:20:00",
+        "source": "Bing News",
+        "query": "光模块 PCB 数据中心 AI A股 财联社 证券时报",
+        "query_dimension": "china_optical_pcb",
+        "source_channel": "china_market_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "【午报】创业板指涨近1%续创阶段新高， PCB、光纤等算力硬件股集体爆发",
+        "link": "https://news.qq.com/rain/a/20260507A046LL00",
+        "published": "2026-05-07T05:26:00",
+        "source": "Bing News",
+        "query": "光模块 PCB 数据中心 AI A股 财联社 证券时报",
+        "query_dimension": "china_optical_pcb",
+        "source_channel": "china_market_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "4月A股光模块再度强势崛起 国金证券AI投顾助力投资者把握科技主线",
+        "link": "https://finance.ifeng.com/c/8sIH1wkCo0C",
+        "published": "2026-04-13T10:27:00",
+        "source": "Bing News",
+        "query": "光模块 PCB 数据中心 AI A股 财联社 证券时报",
+        "query_dimension": "china_optical_pcb",
+        "source_channel": "china_market_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "一PCB企业发布1.6T光模块板，为AI数据传输提供新方案",
+        "link": "https://www.eet-china.com/mp/a465254.html",
+        "published": "2026-01-06T07:00:00",
+        "source": "Bing News",
+        "query": "光模块 PCB 数据中心 AI A股 财联社 证券时报",
+        "query_dimension": "china_optical_pcb",
+        "source_channel": "china_market_search",
+        "source_tier": "trusted_news"
+      }
+    ],
+    "china_mainstream": [
+      {
+        "title": "AI算力板块2025年年报与2026年一季报全扫描：业绩兑现潮中，谁在裸泳谁在冲浪？",
+        "link": "https://finance.sina.com.cn/roll/2026-05-01/doc-inhwmkwx6293681.shtml",
+        "published": "2026-05-01T16:47:00",
+        "source": "Bing News",
+        "query": "AI服务器 数据中心 算力 A股 新闻 财经",
+        "query_dimension": "china_mainstream_ai_server",
+        "source_channel": "china_mainstream_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "长鑫上市进度更新！AI存储万亿周期开启，A股哪些公司能分到红利",
+        "link": "https://finance.ifeng.com/c/8t6i10HdW5g",
+        "published": "2026-05-13T18:16:00",
+        "source": "Bing News",
+        "query": "AI服务器 数据中心 算力 A股 新闻 财经",
+        "query_dimension": "china_mainstream_ai_server",
+        "source_channel": "china_mainstream_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "互联网三巨头集体加码AI基建，阿里算力概念股揭秘（附名单）",
+        "link": "https://stock.stockstar.com/SS2026051400020934.shtml",
+        "published": "2026-05-14T07:35:00",
+        "source": "Bing News",
+        "query": "AI服务器 数据中心 算力 A股 新闻 财经",
+        "query_dimension": "china_mainstream_ai_server",
+        "source_channel": "china_mainstream_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "四大证券报头版头条内容精华摘要_2026年5月7日_财经新闻",
+        "link": "https://finance.sina.com.cn/stock/y/2026-05-07/doc-inhwzmmr2924009.shtml",
+        "published": "2026-05-07T00:41:00",
+        "source": "Bing News",
+        "query": "AI服务器 数据中心 算力 A股 新闻 财经",
+        "query_dimension": "china_mainstream_ai_server",
+        "source_channel": "china_mainstream_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "OpenAI爆出大利空！两项关键指标均未“达标”，CFO：增速不够，将没钱买算力！AI股集体跳水，英伟达、英特尔、甲骨文齐跌｜美股开盘",
+        "link": "https://www.nbd.com.cn/articles/2026-04-28/4369628.html",
+        "published": "2026-04-28T15:05:00",
+        "source": "Bing News",
+        "query": "AI服务器 数据中心 算力 A股 新闻 财经",
+        "query_dimension": "china_mainstream_ai_server",
+        "source_channel": "china_mainstream_search",
+        "source_tier": "trusted_news"
+      }
+    ],
+    "counter_narrative": [
+      {
+        "title": "Investors stay calm as AI capex boom eclipses dotcom mania - Reuters",
+        "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNRHduSXhpVDRyZk1KaktVUHFlX3JqWmhPTUI1dldCVmpNMEU3dGhTVVpucmRHN3JCemdXazJPR3ZXVWNFRTN5SjFCT1VQTUZFNzN0WTF0S0ctMk9Wbjd0bW1HLVNKWVNieTd2WnVxaDF5WlZ1XzYtMHFZaWNmRlhxSXMtY3g3VHRkYzFIWDdpLXNtOVJ5dGd2YzNDT1ZpQzZUenUxX0hTSzVBNlNGMUFBQVZZN2gxbDZaQjNtMFBTaG1YUQ?oc=5",
+        "published": "2026-05-27T23:30:21",
+        "source": "Google News",
+        "query": "(site:reuters.com OR site:cnbc.com OR site:marketwatch.com OR site:ft.com) AI capex ROI risk bubble",
+        "query_dimension": "counter_ai_capex_roi",
+        "source_channel": "counter_narrative_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "What if the AI boom goes into reverse?: Joachim Klement - Reuters",
+        "link": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQR1oxcEVqX0V2MkhMeEZfajY1ZWpPMnF4Q3hPWm1MYTlMeTlDRHEzNTdKa1hNR1RmeHhfbExhd2pxNVRBU1pWOUVHb3NQclBmYWZ4Tk41cEhWcG5BYUpyOHEtYVRzaFk5ZWt0MHNjZ1JmSXUtY0NnU0JmdEhiODdOcm5uSko0T29Ldy1TWFJiT0hFandJSFBjYjFvRzNjdjQydzdZYQ?oc=5",
+        "published": "2026-05-29T12:22:23",
+        "source": "Google News",
+        "query": "(site:reuters.com OR site:cnbc.com OR site:marketwatch.com OR site:ft.com) AI capex ROI risk bubble",
+        "query_dimension": "counter_ai_capex_roi",
+        "source_channel": "counter_narrative_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "AI News | Latest Headlines and Developments - Reuters",
+        "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9DREhaMTJQNGVEZ3phVG5qZGpic050YnV0cEFIQ29XdmFuVE5Jc3pHMHVLVHVKRFhRakFlbzdzazN0d2lidzlvNE81aVRReTVuYi1EWGhCbURkaTdiWnozdkFHV2RCVldNbllJ?oc=5",
+        "published": "2024-06-04T14:21:34",
+        "source": "Google News",
+        "query": "(site:reuters.com OR site:cnbc.com OR site:marketwatch.com OR site:ft.com) AI capex ROI risk bubble",
+        "query_dimension": "counter_ai_capex_roi",
+        "source_channel": "counter_narrative_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Investors hunt for AI winners in small-cap US tech stocks - Reuters",
+        "link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNVFdBRGM1U3NfTDNZcmpzYjZVdF8tOXVIX2Rhbm53cmotQUZDMk56eWowdzRTMEphWk9RN0VSTnY0SWRFOTgtdUJabUNUNjhCUVl3clA3R3Q4eE8zVExSX0NMdUM4NC1uS3NRc3R5VkZZUnZrX204OWc4d1VkZmc4ZXhjNDNnMmRreVZ0d3VTcFhjZ2N2LWJaRGZxaw?oc=5",
+        "published": "2026-05-27T10:28:49",
+        "source": "Google News",
+        "query": "(site:reuters.com OR site:cnbc.com OR site:marketwatch.com OR site:ft.com) AI capex ROI risk bubble",
+        "query_dimension": "counter_ai_capex_roi",
+        "source_channel": "counter_narrative_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Bubble Trouble: AI rally shows cracks as investors question risks - Reuters",
+        "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQOU1jMURmNHdrNHdLN25ZOWZoenJDd2V2d3JNR1pINXRNU0JGLXBEMlRIWENCcGFvWWFTSFJVS2pNaXFNOFBNV3VPWlVNdi1uSDRmYWJEWEU4ekZubUZ5eHhXck5Ub0syclJtQm54YXROT3JxZmYteTg3ZHV1T3cyei1jZmdxTEZaRjdUTzVRWldoLVN5RzN0TGpTdkhxVFl6bXNPNHgtWDZQdw?oc=5",
+        "published": "2025-11-23T08:00:00",
+        "source": "Google News",
+        "query": "(site:reuters.com OR site:cnbc.com OR site:marketwatch.com OR site:ft.com) AI capex ROI risk bubble",
+        "query_dimension": "counter_ai_capex_roi",
+        "source_channel": "counter_narrative_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "If AI is a bubble, the economy will pop with it - Reuters",
+        "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQOEQ2Q3Awdno1MUNickFiQUJUdmVvV1MzdEcweUYxY3E1MC1qX3NVaXY3UW42VTN1VFhqd01rZUJSN2dfVS1fX3QyemxkajJwbVphejdzWWdKNDVZQVpDMExYRERBS3luUHhweGNfQVJmN0hGOEhZRG1RYmRUd2otMUZIeUZUNUxJYmw2X3M1MHhORnlmZlE?oc=5",
+        "published": "2025-10-01T07:00:00",
+        "source": "Google News",
+        "query": "(site:reuters.com OR site:cnbc.com OR site:marketwatch.com OR site:ft.com) AI capex ROI risk bubble",
+        "query_dimension": "counter_ai_capex_roi",
+        "source_channel": "counter_narrative_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "AI’s Data Center Boom Is Running Into A Hard Power Constraint - Forbes",
+        "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOWXl0UG9aZmlpRW1IQ2lPbFl0bkZ4NjlHZWppb1FoZlE5VFZ4N3diNlQta0JyNXhpcS1NOERfbE0wNWt3UW95OGJXS3VhTHZVYjlQU3IxNllFNWlLMHRSTkN5aUhEb2FOMkJ1Y2dvajZKWUFGaGZuRmVHZjU1WnVxZDFCeTB0YUwtSXJxNDhzcEpwTERQc2xnY3NqMm1hU0x5SG5sSWtrSHlTdXZDTHc?oc=5",
+        "published": "2026-05-14T07:00:00",
+        "source": "Google News",
+        "query": "(\"AI data center\" OR hyperscaler) (debt OR financing OR power shortage OR grid delay OR bubble)",
+        "query_dimension": "counter_data_center_power_debt",
+        "source_channel": "counter_narrative_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "The power crunch threatening America’s AI ambitions - Financial Times",
+        "link": "https://news.google.com/rss/articles/CBMiQEFVX3lxTE53aW00anNlNjQySmVaMHN3aU5MSmx2Q3V5dVUyQnRuLXM1dG1iTXlVV1B2SUdzQ0U5TXVwZHpHSUE?oc=5",
+        "published": "2025-12-07T08:00:00",
+        "source": "Google News",
+        "query": "(\"AI data center\" OR hyperscaler) (debt OR financing OR power shortage OR grid delay OR bubble)",
+        "query_dimension": "counter_data_center_power_debt",
+        "source_channel": "counter_narrative_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Microsoft’s AI data center push is colliding with its clean power goals - TechCrunch",
+        "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxNYlJsb0F4TjBNeEJ4dUZJMld6ZUZBbC0zNEZEYU43Ny1BeW04a3lhNDZ0M2pYUnJHd1F5OHI4N2RGNkhCS0xmZzhoNEROdlBocjJ5WGpFeEtzTVBwdG1uUjFWVlVheU8tcDlZU0o2TUNrUms0NGdPeTI3eTFzM0QzNlJlMFg4dWV0bHVTUnNkVjNBcDB4YVEwRFRkbEJJRVRIaG9sOXZLbFo?oc=5",
+        "published": "2026-05-06T07:00:00",
+        "source": "Google News",
+        "query": "(\"AI data center\" OR hyperscaler) (debt OR financing OR power shortage OR grid delay OR bubble)",
+        "query_dimension": "counter_data_center_power_debt",
+        "source_channel": "counter_narrative_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Global data center sector to nearly double to 200GW amid AI infrastructure boom - JLL",
+        "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOeXdMTkxpQXFjcUxEamltS2d0dS1heGhJZnFtbVg2SjhRcmpJWGRjRVI2NE80N1FfM1BXQXZEb0xEVnJ2U2pKem44Q2VLdHVaOEp5U1VlV2tsSEtlYTl3WVlCeXp1YUdmbG1ILXh2bExvN05Uem95ZXFfcHNJSlRmMzdQY2JJbUc1WUN5eDhoNk5FMnBNNTJrS25FWnBqdk93empCcFQ5VTRiX3VkazJCWlA0SHY?oc=5",
+        "published": "2026-01-06T08:00:00",
+        "source": "Google News",
+        "query": "(\"AI data center\" OR hyperscaler) (debt OR financing OR power shortage OR grid delay OR bubble)",
+        "query_dimension": "counter_data_center_power_debt",
+        "source_channel": "counter_narrative_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Power shortages, grid stress may prevent AI data centre bubble despite global investment surge: Report - ETEnergyworld.com",
+        "link": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxOTklfRWEzUktndlBsREhvN2NXdXNYRVRHWDFFRWJma3d5a2pvN1dUcHlQaHR6ODZHWjc1aWtGbHVmR0hlZnhyOXBMcGV5UXlsUmY0MW8yR0szU19tRkVaRklmRDljZ2diLTNQcDRjOHRjaFlQZTBoVFlKamo3djhfLW04UWlOYkl1SVVyN2lOLTZLb0YzZWxrMjUtQmNNdEtZQVZhejBSdXZkR1dKTVhScFg2UmcxMDlyY1otVU5Ya1lZYnp5SDM1dEZQV3R2bEV3MG9XRTZmWG9QRnVXckk3NDdWMGlkNkZudFpncU9EU2dGa3poWjBCUdIB_gFBVV95cUxQaHJqQTI0LTJrcnhhVWRVQzJQb243YjRPNkhYWHMtLURMVUlwbTR4dHZRampmNXJwd3RNSERMblNnTlc5c3NiVmNHSzBwcmpFc1lVRDNZVzRyc0pxU2w1djRyV2FUUk1vMlRYbndkTTR6dDliRkVLU2ZZWlhKZHB4N1FLSWFtQ3JnZHpYaFZQa2ZWdmt4d2NkMFhtdzFacXFFVGhqemJXa2gyY09LZmNSYXEwNHhXRkxqa3RLOHNoeXFHenN6cThrNllaSU9uS1Z1MFI3anVVbjgzbFhNY3JlcGx0X2RYNjNJc3Q4WkxlSFVZR3hsbmdPX0dHcmI5Zw?oc=5",
+        "published": "2026-05-22T08:54:00",
+        "source": "Google News",
+        "query": "(\"AI data center\" OR hyperscaler) (debt OR financing OR power shortage OR grid delay OR bubble)",
+        "query_dimension": "counter_data_center_power_debt",
+        "source_channel": "counter_narrative_search",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "Exploding number of AI data center build-outs delay Texas housing projects — data centers' high demand for electricians prices out contractors, homes now take two months longer to complete - Tom's Hardware",
+        "link": "https://news.google.com/rss/articles/CBMi3gJBVV95cUxPaloyQXNoeHh4VjhXdm14TVRyazJfN0QtYzFLSU5qREFiWnRTZjhJRkl2d0VPRGJrdF9URXJ1LTI5UkcwdEdISTFhMU9WVE8tZ3hIRHpUQ1hma2JjNGhDVFg0VW1LOHI2YllQTWcyWXZ2Wjl4MkdMMjVCU25SdVNWQUlvSzBaZXN3bTVTSzl3WGsxejNtQXkzY0NHNEUyNzdKeVpfRWNsWVlHVXBJMnBpX2xVbC1SM1ZOcXBfNS1XZXVQMnk0aVE4V2t1NnRlYTg2VzFKUkNlblVTMkxnanNHMk5kV1E2ZEI5ck8yLUlQOFFBRjU3LUFzOWRrWEJUYmZXQmNZQnliRk5VbjBNSDBBQUYxUlk5a0tycDZOMDA5ZmJ3ZjE5OEFLTFVGeFU1eXhXMWNxMTZ1aFJhMVJvTlpKa0ozWUdYenZ2U0N3c3c4ejN6Nm8ySnh6NUtNcWFIQQ?oc=5",
+        "published": "2026-04-30T07:00:00",
+        "source": "Google News",
+        "query": "(\"AI data center\" OR hyperscaler) (debt OR financing OR power shortage OR grid delay OR bubble)",
+        "query_dimension": "counter_data_center_power_debt",
+        "source_channel": "counter_narrative_search",
+        "source_tier": "trusted_news"
+      }
+    ],
+    "social_kol": [
+      {
+        "title": "Celestica May Be One Of The Cleanest AI Infrastructure Plays Left (NYSE:CLS) - Seeking Alpha",
+        "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPdzZlY0J2eEFMVVk1T0hNTmZvVWdOcWI0WnV6ZUN5bEY0c2VJb0JPMTVoamh2N0JrbmtfNVRFZzJoVTUzdFF2UHNZLXdwaWNlaXNreUM5NU5WNmhQQ1dCbEg0SmZNaWxSOXZiRXRCSTZ0bWpENjVtTmpOZkduM1ZhWHhXWDdxQmhZMGg1NlB0elRTckFXMlBkWWhNNjZFZHZwY3Nic3RLMDBpdw?oc=5",
+        "published": "2026-05-28T13:05:00",
+        "source": "Google News",
+        "query": "(site:seekingalpha.com OR site:fool.com OR site:247wallst.com OR site:thestreet.com) AI capex data center hyperscaler",
+        "query_dimension": "social_kol_ai_capex",
+        "source_channel": "social_kol_search",
+        "source_tier": "kol_social"
+      },
+      {
+        "title": "Super Micro Computer Spikes 9%, SanDisk Climbs 4% as the AI Infrastructure Trade Heats Up - 24/7 Wall St.",
+        "link": "https://news.google.com/rss/articles/CBMiygFBVV95cUxQVXhTeEVlNWZ6elFEYUkwT0xyeU9jNktIVjViTU9EYndqNXRBWjVLUGtmcC1yZHFhNUw2V05nZGFraXBTU0pIdG5TREpWdmdzaHBwUmVhSFJwUXBkX1psWFF6Ym0yUEJJSjBUc05SdU44OTR2UEdGaWFYQzVIekJoVTBLcVlyRnZfdWszd2RwbHgtUG50ektvRzJuc0d1b3pCbmhsUThVcHRZd2RZQWY3cDV4VUx2R1hZR25aSUNDRDVmQ1RqZGJkeFRB?oc=5",
+        "published": "2026-05-28T18:38:42",
+        "source": "Google News",
+        "query": "(site:seekingalpha.com OR site:fool.com OR site:247wallst.com OR site:thestreet.com) AI capex data center hyperscaler",
+        "query_dimension": "social_kol_ai_capex",
+        "source_channel": "social_kol_search",
+        "source_tier": "kol_social"
+      },
+      {
+        "title": "Mark Zuckerberg’s $145 Billion AI Gamble Could Spawn Meta’s Next Monster Business - 24/7 Wall St.",
+        "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNbDI3bUhkX05BR01PbjcxS3lrbHI1OXFWVnJISmc3SEdFNnA4eGZLRy1JdmItQUNzSWRfOTNQZXdIbVpNcE5WVEw4dkZlTFJYcWp5Z0YydG1fS2dicnhVbG9qb2RPMl9nWTM5cmh3Z1ktRXo5akdia3hpNTNOUVNUTHhWeko2NzFtYmRhekdoczFLdmFGeE5XMkhIRkpsSHdNVXhCSGwyUmQ4Qm4yM0xQUU5fUzVjT3dUSGtKLWNkVQ?oc=5",
+        "published": "2026-05-28T14:21:10",
+        "source": "Google News",
+        "query": "(site:seekingalpha.com OR site:fool.com OR site:247wallst.com OR site:thestreet.com) AI capex data center hyperscaler",
+        "query_dimension": "social_kol_ai_capex",
+        "source_channel": "social_kol_search",
+        "source_tier": "kol_social"
+      },
+      {
+        "title": "The 3 Things That Could Pop The AI Bubble - Seeking Alpha",
+        "link": "https://news.google.com/rss/articles/CBMiigFBVV95cUxQLUVCLWstWE1OYVNnODBsQWlEZXVHb1dBZ29TbXZrR09JcnREZ2wzUGFnNjBJR0RONFB1M3dzNkNrSV9sU01ldVotaDVWN1A2NXdnMlVjY1F2SkJqUHJtWmNzaHhtRU5ES1hlbXlsWGp1TmRsQXVKay03eXR4NFEtLV8xN21jbWw5T2c?oc=5",
+        "published": "2026-05-30T12:00:00",
+        "source": "Google News",
+        "query": "(site:seekingalpha.com OR site:fool.com OR site:247wallst.com OR site:thestreet.com) AI capex data center hyperscaler",
+        "query_dimension": "social_kol_ai_capex",
+        "source_channel": "social_kol_search",
+        "source_tier": "kol_social"
+      },
+      {
+        "title": "The AI Black Box: SpaceX, Hyperscalers And The Liquidity Bubble Beneath The Rally (SP500) - Seeking Alpha",
+        "link": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQOGtOLUttVmRfTUdHNDROS1RvM25VUmdiZmR5Z0JhWC0wOHVkcUowNTFoTHF2LTREalNRREJSX2k5cWJnV2FTVURiVTBGV2JURVRrd2FYLUYxMHRrVVAtd2RoQ0xMWVhJQXdTbVBPVWc3Wnh4LTVIMkJVb0h0cldWdGVvekU4WWM5V3YwTEltekI3OEw4VTZCVDJEaklGRnkwd2hvd2swS2RBbzZyUkVIZmRvSHZuZFpUQk1DVg?oc=5",
+        "published": "2026-05-28T09:53:22",
+        "source": "Google News",
+        "query": "(site:seekingalpha.com OR site:fool.com OR site:247wallst.com OR site:thestreet.com) AI capex data center hyperscaler",
+        "query_dimension": "social_kol_ai_capex",
+        "source_channel": "social_kol_search",
+        "source_tier": "kol_social"
+      },
+      {
+        "title": "If I Could Only Buy 1 Artificial Intelligence (AI) Stock Right Now, This Would Be It. - The Motley Fool",
+        "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOd3haVHhzeVk5LUJhdTQwS2JKOVhra0ttdDdvYzZaanJHdGJQY1VsQzVEcmEtelVGVWhFZi02V3JZQlNjZ2h4NGY2d1J4R1VQMmIySUtGUkVWUWdGOUNGMnVVdURUbENnNEpTRmtaT05CcVVqX0NKYzNqRTN2bzB6T0lOOXJLbHBZcWFMdjVVMFgtQkdNcHJFQg?oc=5",
+        "published": "2026-05-31T05:30:00",
+        "source": "Google News",
+        "query": "(site:seekingalpha.com OR site:fool.com OR site:247wallst.com OR site:thestreet.com) AI capex data center hyperscaler",
+        "query_dimension": "social_kol_ai_capex",
+        "source_channel": "social_kol_search",
+        "source_tier": "kol_social"
+      }
+    ],
+    "china_public_news_direct": [
+      {
+        "title": "股价一个月内翻倍！“电子工业大米”牛股风华高科再澄清与英伟达关系：产品未获认证 | 每经网",
+        "link": "https://www.nbd.com.cn/articles/2026-05-31/4413192.html",
+        "published": "2026-05-31T00:00:00",
+        "source": "每日经济新闻",
+        "query": "china_public_news_direct:nbd",
+        "query_dimension": "https://www.nbd.com.cn/",
+        "source_channel": "china_public_news_direct",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "英伟达下周举办重磅大会，哪些细分主线将站上风口？ | 每经网",
+        "link": "https://www.nbd.com.cn/articles/2026-05-31/4413144.html",
+        "published": "2026-05-31T00:00:00",
+        "source": "每日经济新闻",
+        "query": "china_public_news_direct:nbd",
+        "query_dimension": "https://www.nbd.com.cn/",
+        "source_channel": "china_public_news_direct",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "直击股东会 | AI拉动电子布需求，中国巨石董秘丁成车：扩产设备已提前考虑好 | 每经网",
+        "link": "https://www.nbd.com.cn/articles/2026-05-30/4412909.html",
+        "published": "2026-05-30T00:00:00",
+        "source": "每日经济新闻",
+        "query": "china_public_news_direct:nbd",
+        "query_dimension": "https://www.nbd.com.cn/",
+        "source_channel": "china_public_news_direct",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "刘庆峰谈“技术底座”竞争：单纯做小模型或行业模型是行不通的 科大讯飞坚定走国产化算力路线 | 每经网",
+        "link": "https://www.nbd.com.cn/articles/2026-05-28/4411164.html",
+        "published": "2026-05-28T00:00:00",
+        "source": "每日经济新闻",
+        "query": "china_public_news_direct:nbd",
+        "query_dimension": "https://www.nbd.com.cn/",
+        "source_channel": "china_public_news_direct",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "北京太空智算研究院成立 计划于2028年前完成首发试验星研制与发射--经济·科技--人民网",
+        "link": "http://finance.people.com.cn/n1/2026/0531/c1004-40730945.html",
+        "published": "2026-05-31T00:00:00",
+        "source": "人民网财经",
+        "query": "china_public_news_direct:people_finance",
+        "query_dimension": "http://finance.people.com.cn/",
+        "source_channel": "china_public_news_direct",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "理想CEO李想建议AI时代所有公司不要轻易裁员 - 21经济网",
+        "link": "https://www.21jingji.com/article/20260531/herald/c8e13313c81989dab26fbd24ce72dd93.html",
+        "published": "2026-05-31T21:27:00",
+        "source": "21经济网",
+        "query": "china_public_news_direct:21jingji",
+        "query_dimension": "https://www.21jingji.com/",
+        "source_channel": "china_public_news_direct",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "全国首个绿色算力全栈AI平台上线运行；A股重要指数将调整｜周末要闻速递 - 21经济网",
+        "link": "https://www.21jingji.com/article/20260531/herald/bfb6cf6207fba051c7c3cd5e324973cc.html",
+        "published": "2026-05-31T17:15:00",
+        "source": "21经济网",
+        "query": "china_public_news_direct:21jingji",
+        "query_dimension": "https://www.21jingji.com/",
+        "source_channel": "china_public_news_direct",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "一颗微粒或致芯片报废 高端制造带动洁净耗材产业升级 - 21经济网",
+        "link": "https://www.21jingji.com/article/20260531/herald/17fa29ba69ce1115bf0231be26d3ad73.html",
+        "published": "2026-05-31T21:46:00",
+        "source": "21经济网",
+        "query": "china_public_news_direct:21jingji",
+        "query_dimension": "https://www.21jingji.com/",
+        "source_channel": "china_public_news_direct",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "理想CEO李想回应自研芯片质疑：绝非“跟风烧钱” - 21经济网",
+        "link": "https://www.21jingji.com/article/20260531/herald/21e0b1a89b2b80800682f9d7ac6cdc15.html",
+        "published": "2026-05-31T21:40:00",
+        "source": "21经济网",
+        "query": "china_public_news_direct:21jingji",
+        "query_dimension": "https://www.21jingji.com/",
+        "source_channel": "china_public_news_direct",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "国产AI基础设施产业链寻求高质量发展",
+        "link": "https://finance.sina.com.cn/jjxw/2026-05-29/doc-inhzpfxv9618969.shtml",
+        "published": "2026-05-29T06:58:00",
+        "source": "新浪财经",
+        "query": "china_public_news_direct:sina_finance",
+        "query_dimension": "https://finance.sina.com.cn/",
+        "source_channel": "china_public_news_direct",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "5月29日沪深两市涨停分析：华电能源、香江控股均5连板",
+        "link": "https://finance.sina.cn/stock/dpps/2026-05-29/detail-inhzqccr7610595.d.html",
+        "published": "2026-05-29T15:43:00",
+        "source": "新浪财经",
+        "query": "china_public_news_direct:sina_finance",
+        "query_dimension": "https://finance.sina.com.cn/",
+        "source_channel": "china_public_news_direct",
+        "source_tier": "trusted_news"
+      },
+      {
+        "title": "收评：创指跌超2% 科创50大跌超5% 芯片产业链集体大跌",
+        "link": "https://finance.sina.cn/stock/dpps/2026-05-29/detail-inhzpwvp9550032.d.html",
+        "published": "2026-05-29T15:00:00",
+        "source": "新浪财经",
+        "query": "china_public_news_direct:sina_finance",
+        "query_dimension": "https://finance.sina.com.cn/",
+        "source_channel": "china_public_news_direct",
+        "source_tier": "trusted_news"
+      }
+    ],
+    "primary_evidence": [
+      {
+        "title": "Amazon (AMZN) 8-K filing - 2026-05-22",
+        "link": "https://www.sec.gov/Archives/edgar/data/1018724/000110465926065717/tm2614288d1_8k.htm",
+        "published": "2026-05-22T00:00:00",
+        "source": "Local Primary Evidence Index",
+        "query": "local_primary_evidence_index",
+        "query_dimension": null,
+        "source_channel": "primary_evidence_index",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Amazon (AMZN) 10-Q filing - 2026-04-30",
+        "link": "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000014/amzn-20260331.htm",
+        "published": "2026-04-30T00:00:00",
+        "source": "Local Primary Evidence Index",
+        "query": "local_primary_evidence_index",
+        "query_dimension": null,
+        "source_channel": "primary_evidence_index",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Amazon (AMZN) 8-K filing - 2026-04-29",
+        "link": "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000012/amzn-20260429.htm",
+        "published": "2026-04-29T00:00:00",
+        "source": "Local Primary Evidence Index",
+        "query": "local_primary_evidence_index",
+        "query_dimension": null,
+        "source_channel": "primary_evidence_index",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Amazon (AMZN) 8-K filing - 2026-04-14",
+        "link": "https://www.sec.gov/Archives/edgar/data/1018724/000110465926042880/tm2611746d1_8k.htm",
+        "published": "2026-04-14T00:00:00",
+        "source": "Local Primary Evidence Index",
+        "query": "local_primary_evidence_index",
+        "query_dimension": null,
+        "source_channel": "primary_evidence_index",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Amphenol (APH) 8-K filing - 2026-05-22",
+        "link": "https://www.sec.gov/Archives/edgar/data/820313/000110465926065682/tm2615386d1_8k.htm",
+        "published": "2026-05-22T00:00:00",
+        "source": "Local Primary Evidence Index",
+        "query": "local_primary_evidence_index",
+        "query_dimension": null,
+        "source_channel": "primary_evidence_index",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Amphenol (APH) 8-K filing - 2026-05-12",
+        "link": "https://www.sec.gov/Archives/edgar/data/820313/000110465926059404/tm2613386d5_8k.htm",
+        "published": "2026-05-12T00:00:00",
+        "source": "Local Primary Evidence Index",
+        "query": "local_primary_evidence_index",
+        "query_dimension": null,
+        "source_channel": "primary_evidence_index",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Amphenol (APH) 8-K filing - 2026-05-06",
+        "link": "https://www.sec.gov/Archives/edgar/data/820313/000110465926055888/tm2613386d4_8k.htm",
+        "published": "2026-05-06T00:00:00",
+        "source": "Local Primary Evidence Index",
+        "query": "local_primary_evidence_index",
+        "query_dimension": null,
+        "source_channel": "primary_evidence_index",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Amphenol (APH) 10-Q filing - 2026-05-01",
+        "link": "https://www.sec.gov/Archives/edgar/data/820313/000110465926054128/aph-20260331x10q.htm",
+        "published": "2026-05-01T00:00:00",
+        "source": "Local Primary Evidence Index",
+        "query": "local_primary_evidence_index",
+        "query_dimension": null,
+        "source_channel": "primary_evidence_index",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Broadcom (AVGO) 8-K filing - 2026-04-21",
+        "link": "https://www.sec.gov/Archives/edgar/data/1730168/000173016826000039/avgo-20260420.htm",
+        "published": "2026-04-21T00:00:00",
+        "source": "Local Primary Evidence Index",
+        "query": "local_primary_evidence_index",
+        "query_dimension": null,
+        "source_channel": "primary_evidence_index",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Broadcom (AVGO) 8-K filing - 2026-04-06",
+        "link": "https://www.sec.gov/Archives/edgar/data/1730168/000119312526144028/d87999d8k.htm",
+        "published": "2026-04-06T00:00:00",
+        "source": "Local Primary Evidence Index",
+        "query": "local_primary_evidence_index",
+        "query_dimension": null,
+        "source_channel": "primary_evidence_index",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Broadcom (AVGO) 8-K filing - 2026-04-02",
+        "link": "https://www.sec.gov/Archives/edgar/data/1730168/000119312526140574/d109450d8k.htm",
+        "published": "2026-04-02T00:00:00",
+        "source": "Local Primary Evidence Index",
+        "query": "local_primary_evidence_index",
+        "query_dimension": null,
+        "source_channel": "primary_evidence_index",
+        "source_tier": "primary_evidence"
+      },
+      {
+        "title": "Coherent (COHR) 8-K filing - 2026-05-06",
+        "link": "https://www.sec.gov/Archives/edgar/data/820318/000119312526208972/d57080d8k.htm",
+        "published": "2026-05-06T00:00:00",
+        "source": "Local Primary Evidence Index",
+        "query": "local_primary_evidence_index",
+        "query_dimension": null,
+        "source_channel": "primary_evidence_index",
+        "source_tier": "primary_evidence"
+      }
+    ]
+  },
+  "retained_counts": {
+    "source_tiers": {
+      "trusted_news": 17,
+      "search_intel": 31,
+      "kol_social": 8
+    },
+    "evidence_scopes": {
+      "direct_company_evidence": 10,
+      "sector_or_theme_evidence": 22,
+      "macro_market_context": 9,
+      "background_or_noise": 15
+    },
+    "thesis_effects": {
+      "supports_thesis": 4,
+      "discovery_or_neutral": 48,
+      "crowding_signal": 3,
+      "refutes_or_risks_thesis": 1
+    },
+    "strengths": {
+      "medium": 14,
+      "low": 42
+    }
+  },
+  "themes": {
+    "ai_capex": {
+      "retained": 29,
+      "source_tiers": {
+        "trusted_news": 15,
+        "search_intel": 6,
+        "kol_social": 8
+      },
+      "evidence_scopes": {
+        "direct_company_evidence": 7,
+        "sector_or_theme_evidence": 9,
+        "macro_market_context": 5,
+        "background_or_noise": 8
+      },
+      "thesis_effects": {
+        "supports_thesis": 2,
+        "discovery_or_neutral": 24,
+        "crowding_signal": 2,
+        "refutes_or_risks_thesis": 1
+      },
+      "strengths": {
+        "medium": 11,
+        "low": 18
+      }
+    },
+    "power_cooling": {
+      "retained": 8,
+      "source_tiers": {
+        "trusted_news": 1,
+        "search_intel": 6,
+        "kol_social": 1
+      },
+      "evidence_scopes": {
+        "sector_or_theme_evidence": 5,
+        "background_or_noise": 2,
+        "direct_company_evidence": 1
+      },
+      "thesis_effects": {
+        "discovery_or_neutral": 8
+      },
+      "strengths": {
+        "medium": 1,
+        "low": 7
+      }
+    },
+    "ai_app_roi": {
+      "retained": 11,
+      "source_tiers": {
+        "trusted_news": 3,
+        "search_intel": 7,
+        "kol_social": 1
+      },
+      "evidence_scopes": {
+        "direct_company_evidence": 4,
+        "background_or_noise": 3,
+        "sector_or_theme_evidence": 3,
+        "macro_market_context": 1
+      },
+      "thesis_effects": {
+        "discovery_or_neutral": 9,
+        "supports_thesis": 2
+      },
+      "strengths": {
+        "medium": 3,
+        "low": 8
+      }
+    },
+    "emerging_second_order": {
+      "retained": 3,
+      "source_tiers": {
+        "trusted_news": 1,
+        "search_intel": 2
+      },
+      "evidence_scopes": {
+        "macro_market_context": 1,
+        "direct_company_evidence": 1,
+        "background_or_noise": 1
+      },
+      "thesis_effects": {
+        "supports_thesis": 1,
+        "discovery_or_neutral": 2
+      },
+      "strengths": {
+        "medium": 2,
+        "low": 1
+      }
+    },
+    "networking_optics": {
+      "retained": 4,
+      "source_tiers": {
+        "search_intel": 3,
+        "trusted_news": 1
+      },
+      "evidence_scopes": {
+        "sector_or_theme_evidence": 1,
+        "macro_market_context": 2,
+        "background_or_noise": 1
+      },
+      "thesis_effects": {
+        "discovery_or_neutral": 4
+      },
+      "strengths": {
+        "low": 3,
+        "medium": 1
+      }
+    },
+    "memory": {
+      "retained": 8,
+      "source_tiers": {
+        "search_intel": 8
+      },
+      "evidence_scopes": {
+        "sector_or_theme_evidence": 4,
+        "direct_company_evidence": 2,
+        "macro_market_context": 1,
+        "background_or_noise": 1
+      },
+      "thesis_effects": {
+        "discovery_or_neutral": 7,
+        "crowding_signal": 1
+      },
+      "strengths": {
+        "low": 8
+      }
+    }
+  },
+  "queries": {
+    "site:seekingalpha.com AI capex hyperscaler earnings call": {
+      "raw": 20,
+      "retained": 4,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "solid state transformer AI data center": {
+      "raw": 20,
+      "retained": 3,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "HBM shortage AI data center 2026": {
+      "raw": 18,
+      "retained": 3,
+      "sources": {
+        "Bing News": 8,
+        "Google News": 10
+      }
+    },
+    "china_public_news_direct:21jingji": {
+      "raw": 4,
+      "retained": 3,
+      "sources": {
+        "21经济网": 4
+      }
+    },
+    "Dell AI server orders backlog revenue guidance earnings": {
+      "raw": 20,
+      "retained": 2,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "Dell Technologies AI optimized server revenue backlog guidance": {
+      "raw": 20,
+      "retained": 2,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "Samsung SK hynix Micron HBM demand guidance": {
+      "raw": 20,
+      "retained": 2,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "AI memory bottleneck HBM DRAM supply": {
+      "raw": 20,
+      "retained": 2,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "AI application revenue monetization enterprise adoption": {
+      "raw": 20,
+      "retained": 2,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "AI capex justified by application revenue": {
+      "raw": 19,
+      "retained": 2,
+      "sources": {
+        "Bing News": 9,
+        "Google News": 10
+      }
+    },
+    "site:reuters.com (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)": {
+      "raw": 6,
+      "retained": 2,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "site:cnbc.com (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)": {
+      "raw": 6,
+      "retained": 2,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "(site:marketwatch.com OR site:barrons.com) (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)": {
+      "raw": 6,
+      "retained": 2,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "(site:ft.com OR site:wsj.com OR site:bloomberg.com) (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)": {
+      "raw": 6,
+      "retained": 2,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "china_public_news_direct:nbd": {
+      "raw": 4,
+      "retained": 2,
+      "sources": {
+        "每日经济新闻": 4
+      }
+    },
+    "AI server earnings backlog Dell Supermicro HPE": {
+      "raw": 20,
+      "retained": 1,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "Google Alphabet AI capex data center guidance": {
+      "raw": 20,
+      "retained": 1,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "site:fool.com AI capex data center hyperscaler": {
+      "raw": 20,
+      "retained": 1,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "DRAM price AI server demand HBM capacity allocation": {
+      "raw": 20,
+      "retained": 1,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "liquid cooling AI data center demand guidance": {
+      "raw": 20,
+      "retained": 1,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "Vertiv Eaton Schneider AI data center demand": {
+      "raw": 20,
+      "retained": 1,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "data center grid connection delays AI capex": {
+      "raw": 20,
+      "retained": 1,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "OpenAI Anthropic revenue run rate inference demand": {
+      "raw": 20,
+      "retained": 1,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "AI inference revenue run rate enterprise adoption": {
+      "raw": 20,
+      "retained": 1,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "AI agent enterprise workflow monetization": {
+      "raw": 20,
+      "retained": 1,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "next AI infrastructure bottleneck after HBM power liquid cooling": {
+      "raw": 20,
+      "retained": 1,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "Microsoft AI capex guidance data center": {
+      "raw": 19,
+      "retained": 1,
+      "sources": {
+        "Bing News": 9,
+        "Google News": 10
+      }
+    },
+    "Broadcom AI networking switch demand": {
+      "raw": 19,
+      "retained": 1,
+      "sources": {
+        "Bing News": 9,
+        "Google News": 10
+      }
+    },
+    "CPO silicon photonics AI data center bottleneck": {
+      "raw": 19,
+      "retained": 1,
+      "sources": {
+        "Bing News": 9,
+        "Google News": 10
+      }
+    },
+    "AI data center power bottleneck transformer switchgear shortage": {
+      "raw": 19,
+      "retained": 1,
+      "sources": {
+        "Bing News": 9,
+        "Google News": 10
+      }
+    },
+    "Arista AI networking 800G 1.6T demand": {
+      "raw": 15,
+      "retained": 1,
+      "sources": {
+        "Bing News": 5,
+        "Google News": 10
+      }
+    },
+    "site:semianalysis.com (AI OR GPU OR accelerator OR \"data center\")": {
+      "raw": 6,
+      "retained": 1,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "(site:reuters.com OR site:cnbc.com OR site:businesswire.com) (optical OR networking OR Ethernet) AI data center": {
+      "raw": 6,
+      "retained": 1,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "AI服务器 数据中心 算力 A股 财联社 证券时报": {
+      "raw": 6,
+      "retained": 1,
+      "sources": {
+        "Bing News": 6
+      }
+    },
+    "(site:seekingalpha.com OR site:fool.com OR site:247wallst.com OR site:thestreet.com) AI capex data center hyperscaler": {
+      "raw": 6,
+      "retained": 1,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "china_public_news_direct:sina_finance": {
+      "raw": 4,
+      "retained": 1,
+      "sources": {
+        "新浪财经": 4
+      }
+    },
+    "local_primary_evidence_index": {
+      "raw": 90,
+      "retained": 0,
+      "sources": {
+        "Local Primary Evidence Index": 90
+      }
+    },
+    "local_primary_transcripts": {
+      "raw": 43,
+      "retained": 0,
+      "sources": {
+        "Local Primary Evidence Index": 43
+      }
+    },
+    "Amazon AWS AI capex data center guidance": {
+      "raw": 20,
+      "retained": 0,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "Meta AI capex data center guidance": {
+      "raw": 20,
+      "retained": 0,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "Oracle CoreWeave AI data center capex": {
+      "raw": 20,
+      "retained": 0,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "site:investing.com AI capex data center hyperscaler": {
+      "raw": 20,
+      "retained": 0,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "sovereign AI data center capex Nvidia Oracle CoreWeave": {
+      "raw": 20,
+      "retained": 0,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "AI capex ROI concern hyperscaler spending": {
+      "raw": 20,
+      "retained": 0,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "SOCAMM AI memory Nvidia Vera Rubin supply": {
+      "raw": 20,
+      "retained": 0,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "memory stocks already rallied AI shortage consensus": {
+      "raw": 20,
+      "retained": 0,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "UPS power distribution AI data center shortage": {
+      "raw": 20,
+      "retained": 0,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "AI data center gas turbine power bottleneck": {
+      "raw": 20,
+      "retained": 0,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "battery backed power AI data center grid constraints": {
+      "raw": 20,
+      "retained": 0,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "AI rack power semiconductor SiC GaN data center": {
+      "raw": 20,
+      "retained": 0,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "liquid cooling stocks already rallied AI data center": {
+      "raw": 20,
+      "retained": 0,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "Kuaishou Kling AI revenue monetization": {
+      "raw": 20,
+      "retained": 0,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "high bandwidth flash HBF AI inference alternative HBM": {
+      "raw": 20,
+      "retained": 0,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "AI data center battery backed power grid interconnection": {
+      "raw": 20,
+      "retained": 0,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "AI rack SiC GaN power semiconductor opportunity": {
+      "raw": 20,
+      "retained": 0,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 10
+      }
+    },
+    "AI data center fiber shortage optical cable": {
+      "raw": 19,
+      "retained": 0,
+      "sources": {
+        "Bing News": 9,
+        "Google News": 10
+      }
+    },
+    "InP EML laser shortage 1.6T optical transceiver": {
+      "raw": 19,
+      "retained": 0,
+      "sources": {
+        "Bing News": 9,
+        "Google News": 10
+      }
+    },
+    "AI data center glass fiber preform shortage": {
+      "raw": 19,
+      "retained": 0,
+      "sources": {
+        "Bing News": 9,
+        "Google News": 10
+      }
+    },
+    "AI ROI enterprise adoption concern capex": {
+      "raw": 19,
+      "retained": 0,
+      "sources": {
+        "Bing News": 9,
+        "Google News": 10
+      }
+    },
+    "Copilot monetization ARPU enterprise adoption": {
+      "raw": 19,
+      "retained": 0,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 9
+      }
+    },
+    "AI video generation monetization Kling Runway Sora": {
+      "raw": 19,
+      "retained": 0,
+      "sources": {
+        "Bing News": 10,
+        "Google News": 9
+      }
+    },
+    "AI data center optical circuit switching OCS startup bottleneck": {
+      "raw": 19,
+      "retained": 0,
+      "sources": {
+        "Bing News": 9,
+        "Google News": 10
+      }
+    },
+    "AI cluster CPO thermal yield bottleneck silicon photonics": {
+      "raw": 19,
+      "retained": 0,
+      "sources": {
+        "Bing News": 9,
+        "Google News": 10
+      }
+    },
+    "AI data center fiber preform glass shortage": {
+      "raw": 19,
+      "retained": 0,
+      "sources": {
+        "Bing News": 9,
+        "Google News": 10
+      }
+    },
+    "800G 1.6T optical module demand AI data center": {
+      "raw": 18,
+      "retained": 0,
+      "sources": {
+        "Bing News": 8,
+        "Google News": 10
+      }
+    },
+    "NAND enterprise SSD AI server demand price": {
+      "raw": 18,
+      "retained": 0,
+      "sources": {
+        "Bing News": 8,
+        "Google News": 10
+      }
+    },
+    "high bandwidth flash HBF AI inference storage": {
+      "raw": 18,
+      "retained": 0,
+      "sources": {
+        "Bing News": 8,
+        "Google News": 10
+      }
+    },
+    "enterprise SSD shortage AI inference demand": {
+      "raw": 18,
+      "retained": 0,
+      "sources": {
+        "Bing News": 8,
+        "Google News": 10
+      }
+    },
+    "Tencent AI advertising cloud monetization": {
+      "raw": 18,
+      "retained": 0,
+      "sources": {
+        "Bing News": 8,
+        "Google News": 10
+      }
+    },
+    "Coherent Lumentum Fabrinet optical transceiver AI demand": {
+      "raw": 17,
+      "retained": 0,
+      "sources": {
+        "Bing News": 7,
+        "Google News": 10
+      }
+    },
+    "optical circuit switch OCS AI cluster bottleneck": {
+      "raw": 17,
+      "retained": 0,
+      "sources": {
+        "Bing News": 7,
+        "Google News": 10
+      }
+    },
+    "AI inference enterprise SSD QLC NAND bottleneck": {
+      "raw": 17,
+      "retained": 0,
+      "sources": {
+        "Bing News": 7,
+        "Google News": 10
+      }
+    },
+    "AI server testing bottleneck burn in advanced packaging": {
+      "raw": 17,
+      "retained": 0,
+      "sources": {
+        "Bing News": 7,
+        "Google News": 10
+      }
+    },
+    "site:trendforce.com DRAM NAND HBM price AI server": {
+      "raw": 10,
+      "retained": 0,
+      "sources": {
+        "Google News": 10
+      }
+    },
+    "AI data center InP laser EML shortage": {
+      "raw": 10,
+      "retained": 0,
+      "sources": {
+        "Bing News": 3,
+        "Google News": 7
+      }
+    },
+    "site:trendforce.com AI optical transceiver 1.6T shortage": {
+      "raw": 6,
+      "retained": 0,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "site:datacenterdynamics.com (\"AI\" OR hyperscale) (\"power\" OR \"data center\" OR cooling)": {
+      "raw": 6,
+      "retained": 0,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "site:spglobal.com (\"data center\" OR AI) (power OR grid OR energy)": {
+      "raw": 6,
+      "retained": 0,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "site:trendforce.com (HBM OR DRAM OR memory) AI": {
+      "raw": 6,
+      "retained": 0,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "site:digitimes.com (AI OR \"data center\") (server OR supply OR component)": {
+      "raw": 6,
+      "retained": 0,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "(site:semiwiki.com OR site:eetimes.com) (AI OR \"data center\") (chip OR semiconductor OR interconnect)": {
+      "raw": 6,
+      "retained": 0,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "site:businesswire.com (\"AI\" OR \"data center\") (server OR power OR cooling OR optical)": {
+      "raw": 6,
+      "retained": 0,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "site:prnewswire.com (\"AI\" OR \"data center\") (server OR power OR cooling OR optical)": {
+      "raw": 6,
+      "retained": 0,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "site:globenewswire.com (\"AI\" OR \"data center\") (server OR power OR cooling OR optical)": {
+      "raw": 6,
+      "retained": 0,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "site:investors.delltechnologies.com (AI OR server OR revenue OR backlog)": {
+      "raw": 6,
+      "retained": 0,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "site:investor.nvidia.com (\"data center\" OR AI OR networking)": {
+      "raw": 6,
+      "retained": 0,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "(site:investors.micron.com OR site:news.skhynix.com OR site:news.samsung.com) (HBM OR memory OR AI)": {
+      "raw": 6,
+      "retained": 0,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "(site:investors.vertiv.com OR site:eaton.com OR site:se.com) (\"data center\" OR AI) (power OR cooling)": {
+      "raw": 6,
+      "retained": 0,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "(site:reuters.com OR site:cnbc.com OR site:businesswire.com) (HBM OR DRAM OR memory) AI data center": {
+      "raw": 6,
+      "retained": 0,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "光模块 PCB 数据中心 AI A股 财联社 证券时报": {
+      "raw": 6,
+      "retained": 0,
+      "sources": {
+        "Bing News": 6
+      }
+    },
+    "数据中心 电力 液冷 AI A股 财联社 证券时报": {
+      "raw": 6,
+      "retained": 0,
+      "sources": {
+        "Bing News": 6
+      }
+    },
+    "(site:reuters.com OR site:cnbc.com OR site:marketwatch.com OR site:ft.com) AI capex ROI risk bubble": {
+      "raw": 6,
+      "retained": 0,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "(\"AI data center\" OR hyperscaler) (debt OR financing OR power shortage OR grid delay OR bubble)": {
+      "raw": 6,
+      "retained": 0,
+      "sources": {
+        "Google News": 6
+      }
+    },
+    "AI服务器 数据中心 算力 A股 新闻 财经": {
+      "raw": 5,
+      "retained": 0,
+      "sources": {
+        "Bing News": 5
+      }
+    },
+    "china_public_news_direct:eastmoney": {
+      "raw": 4,
+      "retained": 0,
+      "sources": {
+        "东方财富": 4
+      }
+    },
+    "HBM 存储 AI A股 财联社 证券时报": {
+      "raw": 1,
+      "retained": 0,
+      "sources": {
+        "Bing News": 1
+      }
+    },
+    "china_public_news_direct:people_finance": {
+      "raw": 1,
+      "retained": 0,
+      "sources": {
+        "人民网财经": 1
+      }
+    }
+  },
+  "retained_sample": [
+    {
+      "title": "Dell stock skyrockets 32% for its best day ever as AI server revenue soars - CNBC",
+      "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTFA3OExqRmFTZ2g1b0t3dC1vY3R2SVR1U0JJTmJtNnp3OGdFZmRpTkFOUnp2WnQ3RmpnbnJiaGZSekk2MlNvYV9KaHFDZ1F4cUxkVlEtMWp5MzNmOE5TeDI1a1Y2bE40Q09OYW5mdDh5UzBMZEhlRGfSAXtBVV95cUxNMm1vRmUxTDQwTHZXa0t4eTEzalRfWTBIV2tGLS1fdFh5c1pYa0N6WFAwY0RWMG83NUFQajBLY3VXSlROdVNTaUF5cnI5YkR0R3dTQUZoNUxSdHhVZlk1cFlxcXNMYTBVWUJyMVR0M0dWYThaNzU2bXVYd2c?oc=5",
+      "published": "2026-05-29T13:41:07",
+      "source": "Google News",
+      "query": "site:cnbc.com (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": "mainstream_financial_search",
+      "coverage_lane": "mainstream_financial",
+      "time_scope": null,
+      "source_tier": "trusted_news",
+      "evidence_scope": "direct_company_evidence",
+      "thesis_effect": "supports_thesis",
+      "evidence_strength": "medium",
+      "reasons": [
+        "trusted news source",
+        "direct company/ticker match",
+        "identity=dell",
+        "positive thesis terms dominate"
+      ]
+    },
+    {
+      "title": "Dell shares soar 30% as AI server demand, price hikes power stellar quarter - Reuters",
+      "link": "https://news.google.com/rss/articles/CBMivAFBVV95cUxPcVJqdDdzRnFib0ZkeU1rd1F6WlZrOHF4cTB2MGVoLUhqRlNJNzY1RXY0MHBpcHhNUXBQODVMSlNRd0c5N292QnRTcUZpRkpvR2dVYnVLSm1YalVEUkZ0blV6UllTZTJPaUtlU2VfbDZjWk1ESWYwcGtwRzAzWHV3UjN0dS1Oc1ExNXNLSHVmRmRBQy1xOWFyN3ZaNjFFdDVzYWxEcGN4UTBmdUs1bV9ySnpBaTVRSkdQMkZqcg?oc=5",
+      "published": "2026-05-29T15:57:39",
+      "source": "Google News",
+      "query": "site:reuters.com (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": "mainstream_financial_search",
+      "coverage_lane": "mainstream_financial",
+      "time_scope": null,
+      "source_tier": "trusted_news",
+      "evidence_scope": "sector_or_theme_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "medium",
+      "reasons": [
+        "trusted news source",
+        "sector/theme keyword match"
+      ]
+    },
+    {
+      "title": "Will Autonomous Agent Growth Accelerate CRWV's Data Center Utilization? - The Globe and Mail",
+      "link": "https://news.google.com/rss/articles/CBMi7gFBVV95cUxQM2xPRXZaeE53dm1kbmEzOENsUDE5c2x5THVPZUlNR0JZY1ZCbU1EYndlNEZTYl9HVDhrRWtwbjNCTTQtbVZ5SzFGb1RkeTd1NzU1b1FjQllrMV9VTV9qRV9yZFEwby12TENpSk50aUN0b3dtSkRuR2xLM1k0WElFbkJpVjIwY2xlLTk0Q1Nld0xKSmd4SWxSREVSWHlZNV9wc0dKMnlTRUlDcUctRVJseEFQQ2M3czhOR2RiLXFzMWo0NE9pOTNCWWl3OXZXai1wd2VnbWtUM0U2U0thX0RxaFI4SjU5bHhzcXRNSElB?oc=5",
+      "published": "2026-05-29T15:18:00",
+      "source": "Google News",
+      "query": "AI inference revenue run rate enterprise adoption",
+      "theme_hint": "ai_app_roi",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "sector_or_theme_evidence",
+      "thesis_effect": "supports_thesis",
+      "evidence_strength": "low",
+      "reasons": [
+        "sector/theme keyword match",
+        "positive thesis terms dominate"
+      ]
+    },
+    {
+      "title": "The Tech Download: How chip companies are looking to use light to solve this major AI bottleneck - CNBC",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNbkJUMlhlcDJ6RXhnM3ZfbEQ4dXNLRkRuVnEyNjUyNjFQSDNWamlCQXBxTjJtY2d3TmNHaTdKYlhBLWFMTl9qV1N6RFRfNHA4bjk4S3YtUlNGeXhNSWZnMkJnZTJqdUxNV2V0NG91Nk9xYlJnRFpubDVwQlVnWUtSZkd2VHoyRGEx0gGOAUFVX3lxTE5wdXB2WDFGVDg0b0xlcTVvOWVBb0lYYkVoLUZrZ0F0dXFmV0lKVWtwVHQ3RkZVZDBSUHlrS2dDc1BaUHlINE1TX3l1emFjdldpR1ROMzlWak5zTlE4UFhSbDBleWRYeFB5WWlKLVpOUTJ5WXh5TWQ2Zy1UT0tMZVNlV3JIZ3E5YjBNMmtNWXc?oc=5",
+      "published": "2026-05-29T11:00:01",
+      "source": "Google News",
+      "query": "(site:reuters.com OR site:cnbc.com OR site:businesswire.com) (optical OR networking OR Ethernet) AI data center",
+      "theme_hint": "networking_optics",
+      "theme_hints": null,
+      "source_channel": "mainstream_financial_search",
+      "coverage_lane": "mainstream_financial",
+      "time_scope": null,
+      "source_tier": "trusted_news",
+      "evidence_scope": "macro_market_context",
+      "thesis_effect": "supports_thesis",
+      "evidence_strength": "medium",
+      "reasons": [
+        "trusted news source",
+        "macro/financing context",
+        "positive thesis terms dominate"
+      ]
+    },
+    {
+      "title": "Broadcom sees bullish views at Susquehanna ahead of Q2 results",
+      "link": "https://www.msn.com/en-us/money/topstocks/broadcom-sees-bullish-views-at-susquehanna-ahead-of-q2-results/ar-AA24q5fv",
+      "published": "2026-05-30T05:00:05",
+      "source": "Bing News",
+      "query": "Broadcom AI networking switch demand",
+      "theme_hint": "networking_optics",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "sector_or_theme_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "sector/theme keyword match"
+      ]
+    },
+    {
+      "title": "Micron just crossed $800 billion in market value for the first time — the memory-chip maker up more than 750% in a single year as AI servers hoard every DRAM wafer",
+      "link": "https://www.msn.com/en-us/money/companies/micron-just-crossed-800-billion-in-market-value-for-the-first-time-the-memory-chip-maker-up-more-than-750-in-a-single-year-as-ai-servers-hoard-every-dram-wafer/ar-AA24nJil",
+      "published": "2026-05-29T13:15:00",
+      "source": "Bing News",
+      "query": "AI memory bottleneck HBM DRAM supply",
+      "theme_hint": "memory",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "sector_or_theme_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "sector/theme keyword match"
+      ]
+    },
+    {
+      "title": "What is AI CapEx and why should investors care? - TradingView",
+      "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQaENWeFpXSzREYnp4a2hxc0JwUzhLMHR2bGdiQkNMb3Jrd3ZaSEZvc2J3dXlzSkt4OVYxQlBFWjdqaExaQTljM0thYUFTRV9kZC1VU0c2WDNMSWpsamZIaFM5NXNzMS1ic1pqekNwOWFnVE82YjJDWGI5Q1ROUnJfbmVBMktRVVhrdkRTelZUbzV1TjMwY1ZNdjVSSDJSNEpoNTh2Y1MtQTUtdw?oc=5",
+      "published": "2026-05-29T11:38:22",
+      "source": "Google News",
+      "query": "AI capex justified by application revenue",
+      "theme_hint": "ai_app_roi",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "background_or_noise",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": []
+    },
+    {
+      "title": "一颗微粒或致芯片报废 高端制造带动洁净耗材产业升级 - 21经济网",
+      "link": "https://www.21jingji.com/article/20260531/herald/17fa29ba69ce1115bf0231be26d3ad73.html",
+      "published": "2026-05-31T21:46:00",
+      "source": "21经济网",
+      "query": "china_public_news_direct:21jingji",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": "china_public_news_direct",
+      "coverage_lane": "china_public_news_direct",
+      "time_scope": null,
+      "source_tier": "trusted_news",
+      "evidence_scope": "direct_company_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "medium",
+      "reasons": [
+        "trusted news source",
+        "direct company/ticker match",
+        "identity=兆易创新"
+      ]
+    },
+    {
+      "title": "理想CEO李想回应自研芯片质疑：绝非“跟风烧钱” - 21经济网",
+      "link": "https://www.21jingji.com/article/20260531/herald/21e0b1a89b2b80800682f9d7ac6cdc15.html",
+      "published": "2026-05-31T21:40:00",
+      "source": "21经济网",
+      "query": "china_public_news_direct:21jingji",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": "china_public_news_direct",
+      "coverage_lane": "china_public_news_direct",
+      "time_scope": null,
+      "source_tier": "trusted_news",
+      "evidence_scope": "direct_company_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "medium",
+      "reasons": [
+        "trusted news source",
+        "direct company/ticker match",
+        "identity=兆易创新"
+      ]
+    },
+    {
+      "title": "Dell Stock Soars Over 30% as AI Revenue Supercharges Growth - Barron's",
+      "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1iOW43dkdoZGl0dEJRTHcwcVB5ek1XbHVWTGdoZDV5R0QtN1JMYThTLW1MNUQ3OVp4SUc3R0JkOVRGc25qUWJJRFNRT01JSEVieW8yNVMycjM3RlllZHpiTFh0aDRCeFdnQ05Zd2ZfNlV3d1VnMlE?oc=5",
+      "published": "2026-05-29T14:17:00",
+      "source": "Google News",
+      "query": "(site:marketwatch.com OR site:barrons.com) (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": "mainstream_financial_search",
+      "coverage_lane": "mainstream_financial",
+      "time_scope": null,
+      "source_tier": "trusted_news",
+      "evidence_scope": "direct_company_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "medium",
+      "reasons": [
+        "trusted news source",
+        "direct company/ticker match",
+        "identity=dell"
+      ]
+    },
+    {
+      "title": "Dell Stock Soars on Data-Center Revenue and Pentagon Deal - WSJ",
+      "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQZnIwSmdCX2dqRldITXQ4UFN0MW5zLW4zMll0ZUZ4V3E2bWRKYmdGeEZVcEZzMjJxZ3hNRnZ5TWJROXpwTmxIdG9mbGFjR0RPTW1yUm16a3c0QUFfbEFjcllqMGVXMmUzcTZzcDVaREMzeUxVOWlZNjBabGtCb1VUOVBMYWgwUmp0TUlrZV9aUXVzbG9xSkE?oc=5",
+      "published": "2026-05-29T14:05:00",
+      "source": "Google News",
+      "query": "(site:ft.com OR site:wsj.com OR site:bloomberg.com) (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": "mainstream_financial_search",
+      "coverage_lane": "mainstream_financial",
+      "time_scope": null,
+      "source_tier": "trusted_news",
+      "evidence_scope": "direct_company_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "medium",
+      "reasons": [
+        "trusted news source",
+        "direct company/ticker match",
+        "identity=dell"
+      ]
+    },
+    {
+      "title": "全国首个绿色算力全栈AI平台上线运行；A股重要指数将调整｜周末要闻速递 - 21经济网",
+      "link": "https://www.21jingji.com/article/20260531/herald/bfb6cf6207fba051c7c3cd5e324973cc.html",
+      "published": "2026-05-31T17:15:00",
+      "source": "21经济网",
+      "query": "china_public_news_direct:21jingji",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": "china_public_news_direct",
+      "coverage_lane": "china_public_news_direct",
+      "time_scope": null,
+      "source_tier": "trusted_news",
+      "evidence_scope": "macro_market_context",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "medium",
+      "reasons": [
+        "trusted news source",
+        "macro/financing context"
+      ]
+    },
+    {
+      "title": "股价一个月内翻倍！“电子工业大米”牛股风华高科再澄清与英伟达关系：产品未获认证 | 每经网",
+      "link": "https://www.nbd.com.cn/articles/2026-05-31/4413192.html",
+      "published": "2026-05-31T00:00:00",
+      "source": "每日经济新闻",
+      "query": "china_public_news_direct:nbd",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": "china_public_news_direct",
+      "coverage_lane": "china_public_news_direct",
+      "time_scope": null,
+      "source_tier": "trusted_news",
+      "evidence_scope": "macro_market_context",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "medium",
+      "reasons": [
+        "trusted news source",
+        "macro/financing context"
+      ]
+    },
+    {
+      "title": "直击股东会 | AI拉动电子布需求，中国巨石董秘丁成车：扩产设备已提前考虑好 | 每经网",
+      "link": "https://www.nbd.com.cn/articles/2026-05-30/4412909.html",
+      "published": "2026-05-30T00:00:00",
+      "source": "每日经济新闻",
+      "query": "china_public_news_direct:nbd",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": "china_public_news_direct",
+      "coverage_lane": "china_public_news_direct",
+      "time_scope": null,
+      "source_tier": "trusted_news",
+      "evidence_scope": "macro_market_context",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "medium",
+      "reasons": [
+        "trusted news source",
+        "macro/financing context"
+      ]
+    },
+    {
+      "title": "19亿元，算力“国家队”斩获算力大订单！多家公司签订算力合同，这些股业绩要起飞？",
+      "link": "https://finance.sina.com.cn/wm/2026-05-30/doc-inhzrrex7178016.shtml",
+      "published": "2026-05-29T16:52:00",
+      "source": "Bing News",
+      "query": "AI服务器 数据中心 算力 A股 财联社 证券时报",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": "china_market_search",
+      "coverage_lane": "china_market",
+      "time_scope": null,
+      "source_tier": "trusted_news",
+      "evidence_scope": "macro_market_context",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "medium",
+      "reasons": [
+        "trusted news source",
+        "macro/financing context"
+      ]
+    },
+    {
+      "title": "收评：创指跌超2% 科创50大跌超5% 芯片产业链集体大跌",
+      "link": "https://finance.sina.cn/stock/dpps/2026-05-29/detail-inhzpwvp9550032.d.html",
+      "published": "2026-05-29T15:00:00",
+      "source": "新浪财经",
+      "query": "china_public_news_direct:sina_finance",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": "china_public_news_direct",
+      "coverage_lane": "china_public_news_direct",
+      "time_scope": null,
+      "source_tier": "trusted_news",
+      "evidence_scope": "macro_market_context",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "medium",
+      "reasons": [
+        "trusted news source",
+        "macro/financing context"
+      ]
+    },
+    {
+      "title": "Salesforce’s Headless 360 monetization play could give CIOs a familiar budgeting headache - cio.com",
+      "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPaUpnODJtY3J5cWRuWnhudkRWdkZKNHUtQ2l4ZVUtLVd4Rk9oMkRjSjh4N2JpanRnbGhKZllTbmdDZnRKWUJucmE4a3diUU1RQ081Sk5xeGo5ZHNiTW1IbnJyUjZEOThsMFB4eXo1SHI0OS15M2g0SWtwNU00T1NGajltZDVVVHdSUkxweGtidWV2WlFLcEpudTRidTd1cDRkY3ZaUUozN1pqOVVxVnFFRkxqVkRVcXZBUUo3UkZTaFEwMnR3SHRfcw?oc=5",
+      "published": "2026-05-29T22:34:05",
+      "source": "Google News",
+      "query": "AI agent enterprise workflow monetization",
+      "theme_hint": "ai_app_roi",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "sector_or_theme_evidence",
+      "thesis_effect": "supports_thesis",
+      "evidence_strength": "low",
+      "reasons": [
+        "sector/theme keyword match",
+        "positive thesis terms dominate"
+      ]
+    },
+    {
+      "title": "Micron just crossed $800 billion in market value for the first time — the memory-chip maker up 750% in a single year as AI servers hoard every DRAM wafer",
+      "link": "https://www.msn.com/en-us/money/general/micron-just-crossed-800-billion-in-market-value-for-the-first-time-the-memory-chip-maker-up-750-in-a-single-year-as-ai-servers-hoard-every-dram-wafer/ar-AA24qXK1",
+      "published": "2026-05-30T10:05:00",
+      "source": "Bing News",
+      "query": "DRAM price AI server demand HBM capacity allocation",
+      "theme_hint": "memory",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "sector_or_theme_evidence",
+      "thesis_effect": "crowding_signal",
+      "evidence_strength": "low",
+      "reasons": [
+        "sector/theme keyword match",
+        "crowding language detected"
+      ]
+    },
+    {
+      "title": "SoftBank plans 75 billion euros of AI investments in France, as Europe struggles to catch up with U.S. and China - CNBC",
+      "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQeGdvazJVU0FLWWxqTjhBWS1CM2IyZThDc29uckwwc0h1US1Cd0NRcWpnLXpUNmpkck5Dc29MQmpxLXk4TDFNWlhUUHQ5YlAzTjk2Q2d0eW5GMVI4V29ZYWdXMjRnWC0zb3Z6NVp2Vll6TDlNV2gtb2tmTXBkQWE3RWFzaGQzczBuTlhhU1I3Z19WcG1hQ2hhYWVIYlFoQm9UWXVxRVVBRErSAa4BQVVfeXFMTTRzWVdjYzFEdTJZME5BSUxDaXBsd2pfLVdVMS12NFljOTFNN2MxS2hJNk95WTFlSnpvTm0tOGY4LTBmSTJXbXNLQk5uNXBidjJLWjZFYklLUW9ldGUwOXROTlM2M01GS2xNU2pHVS15UWs2aWY0b1YzUzdBaU9oelVNTlZYYUNOU2JDR2tFR2gyM3l6YlRVblVoOHhRamRDQnV3R3liVlA2UnQ3Y1l3?oc=5",
+      "published": "2026-05-31T07:26:59",
+      "source": "Google News",
+      "query": "site:cnbc.com (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": "mainstream_financial_search",
+      "coverage_lane": "mainstream_financial",
+      "time_scope": null,
+      "source_tier": "trusted_news",
+      "evidence_scope": "background_or_noise",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "trusted news source"
+      ]
+    },
+    {
+      "title": "SoftBank Plans Up to €75 Billion Investment in French AI Centers - Bloomberg.com",
+      "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOdTFzR0hIOUZmSUNYU2dsX0hZLUs3dGQxZDhzQU5aYmVwTnlQTzJwcTB6N3MwaEZhWjBIRGFYeThFZmVHSS1HOGFWVFJGWktYblZaZWJtX2JuODk0V3RJZy1VOWFBeTE1Zjd5OHlIUnpNN0k4T3VLWWhBUHQzN2U5Y2ticWNUSzh5V09ydEEwNlN0SklQTWQ4Mnc4TFVXZDktYW5ONHBRaWxRb09XLWtoVEo3NA?oc=5",
+      "published": "2026-05-30T19:52:57",
+      "source": "Google News",
+      "query": "(site:ft.com OR site:wsj.com OR site:bloomberg.com) (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": "mainstream_financial_search",
+      "coverage_lane": "mainstream_financial",
+      "time_scope": null,
+      "source_tier": "trusted_news",
+      "evidence_scope": "background_or_noise",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "trusted news source"
+      ]
+    },
+    {
+      "title": "AI Dark Output: The Visible Cost of Invisible Output - SemiAnalysis",
+      "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTE1KN0dPX2hLZXdxTEN5QVhDWGFPaUtJZDl3Zm1XaFRKQkFLbEdOc1JOWDJxUDRTaDdtU3VKTjJnZFNRM0lpd1YxNHZ2Yk9wTVUxVkFFRnZIX1F2SEd2Z1ozN1RnUGZ2OG5IZEQ0dzhIa0FpV0lGRVJFWUtmSGw?oc=5",
+      "published": "2026-05-29T20:02:50",
+      "source": "Google News",
+      "query": "site:semianalysis.com (AI OR GPU OR accelerator OR \"data center\")",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": "industry_vertical_search",
+      "coverage_lane": "industry_vertical",
+      "time_scope": null,
+      "source_tier": "trusted_news",
+      "evidence_scope": "background_or_noise",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "trusted news source"
+      ]
+    },
+    {
+      "title": "What if the AI boom goes into reverse?: Joachim Klement - Reuters",
+      "link": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQR1oxcEVqX0V2MkhMeEZfajY1ZWpPMnF4Q3hPWm1MYTlMeTlDRHEzNTdKa1hNR1RmeHhfbExhd2pxNVRBU1pWOUVHb3NQclBmYWZ4Tk41cEhWcG5BYUpyOHEtYVRzaFk5ZWt0MHNjZ1JmSXUtY0NnU0JmdEhiODdOcm5uSko0T29Ldy1TWFJiT0hFandJSFBjYjFvRzNjdjQydzdZYQ?oc=5",
+      "published": "2026-05-29T12:22:23",
+      "source": "Google News",
+      "query": "site:reuters.com (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": "mainstream_financial_search",
+      "coverage_lane": "mainstream_financial",
+      "time_scope": null,
+      "source_tier": "trusted_news",
+      "evidence_scope": "background_or_noise",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "trusted news source"
+      ]
+    },
+    {
+      "title": "Dell’s stunning 33% stock rally gave a big boost to shares of other server makers - MarketWatch",
+      "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOZURkejVXZVpTVnZ0bEx0amlhTi1JVTBxbi0tbXFjcS1JYmVuaHFfenBnbGswWW1tT1BERnBVSER5QjNWcTRtQU11ajVXVFpKYV92U19NWC1NcDJPUFNqbklDTEhZakN4MGlZcVAyd0lYbUY5TzFuOFFkWEFULTMzY1FwQUt6RlBTalFqWnpvbzd1cmo0bnVfM2hnV1ZhLTQxM0QyQXU5c3Q3ZjJOX1U0SjFVUW9LbjF6QnZ4bUxlZFBKU0U2blE?oc=5",
+      "published": "2026-05-29T18:17:00",
+      "source": "Google News",
+      "query": "(site:marketwatch.com OR site:barrons.com) (\"AI\" OR \"artificial intelligence\") (\"data center\" OR capex OR server)",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": "mainstream_financial_search",
+      "coverage_lane": "mainstream_financial",
+      "time_scope": null,
+      "source_tier": "trusted_news",
+      "evidence_scope": "sector_or_theme_evidence",
+      "thesis_effect": "crowding_signal",
+      "evidence_strength": "medium",
+      "reasons": [
+        "trusted news source",
+        "sector/theme keyword match",
+        "crowding language detected"
+      ]
+    },
+    {
+      "title": "Microsoft: Looking Through Legacy Business Noise; Short-Lived Assets Require Elevated Capex - Seeking Alpha",
+      "link": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNSnZLR2U1MVJtVGpyblEySDBpQkZESzZyb2paSk9tYVFUYmprRkdfUHByMDJtVFRiTVR1bTdMU1dMVzhuSE5DZmsxbmJNSzZQV1hXNzVXMGhEakpsSkt2alBMQjd2cGRXUnNPVVNjVTl0RWg5WDdaWjJVejNnOUR4bC1EQUU0bVFwUGRjZnhEN0ZUUVhnY3I0cnV1djNyRy1NYWpBelFiT0c0SjZZS0hJeTl1N01jbF9teWtWWkhyUGVDMnR1NWlUYTlR?oc=5",
+      "published": "2026-05-30T07:00:25",
+      "source": "Google News",
+      "query": "site:seekingalpha.com AI capex hyperscaler earnings call",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "kol_social",
+      "evidence_scope": "direct_company_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "KOL/social source; narrative/crowding only",
+        "direct company/ticker match",
+        "identity=microsoft"
+      ]
+    },
+    {
+      "title": "QQQ’s Hidden Risk: Why the Fund’s Top 5 Holdings Move Together",
+      "link": "https://247wallst.com/investing/2026/05/30/qqqs-hidden-risk-why-the-funds-top-5-holdings-move-together",
+      "published": "2026-05-30T14:18:00",
+      "source": "Bing News",
+      "query": "Google Alphabet AI capex data center guidance",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "kol_social",
+      "evidence_scope": "sector_or_theme_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "KOL/social source; narrative/crowding only",
+        "sector/theme keyword match"
+      ]
+    },
+    {
+      "title": "Dell's Financial Reports Unveiled: Stock Soars 40% After Earnings - The \"Those Who Control Physical Infrastructure Reign Supreme\" Arms Race in the Second Half of the AI Era - 36氪",
+      "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE0yc3FmTjZDVy11d3ktUFZnZ1NnX1lHUXU4SUVXd1hrWmJfM2tqUWppNm5OTjBWc0JzVV9naXhNbzVITl9iNTJhcEdmdnV6am5SWVA0?oc=5",
+      "published": "2026-05-29T10:43:44",
+      "source": "Google News",
+      "query": "Dell AI server orders backlog revenue guidance earnings",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "direct_company_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "medium",
+      "reasons": [
+        "direct company/ticker match",
+        "identity=dell"
+      ]
+    },
+    {
+      "title": "6 Numbers That Should Give Prudent Investors Pause - Seeking Alpha",
+      "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQRHNvT2EzWVBrc0ZSamJyN0Jjdkh1RnVORzdaRlEtYjNQUUdKN0s1ZWR4R194UzItdnF0ZkNjaVZ3NlkzaWRGMGVZbnAtcDFNd2lYZmhHb1BmWVJqMngzMFVMWGRnc0VBR2pDREMtVGoyVllxZV9mUkYzc1lxTGxBd3ZpWDRZYlF1ZDk3V01nTVBJS0p0d1E?oc=5",
+      "published": "2026-05-30T13:49:16",
+      "source": "Google News",
+      "query": "site:seekingalpha.com AI capex hyperscaler earnings call",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "kol_social",
+      "evidence_scope": "background_or_noise",
+      "thesis_effect": "refutes_or_risks_thesis",
+      "evidence_strength": "low",
+      "reasons": [
+        "KOL/social source; narrative/crowding only",
+        "negative trigger terms dominate"
+      ]
+    },
+    {
+      "title": "Samsung Ships Industry-First HBM4E Samples: 3.6 TB/s Bandwidth Beats SK Hynix by Six Months",
+      "link": "https://www.techtimes.com/articles/317400/20260530/samsung-ships-industry-first-hbm4e-samples-36-tb-s-bandwidth-beats-sk-hynix-six-months.htm",
+      "published": "2026-05-30T13:43:00",
+      "source": "Bing News",
+      "query": "Samsung SK hynix Micron HBM demand guidance",
+      "theme_hint": "memory",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "direct_company_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "direct company/ticker match",
+        "identity=sk hynix,samsung electronics"
+      ]
+    },
+    {
+      "title": "The Roundhill Memory ETF (DRAM) Packages Micron, Sandisk, Samsung, and SK Hynix in 1 Ticker for Just $60. But There's a Catch.",
+      "link": "https://www.msn.com/en-us/lifestyle/shopping/the-roundhill-memory-etf-dram-packages-micron-sandisk-samsung-and-sk-hynix-in-1-ticker-for-just-60-but-theres-a-catch/ar-AA24iljc",
+      "published": "2026-05-30T04:41:00",
+      "source": "Bing News",
+      "query": "AI memory bottleneck HBM DRAM supply",
+      "theme_hint": "memory",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "direct_company_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "direct company/ticker match",
+        "identity=micron,sk hynix"
+      ]
+    },
+    {
+      "title": "Will AI Break The Grid? It Depends On How We Use Every Electron",
+      "link": "https://www.forbes.com/sites/annabroughel/2026/05/31/will-ai-break-the-grid-it-depends-on-how-we-use-every-electron",
+      "published": "2026-05-31T01:19:00",
+      "source": "Bing News",
+      "query": "data center grid connection delays AI capex",
+      "theme_hint": "power_cooling",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "sector_or_theme_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "sector/theme keyword match"
+      ]
+    },
+    {
+      "title": "This will be Dell’s stock price in 2027 - MSN",
+      "link": "https://news.google.com/rss/articles/CBMirwJBVV95cUxPbl9yZE9BUVZOMmNXYmwzMW9UaDU0QlozVWJmZnMwVWdoMUZ0S2RNNS1mQ2F1a2wtLV9DNmVJZVRad1BxMlI2c19JTnJMcE5EMTUzZURLRGhMNDNlRE5ZQUN5aEV3WWZEbVhWS1RhZU5GWjBPSzBycFFyT2RGQ09KUjBCMF9paHVfUXhSeWZhX2luT2lHMFg0blRzTTZGMDRqUlkzSnl2VlZhSGJOUDRsUU9vdWdoUVhUb3p1dDJWNGtCX0FWdk96a3lYTktZRExRWllkRDlUQTc1Y2FBdEtQSFV4ckQ3VGY4YU5XZWw4c25qWEhpbmpQcmo3a3FsUjhncXdkd3dYendYRTRwS2F0aEF0UHdBejU5QWdJejBXMlZrSnp2TFpEaUtiMEFmNnc?oc=5",
+      "published": "2026-05-30T19:20:23",
+      "source": "Google News",
+      "query": "Dell Technologies AI optimized server revenue backlog guidance",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "sector_or_theme_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "sector/theme keyword match"
+      ]
+    },
+    {
+      "title": "Micron Technology hits $1 trillion market cap for first time on AI chip demand - eciks.org",
+      "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPNHNOaTA2amlmUHpBTkhDcVFQV01Ta01zVGM3WEljNmhMZTZaOUwtWWhmSjNiLTFab3ZMYldzNXdFQmhOeXQ3UUhMbjNtekxzRXRRUFhnVW5uZVpVUm9Ma0p6Y0JYMkQ4QzZyTHVKdlN3YjU4UFpsdm1MR3FweFE2T29XemJqc0RCWks2bVVydWExMUlqM1FsN0tuTU9zay1tMUs0Z1lMV0VnUQ?oc=5",
+      "published": "2026-05-30T17:26:51",
+      "source": "Google News",
+      "query": "HBM shortage AI data center 2026",
+      "theme_hint": "memory",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "sector_or_theme_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "sector/theme keyword match"
+      ]
+    },
+    {
+      "title": "Prediction: This Artificial Intelligence (AI) Inference Specialist Is Going to Soar After June 3",
+      "link": "https://www.msn.com/en-us/money/topstocks/prediction-this-artificial-intelligence-ai-inference-specialist-is-going-to-soar-after-june-3/ar-AA24qtfq",
+      "published": "2026-05-30T17:06:00",
+      "source": "Bing News",
+      "query": "AI capex justified by application revenue",
+      "theme_hint": "ai_app_roi",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "sector_or_theme_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "sector/theme keyword match"
+      ]
+    },
+    {
+      "title": "AI Hyperscalers Are Taking on Debt, But the Broader Market Looks More Leveraged",
+      "link": "https://finance.yahoo.com/markets/stocks/articles/ai-hyperscalers-taking-debt-broader-160002115.html?fr=sycsrp_catchall",
+      "published": "2026-05-30T16:01:00",
+      "source": "Bing News",
+      "query": "Microsoft AI capex guidance data center",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "sector_or_theme_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "sector/theme keyword match"
+      ]
+    },
+    {
+      "title": "SK Hynix just hit a $1 trillion market cap. Here's how you can buy the stock for around $60.",
+      "link": "https://www.msn.com/en-us/money/savingandinvesting/sk-hynix-just-hit-a-1-trillion-market-cap-here-s-how-you-can-buy-the-stock-for-around-60/ar-AA24rUU7",
+      "published": "2026-05-30T15:45:00",
+      "source": "Bing News",
+      "query": "Samsung SK hynix Micron HBM demand guidance",
+      "theme_hint": "memory",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "sector_or_theme_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "sector/theme keyword match"
+      ]
+    },
+    {
+      "title": "The new AI king: how Anthropic eclipsed OpenAI’s valuation and leapt to $965B",
+      "link": "https://www.msn.com/en-us/news/technology/the-new-ai-king-how-anthropic-eclipsed-openai-s-valuation-and-leapt-to-965b/ar-AA24p7Go",
+      "published": "2026-05-30T02:00:00",
+      "source": "Bing News",
+      "query": "AI application revenue monetization enterprise adoption",
+      "theme_hint": "ai_app_roi",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "sector_or_theme_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "sector/theme keyword match"
+      ]
+    },
+    {
+      "title": "Texas Contractor Partners on AI Data Center Power Technology Expansion - Construction Owners Club",
+      "link": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxNYkNaTm9Gcl8tcXNVQlRPUTNnYU0yRlJNOU5tSzVIVHpkZjZ1dnM4NGhaTUNIYjFIZFl5R1FTODhLb3VMbkd0dTNxejZyZl9sd2ZMWkxyNzJJSTZkWFNiX2dVS2x3bWkydlo2OGRrcVU2R1RNMWVpTFRuMnQ0QlpoTENoeHZ6dUJXdEFmcUJwb1d5Q0xUSVNVVHNFekQ4R3NqVHZsdHV1SGpLS2FzSllZZS1tWjZmc1NsMlZYVW9EYS1fdHhOOXJBNkJvSWpYSTdwYUxhU1J0NF8?oc=5",
+      "published": "2026-05-29T20:24:05",
+      "source": "Google News",
+      "query": "solid state transformer AI data center",
+      "theme_hint": "power_cooling",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "sector_or_theme_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "sector/theme keyword match"
+      ]
+    },
+    {
+      "title": "Wall Street is Bullish on Dell Stock And Here’s Why We Agree - 24/7 Wall St.",
+      "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNa19lVUZPTVhPS1Z1SDBLNi1oNVhpNnN3TUd2OUVSYUtSeExLQ0hIR25OUUxCWU1yR214dUh3b0VrdnJaazBZMmVyN0hYWXpkOUhlOTZkOS1aQlRVX3hHbl8tbWZWSVdYbWJaM1pmSi1KVXJ0UUtfNUhSanU1YnpZa1lBZGZpVGc2OUxwbUxHMmktVHg5VmxoUDJUYU92aUhXX2RoeTFB?oc=5",
+      "published": "2026-05-29T14:39:02",
+      "source": "Google News",
+      "query": "Dell Technologies AI optimized server revenue backlog guidance",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "sector_or_theme_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "sector/theme keyword match"
+      ]
+    },
+    {
+      "title": "Elon Musk warns the world is racing toward a brutal energy crunch",
+      "link": "https://www.msn.com/en-us/money/markets/elon-musk-warns-the-world-is-racing-toward-a-brutal-energy-crunch/ar-AA1W9sCz",
+      "published": "2026-05-29T14:09:00",
+      "source": "Bing News",
+      "query": "AI data center power bottleneck transformer switchgear shortage",
+      "theme_hint": "power_cooling",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "sector_or_theme_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "sector/theme keyword match"
+      ]
+    },
+    {
+      "title": "Super Micro and these stocks pop as Dell drives AI buzz",
+      "link": "https://www.msn.com/en-us/news/technology/super-micro-and-these-stocks-pop-as-dell-drives-ai-server-excitement/ar-AA24lPTh",
+      "published": "2026-05-29T11:57:00",
+      "source": "Bing News",
+      "query": "AI server earnings backlog Dell Supermicro HPE",
+      "theme_hint": "ai_capex",
+      "theme_hints": null,
+      "source_channel": null,
+      "coverage_lane": null,
+      "time_scope": null,
+      "source_tier": "search_intel",
+      "evidence_scope": "sector_or_theme_evidence",
+      "thesis_effect": "discovery_or_neutral",
+      "evidence_strength": "low",
+      "reasons": [
+        "sector/theme keyword match"
+      ]
+    }
+  ],
+  "errors": []
+}

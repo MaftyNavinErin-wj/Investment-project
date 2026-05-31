@@ -1,7 +1,7 @@
 # AI Capex Radar Readthrough - 2026-05-31
 
-Report issued: 2026-05-31 08:48 UTC
-Delta window: 2026-05-29 08:58 UTC -> 2026-05-31 08:48 UTC
+Report issued: 2026-05-31 14:25 UTC
+Delta window: 2026-05-29 08:58 UTC -> 2026-05-31 14:25 UTC
 
 ## 一句话
 
@@ -9,8 +9,8 @@ Delta window: 2026-05-29 08:58 UTC -> 2026-05-31 08:48 UTC
 
 ## 今天真正更新了什么
 
-- **Dell 事件**：Dell AI server 相关业绩、订单/积压和指引进入本轮窗口。来源：[Dell: A Detailed Look At Its Q1 Results](http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6a1bf5d4d1e24fa497f09a8012177d61&url=https%3a%2f%2fseekingalpha.com%2farticle%2f4910089-dell-a-detailed-look-at-its-q1-results&c=4105750667371704661&mkt=en-us)。
-- **需求侧判断**：中性偏利好。这更像“边际强化，不是全市场 capex consensus 的大幅改写”，不是全市场共识被大幅改写。
+- **Dell 事件**：Dell AI server 相关业绩、订单/积压和指引进入本轮窗口。来源：[Dell stock skyrockets 32% for its best day ever as AI server revenue soars - CNBC](https://news.google.com/rss/articles/CBMidkFVX3lxTFA3OExqRmFTZ2g1b0t3dC1vY3R2SVR1U0JJTmJtNnp3OGdFZmRpTkFOUnp2WnQ3RmpnbnJiaGZSekk2MlNvYV9KaHFDZ1F4cUxkVlEtMWp5MzNmOE5TeDI1a1Y2bE40Q09OYW5mdDh5UzBMZEhlRGfSAXtBVV95cUxNMm1vRmUxTDQwTHZXa0t4eTEzalRfWTBIV2tGLS1fdFh5c1pYa0N6WFAwY0RWMG83NUFQajBLY3VXSlROdVNTaUF5cnI5YkR0R3dTQUZoNUxSdHhVZlk1cFlxcXNMYTBVWUJyMVR0M0dWYThaNzU2bXVYd2c?oc=5)。
+- **需求侧判断**：中性偏利好。这更像“服务器链需求韧性边际确认，但不是全市场 capex consensus 改写”，不是全市场共识被大幅改写。
 - **资金侧判断**：中性偏利空。基本面需求仍强，但 discount-rate + crowding 的组合变差；这会先压高估值和远期故事，而不是立刻否定订单。
 - **信用利差**：IG/HY OAS 当前没有明显恶化，说明短期不是信用市场关门；压力主要来自国债利率和估值拥挤。
 

@@ -169,6 +169,53 @@ Run:
 .\run-ai-radar.ps1
 ```
 
+The generator now writes an evidence-intelligence audit in addition to the visible report:
+
+- `data/evidence_intelligence_YYYY-MM-DD.json`
+- `data/evidence_intelligence_latest.json`
+
+This audit is the backstage news/search layer. It records raw item count, retained item count, query/source statistics, evidence tier, evidence scope, thesis effect, strength, and the reasons each retained item survived filtering.
+
+The generator uses multiple source lanes:
+
+- Standard theme search: broad Bing/Google RSS queries from `ai-radar/config.json`.
+- Mainstream financial: targeted Google News site queries for Reuters, CNBC, MarketWatch/Barron's, WSJ/FT/Bloomberg-style sources.
+- Industry vertical: Data Center Dynamics, S&P Global, SemiAnalysis, TrendForce, DigiTimes, SemiWiki, EE Times-style sources.
+- Company official: BusinessWire, PRNewswire, GlobeNewswire, and selected company IR/news domains. These are treated as official-like raw material, but still need fresh dates and relevant content to enter the delta layer.
+- China market: broad Chinese market/news queries for A-share narrative and local AI-infra discussion.
+- China direct public news: direct homepage/column/article scraping for accessible public newspapers and financial media, currently including 中证网、第一财经、每日经济新闻、人民网财经、21经济网、证券时报、新浪财经、东方财富. This lane reads article pages directly instead of relying on search aggregation.
+- China mainstream: targeted Chinese financial media queries, including 财联社/证券时报/中证网/上证报/第一财经/新浪财经-style coverage.
+- China official: 巨潮资讯、交易所、互动易/上证e互动、公司公告和投资者关系-style evidence. Treat as official-like raw material, but keep stale items out of the delta conclusion.
+- China broker/industry/social: separate lanes for券商研报/策略解读、半导体/电子产业媒体、雪球/股吧/淘股吧-style community narrative. Broker and industry items can support narrative mapping; social items are crowding/noise checks only.
+- Counter narrative: targeted searches for ROI, financing, power/grid, bubble, and debt-risk narratives.
+- Social/KOL: Seeking Alpha, The Motley Fool, 24/7 Wall St., TheStreet-style narrative sources, tagged as KOL/social rather than conviction evidence.
+- Local primary baseline: `evidence/index.json` SEC/IR/transcript evidence. Recent official filings can enter the delta layer; older filings are tagged as `primary_baseline` and stay in audit rather than changing today's conclusion.
+
+The audit `counts` block includes `source_lane_raw_items`, `primary_index_raw_items`, and `primary_baseline_items`. The `raw_counts.source_channels` and `raw_counts.coverage_lanes` blocks show whether the run is relying mostly on generic search, targeted trusted search, China-market narrative, official/company material, KOL/social material, or primary evidence.
+
+The audit also writes `coverage_matrix`, with `raw` and `retained` counts for each lane. Use this to judge representativeness. A good run should not merely have a high raw count; it should show non-zero coverage in the main lane categories and keep retained items selective.
+
+The audit writes `raw_sample_by_lane` so source QA can inspect actual channel hits without rerunning searches. This is especially important for Chinese lanes because broad search can surface aggregators; check the raw sample before treating a lane as representative.
+
+For `china_public_news_direct`, source QA should check both relevance and extraction quality. Some sites include navigation text in article pages, so the collector only admits articles whose headline/description match focused AI-infrastructure terms such as 算力、数据中心、AI服务器、光模块、PCB、液冷、HBM、AI基础设施, or portfolio/watchlist company names.
+
+Evidence tiers:
+
+- `primary_evidence`: official filings, exchange/company disclosures, IR-like sources.
+- `trusted_news`: reputable news wires and financial media.
+- `search_intel`: general Bing/Google RSS search results.
+- `kol_social`: KOL, recap, social, and opinion sources; use only for narrative/crowding.
+- `manual_evidence`: notes added through the manual inbox.
+
+Evidence scopes:
+
+- `direct_company_evidence`: direct company or ticker match plus company-event context.
+- `sector_or_theme_evidence`: industry or theme evidence.
+- `macro_market_context`: rates, financing, credit, market-risk context.
+- `background_or_noise`: retained for auditability but low conviction.
+
+The visible report structure should stay stable. This layer changes how news is searched, filtered, and mapped into the existing framework; it should not turn the report into a generic news digest or trading-score system.
+
 Expected outputs:
 
 - `reports/ai-radar-YYYY-MM-DD.md`

@@ -1,6 +1,7 @@
 import argparse
 import datetime as dt
 import email.utils
+import gzip
 import html
 import math
 import json
@@ -14,6 +15,7 @@ import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
+from html.parser import HTMLParser
 
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -49,6 +51,336 @@ STOPWORDS = {
     "the", "for", "are", "was", "will", "has", "had", "its", "our", "you", "can", "may", "center",
     "centers", "infrastructure", "business", "growth", "driver", "drivers", "largest", "world"
 }
+
+PRIMARY_SOURCE_TERMS = (
+    "sec.gov", "cninfo", "sse.com", "szse.cn", "hkexnews", "nasdaq.com", "nyse.com",
+    "investor relations", "quarterly results", "earnings release", "press release",
+    "annual report", "10-q", "10-k", "8-k", "cninfo.com.cn", "static.cninfo.com.cn",
+    "sse.com.cn", "szse.cn", "irm.cninfo.com.cn", "巨潮", "互动易", "上证e互动",
+)
+TRUSTED_NEWS_TERMS = (
+    "bloomberg", "reuters", "cnbc", "financial times", "wall street journal", "wsj",
+    "nikkei", "the information", "semiconductor digest", "data center dynamics",
+    "s&p global", "spglobal", "marketwatch", "barron's", "barrons",
+    "pr newswire", "prnewswire", "globe newswire", "globenewswire", "business wire",
+    "财联社", "证券时报", "中证网", "上海证券报", "中国证券报", "第一财经",
+    "新浪财经", "东方财富", "证券之星", "人民网财经", "stcn.com", "cs.com.cn",
+    "cnstock.com", "yicai.com", "finance.sina.com.cn", "eastmoney.com", "stockstar.com",
+)
+SOCIAL_KOL_TERMS = (
+    "youtube", "twitter", "x.com", "reddit", "seeking alpha", "seekingalpha",
+    "fool.com", "247wallst", "thestreet", "jim cramer", "mad money", "stocktwits", "finvid",
+    "雪球", "xueqiu", "股吧", "guba.eastmoney", "淘股吧",
+)
+COMPANY_EVENT_TERMS = (
+    "order", "orders", "backlog", "guidance", "earnings", "revenue", "margin", "capex",
+    "capital expenditure", "shipment", "shipments", "capacity", "customer", "contract",
+    "deal", "win", "announces", "reported", "forecast", "outlook", "财报", "公告", "订单",
+    "营收", "利润", "毛利", "指引", "客户", "产能", "中标",
+)
+MACRO_MARKET_TERMS = (
+    "fed", "rate", "rates", "yield", "treasury", "inflation", "credit", "debt",
+    "financing", "market", "nasdaq", "s&p", "dow", "macro", "vix", "利率", "融资",
+    "通胀", "美债", "市场", "宏观",
+)
+TRUSTED_NEWS_QUERY_SPECS = [
+    {
+        "name": "reuters_ai_capex",
+        "theme_hint": "ai_capex",
+        "coverage_lane": "mainstream_financial",
+        "source_channel": "mainstream_financial_search",
+        "query": 'site:reuters.com ("AI" OR "artificial intelligence") ("data center" OR capex OR server)',
+    },
+    {
+        "name": "cnbc_ai_capex",
+        "theme_hint": "ai_capex",
+        "coverage_lane": "mainstream_financial",
+        "source_channel": "mainstream_financial_search",
+        "query": 'site:cnbc.com ("AI" OR "artificial intelligence") ("data center" OR capex OR server)',
+    },
+    {
+        "name": "marketwatch_barrons_ai_capex",
+        "theme_hint": "ai_capex",
+        "coverage_lane": "mainstream_financial",
+        "source_channel": "mainstream_financial_search",
+        "query": '(site:marketwatch.com OR site:barrons.com) ("AI" OR "artificial intelligence") ("data center" OR capex OR server)',
+    },
+    {
+        "name": "ft_wsj_bloomberg_ai_capex",
+        "theme_hint": "ai_capex",
+        "coverage_lane": "mainstream_financial",
+        "source_channel": "mainstream_financial_search",
+        "query": '(site:ft.com OR site:wsj.com OR site:bloomberg.com) ("AI" OR "artificial intelligence") ("data center" OR capex OR server)',
+    },
+    {
+        "name": "dcd_data_center",
+        "theme_hint": "power_cooling",
+        "coverage_lane": "industry_vertical",
+        "source_channel": "industry_vertical_search",
+        "query": 'site:datacenterdynamics.com ("AI" OR hyperscale) ("power" OR "data center" OR cooling)',
+    },
+    {
+        "name": "spglobal_power",
+        "theme_hint": "power_cooling",
+        "coverage_lane": "industry_vertical",
+        "source_channel": "industry_vertical_search",
+        "query": 'site:spglobal.com ("data center" OR AI) (power OR grid OR energy)',
+    },
+    {
+        "name": "semianalysis_ai_infra",
+        "theme_hint": "ai_capex",
+        "coverage_lane": "industry_vertical",
+        "source_channel": "industry_vertical_search",
+        "query": 'site:semianalysis.com (AI OR GPU OR accelerator OR "data center")',
+    },
+    {
+        "name": "trendforce_hbm_memory",
+        "theme_hint": "memory",
+        "coverage_lane": "industry_vertical",
+        "source_channel": "industry_vertical_search",
+        "query": 'site:trendforce.com (HBM OR DRAM OR memory) AI',
+    },
+    {
+        "name": "digitimes_ai_hardware",
+        "theme_hint": "emerging_second_order",
+        "coverage_lane": "industry_vertical",
+        "source_channel": "industry_vertical_search",
+        "query": 'site:digitimes.com (AI OR "data center") (server OR supply OR component)',
+    },
+    {
+        "name": "semiwiki_eetimes_ai_chip",
+        "theme_hint": "emerging_second_order",
+        "coverage_lane": "industry_vertical",
+        "source_channel": "industry_vertical_search",
+        "query": '(site:semiwiki.com OR site:eetimes.com) (AI OR "data center") (chip OR semiconductor OR interconnect)',
+    },
+    {
+        "name": "businesswire_ai_infra",
+        "theme_hint": "ai_capex",
+        "coverage_lane": "company_official",
+        "source_channel": "company_official_search",
+        "query": 'site:businesswire.com ("AI" OR "data center") (server OR power OR cooling OR optical)',
+    },
+    {
+        "name": "prnewswire_ai_infra",
+        "theme_hint": "ai_capex",
+        "coverage_lane": "company_official",
+        "source_channel": "company_official_search",
+        "query": 'site:prnewswire.com ("AI" OR "data center") (server OR power OR cooling OR optical)',
+    },
+    {
+        "name": "globenewswire_ai_infra",
+        "theme_hint": "ai_capex",
+        "coverage_lane": "company_official",
+        "source_channel": "company_official_search",
+        "query": 'site:globenewswire.com ("AI" OR "data center") (server OR power OR cooling OR optical)',
+    },
+    {
+        "name": "dell_investor_ai_server",
+        "theme_hint": "ai_capex",
+        "coverage_lane": "company_official",
+        "source_channel": "company_official_search",
+        "query": 'site:investors.delltechnologies.com (AI OR server OR revenue OR backlog)',
+    },
+    {
+        "name": "nvidia_investor_data_center",
+        "theme_hint": "ai_capex",
+        "coverage_lane": "company_official",
+        "source_channel": "company_official_search",
+        "query": 'site:investor.nvidia.com ("data center" OR AI OR networking)',
+    },
+    {
+        "name": "memory_company_official",
+        "theme_hint": "memory",
+        "coverage_lane": "company_official",
+        "source_channel": "company_official_search",
+        "query": '(site:investors.micron.com OR site:news.skhynix.com OR site:news.samsung.com) (HBM OR memory OR AI)',
+    },
+    {
+        "name": "power_company_official",
+        "theme_hint": "power_cooling",
+        "coverage_lane": "company_official",
+        "source_channel": "company_official_search",
+        "query": '(site:investors.vertiv.com OR site:eaton.com OR site:se.com) ("data center" OR AI) (power OR cooling)',
+    },
+    {
+        "name": "trusted_networking",
+        "theme_hint": "networking_optics",
+        "coverage_lane": "mainstream_financial",
+        "source_channel": "mainstream_financial_search",
+        "query": '(site:reuters.com OR site:cnbc.com OR site:businesswire.com) (optical OR networking OR Ethernet) AI data center',
+    },
+    {
+        "name": "trusted_memory",
+        "theme_hint": "memory",
+        "coverage_lane": "mainstream_financial",
+        "source_channel": "mainstream_financial_search",
+        "query": '(site:reuters.com OR site:cnbc.com OR site:businesswire.com) (HBM OR DRAM OR memory) AI data center',
+    },
+    {
+        "name": "china_ai_server",
+        "theme_hint": "ai_capex",
+        "coverage_lane": "china_market",
+        "source_channel": "china_market_search",
+        "use_bing": True,
+        "query": 'AI服务器 数据中心 算力 A股 财联社 证券时报',
+    },
+    {
+        "name": "china_optical_pcb",
+        "theme_hint": "networking_optics",
+        "coverage_lane": "china_market",
+        "source_channel": "china_market_search",
+        "use_bing": True,
+        "query": '光模块 PCB 数据中心 AI A股 财联社 证券时报',
+    },
+    {
+        "name": "china_power_cooling",
+        "theme_hint": "power_cooling",
+        "coverage_lane": "china_market",
+        "source_channel": "china_market_search",
+        "use_bing": True,
+        "query": '数据中心 电力 液冷 AI A股 财联社 证券时报',
+    },
+    {
+        "name": "china_memory",
+        "theme_hint": "memory",
+        "coverage_lane": "china_market",
+        "source_channel": "china_market_search",
+        "use_bing": True,
+        "query": 'HBM 存储 AI A股 财联社 证券时报',
+    },
+    {
+        "name": "china_mainstream_ai_server",
+        "theme_hint": "ai_capex",
+        "coverage_lane": "china_mainstream",
+        "source_channel": "china_mainstream_search",
+        "use_bing": True,
+        "query": 'AI服务器 数据中心 算力 A股 新闻 财经',
+    },
+    {
+        "name": "china_mainstream_power_optics",
+        "theme_hint": "power_cooling",
+        "coverage_lane": "china_mainstream",
+        "source_channel": "china_mainstream_search",
+        "use_bing": True,
+        "query": '数据中心 电力 液冷 光模块 PCB AI A股 财经',
+    },
+    {
+        "name": "china_official_disclosure_ai",
+        "theme_hint": "ai_capex",
+        "coverage_lane": "china_official",
+        "source_channel": "china_official_search",
+        "use_bing": True,
+        "query": '中际旭创 沪电股份 澜起科技 工业富联 公告 AI服务器 光模块 PCB',
+    },
+    {
+        "name": "china_ir_interaction_ai",
+        "theme_hint": "emerging_second_order",
+        "coverage_lane": "china_official",
+        "source_channel": "china_official_search",
+        "use_bing": True,
+        "query": '英维克 科华数据 数据中心 液冷 电源 公告 互动易',
+    },
+    {
+        "name": "china_broker_ai_infra",
+        "theme_hint": "ai_capex",
+        "coverage_lane": "china_broker_research",
+        "source_channel": "china_broker_search",
+        "use_bing": True,
+        "query": '券商 研报 AI算力 数据中心 光模块 液冷 HBM',
+    },
+    {
+        "name": "china_industry_ai_hardware",
+        "theme_hint": "networking_optics",
+        "coverage_lane": "china_industry",
+        "source_channel": "china_industry_search",
+        "use_bing": True,
+        "query": '电子工程专辑 集微网 OFweek AI服务器 光模块 PCB HBM 液冷',
+    },
+    {
+        "name": "china_social_ai_infra",
+        "theme_hint": "ai_capex",
+        "coverage_lane": "china_social",
+        "source_channel": "china_social_search",
+        "use_bing": True,
+        "query": '雪球 股吧 AI算力 光模块 液冷 数据中心',
+    },
+    {
+        "name": "counter_ai_capex_roi",
+        "theme_hint": "ai_app_roi",
+        "coverage_lane": "counter_narrative",
+        "source_channel": "counter_narrative_search",
+        "query": '(site:reuters.com OR site:cnbc.com OR site:marketwatch.com OR site:ft.com) AI capex ROI risk bubble',
+    },
+    {
+        "name": "counter_data_center_power_debt",
+        "theme_hint": "power_cooling",
+        "coverage_lane": "counter_narrative",
+        "source_channel": "counter_narrative_search",
+        "query": '("AI data center" OR hyperscaler) (debt OR financing OR power shortage OR grid delay OR bubble)',
+    },
+    {
+        "name": "social_kol_ai_capex",
+        "theme_hint": "ai_capex",
+        "coverage_lane": "social_kol",
+        "source_channel": "social_kol_search",
+        "query": '(site:seekingalpha.com OR site:fool.com OR site:247wallst.com OR site:thestreet.com) AI capex data center hyperscaler',
+    },
+]
+CHINA_PUBLIC_NEWS_DIRECT_SOURCES = [
+    {
+        "key": "cs",
+        "name": "中证网",
+        "urls": ["https://www.cs.com.cn/"],
+    },
+    {
+        "key": "yicai",
+        "name": "第一财经",
+        "urls": ["https://www.yicai.com/"],
+    },
+    {
+        "key": "nbd",
+        "name": "每日经济新闻",
+        "urls": ["https://www.nbd.com.cn/"],
+    },
+    {
+        "key": "people_finance",
+        "name": "人民网财经",
+        "urls": ["http://finance.people.com.cn/"],
+    },
+    {
+        "key": "21jingji",
+        "name": "21经济网",
+        "urls": ["https://www.21jingji.com/"],
+    },
+    {
+        "key": "stcn",
+        "name": "证券时报",
+        "urls": [
+            "https://www.stcn.com/",
+            "https://www.stcn.com/article/list/kx.html",
+            "https://www.stcn.com/article/list/xw.html",
+            "https://www.stcn.com/article/list/investment.html",
+        ],
+    },
+    {
+        "key": "sina_finance",
+        "name": "新浪财经",
+        "urls": ["https://finance.sina.com.cn/", "https://finance.sina.com.cn/stock/"],
+    },
+    {
+        "key": "eastmoney",
+        "name": "东方财富",
+        "urls": ["https://finance.eastmoney.com/"],
+    },
+]
+CHINA_PUBLIC_NEWS_TERMS = (
+    "AI", "人工智能", "算力", "数据中心", "服务器", "AI服务器", "智算", "光模块",
+    "PCB", "液冷", "电力", "电源", "储能", "HBM", "存储", "芯片", "半导体",
+    "英伟达", "戴尔", "微软", "谷歌", "亚马逊", "Meta", "阿里", "腾讯",
+    "中际旭创", "新易盛", "天孚通信", "沪电股份", "胜宏科技", "工业富联",
+    "澜起科技", "英维克", "科华数据", "中航光电", "长飞光纤", "中天科技",
+)
 
 
 def utc_now():
@@ -142,6 +474,219 @@ def fetch_google_news(query, max_items):
     return items
 
 
+class NewsHTMLParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.title = ""
+        self.in_title = False
+        self.links = []
+        self.metas = []
+        self.text_parts = []
+        self.skip_depth = 0
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        tag = tag.lower()
+        if tag == "title":
+            self.in_title = True
+        if tag in ("script", "style", "noscript"):
+            self.skip_depth += 1
+        if tag == "a" and attrs.get("href"):
+            self.links.append({"href": attrs.get("href"), "text": attrs.get("title") or ""})
+        if tag == "meta":
+            self.metas.append(attrs)
+
+    def handle_endtag(self, tag):
+        tag = tag.lower()
+        if tag == "title":
+            self.in_title = False
+        if tag in ("script", "style", "noscript") and self.skip_depth:
+            self.skip_depth -= 1
+
+    def handle_data(self, data):
+        if self.in_title:
+            self.title += data.strip()
+        if not self.skip_depth:
+            data = data.strip()
+            if data:
+                self.text_parts.append(data)
+
+
+def decode_web_text(raw, content_type=""):
+    encodings = []
+    match = re.search(r"charset=([\w-]+)", content_type or "", re.IGNORECASE)
+    if match:
+        encodings.append(match.group(1))
+    encodings.extend(["utf-8", "gb18030", "gbk"])
+    for encoding in encodings:
+        try:
+            return raw.decode(encoding, errors="replace")
+        except Exception:
+            continue
+    return raw.decode("utf-8", errors="replace")
+
+
+def fetch_page_text(url, timeout=6, max_bytes=500000):
+    req = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) investment-radar/0.1",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.6",
+            "Accept-Encoding": "identity",
+        },
+    )
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        raw = resp.read(max_bytes)
+        if raw.startswith(b"\x1f\x8b"):
+            raw = gzip.decompress(raw)
+        return decode_web_text(raw, resp.headers.get("Content-Type", ""))
+
+
+def parse_html_page(text):
+    parser = NewsHTMLParser()
+    parser.feed(text)
+    body = re.sub(r"\s+", " ", " ".join(parser.text_parts)).strip()
+    return parser, body
+
+
+def meta_value(parser, *names):
+    wanted = {name.lower() for name in names}
+    for meta in parser.metas:
+        key = (meta.get("property") or meta.get("name") or "").lower()
+        if key in wanted:
+            value = meta.get("content")
+            if value:
+                return strip_tags(value)
+    return ""
+
+
+def article_date_from_text(url, parser, body):
+    for value in [
+        meta_value(parser, "article:published_time", "pubdate", "publishdate", "date", "og:pubdate"),
+        url,
+        body[:4000],
+    ]:
+        if not value:
+            continue
+        match = re.search(r"(20\d{2})[-年/](\d{1,2})[-月/](\d{1,2})(?:[日\sT]+(\d{1,2}):(\d{2}))?", value)
+        if match:
+            year, month, day, hour, minute = match.groups()
+            return dt.datetime(int(year), int(month), int(day), int(hour or 0), int(minute or 0))
+    return None
+
+
+def chinese_direct_terms(config):
+    terms = list(CHINA_PUBLIC_NEWS_TERMS)
+    for bucket in ("holdings", "watchlist"):
+        for item in config.get(bucket, []):
+            name = item.get("name")
+            if name and name not in terms:
+                terms.append(name)
+    return terms
+
+
+def chinese_direct_focus_terms(config):
+    generic = {"AI", "人工智能"}
+    terms = [term for term in chinese_direct_terms(config) if term not in generic]
+    for term in ("AI基础设施", "AI链", "国产AI", "算存联", "高质量发展"):
+        if term not in terms:
+            terms.append(term)
+    return terms
+
+
+def chinese_term_hit(text, terms):
+    return any(term and term.lower() in text.lower() for term in terms)
+
+
+def china_article_url_candidate(url):
+    lowered = url.lower()
+    if any(skip in lowered for skip in ["javascript:", "#", ".css", ".js", ".jpg", ".png", ".pdf", "/video/"]):
+        return False
+    return any(pattern in lowered for pattern in ["/202", "doc-", "/articles/", "/article/", "/news/", "/wm/", "/jjxw/", "/roll/", "/stock/"])
+
+
+def theme_hint_for_chinese_article(text):
+    lowered = text.lower()
+    if any(term.lower() in lowered for term in ["hbm", "存储", "内存", "dram"]):
+        return "memory"
+    if any(term.lower() in lowered for term in ["光模块", "pcb", "光纤", "交换机", "互连"]):
+        return "networking_optics"
+    if any(term.lower() in lowered for term in ["液冷", "电力", "电源", "储能", "温控", "散热"]):
+        return "power_cooling"
+    if any(term.lower() in lowered for term in ["应用", "roi", "变现", "收入转化"]):
+        return "ai_app_roi"
+    return "ai_capex"
+
+
+def collect_china_public_news_direct(config, since=None):
+    sources = config.get("china_public_news_sources") or CHINA_PUBLIC_NEWS_DIRECT_SOURCES
+    terms = chinese_direct_terms(config)
+    focus_terms = chinese_direct_focus_terms(config)
+    max_links = int(config.get("china_direct_max_links_per_source", 10))
+    max_articles = int(config.get("china_direct_max_articles_per_source", 4))
+    items = []
+    errors = []
+    seen = set()
+
+    for source in sources:
+        source_key = source.get("key") or source.get("name")
+        source_name = source.get("name") or source_key
+        candidates = []
+        for page_url in source.get("urls", []):
+            try:
+                page_text = fetch_page_text(page_url, timeout=10)
+                parser, _ = parse_html_page(page_text)
+                base_url = page_url
+                for link in parser.links:
+                    url = urllib.parse.urljoin(base_url, link.get("href") or "")
+                    clean = normalized_link({"link": url})
+                    if not clean or clean in seen or not china_article_url_candidate(clean):
+                        continue
+                    anchor = strip_tags(link.get("text") or "")
+                    candidates.append({"url": clean, "anchor": anchor, "page": page_url})
+                    seen.add(clean)
+            except Exception as exc:
+                errors.append(f"China direct / {source_name} / {page_url}: {exc}")
+
+        candidates.sort(key=lambda row: chinese_term_hit(f"{row.get('anchor', '')} {row.get('url', '')}", terms), reverse=True)
+        fetched = 0
+        for row in candidates[:max_links]:
+            if fetched >= max_articles:
+                break
+            url = row["url"]
+            try:
+                article_text = fetch_page_text(url, timeout=10)
+                parser, body = parse_html_page(article_text)
+                title = strip_tags(meta_value(parser, "og:title", "twitter:title") or parser.title or row.get("anchor") or url)
+                description = strip_tags(meta_value(parser, "description", "og:description") or body[:900])
+                headline_haystack = f"{title} {description}"
+                if not chinese_term_hit(headline_haystack, focus_terms):
+                    continue
+                published = article_date_from_text(url, parser, body)
+                if since and published and published < since - dt.timedelta(days=int(config.get("china_direct_grace_days", 2))):
+                    continue
+                theme_hint = theme_hint_for_chinese_article(headline_haystack)
+                items.append(
+                    {
+                        "query": f"china_public_news_direct:{source_key}",
+                        "title": title[:180],
+                        "link": url,
+                        "summary": description[:1200],
+                        "published": published,
+                        "source": source_name,
+                        "source_channel": "china_public_news_direct",
+                        "coverage_lane": "china_public_news_direct",
+                        "theme_hint": theme_hint,
+                        "query_dimension": row.get("page"),
+                    }
+                )
+                fetched += 1
+            except Exception as exc:
+                errors.append(f"China direct article / {source_name} / {url}: {exc}")
+    return items, errors
+
+
 def read_manual_inbox(path):
     if not os.path.isdir(path):
         return []
@@ -172,6 +717,252 @@ def normalize_text(item):
     return f"{item.get('title', '')} {item.get('summary', '')}".lower()
 
 
+def normalized_link(item):
+    link = item.get("link") or item.get("url") or ""
+    try:
+        parsed = urllib.parse.urlparse(link)
+        params = dict(urllib.parse.parse_qsl(parsed.query, keep_blank_values=True))
+        if "bing.com" in parsed.netloc.lower() and params.get("url"):
+            link = urllib.parse.unquote(params["url"])
+            parsed = urllib.parse.urlparse(link)
+        query = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
+        query = [(k, v) for k, v in query if not k.lower().startswith(("utm_", "fbclid", "gclid"))]
+        clean_query = urllib.parse.urlencode(query)
+        return urllib.parse.urlunparse((parsed.scheme, parsed.netloc.lower(), parsed.path.rstrip("/"), "", clean_query, ""))
+    except Exception:
+        return link
+
+
+def source_text(item):
+    title = item.get("title") or ""
+    source = item.get("source") or ""
+    link = normalized_link(item) or item.get("link") or ""
+    title_suffix = ""
+    if " - " in title:
+        title_suffix = title.rsplit(" - ", 1)[-1]
+    host = ""
+    try:
+        host = urllib.parse.urlparse(link).netloc.replace("www.", "").lower()
+    except Exception:
+        host = ""
+    return " ".join([source, title, title_suffix, host, link]).lower()
+
+
+def source_tier(item):
+    text = source_text(item)
+    if str(item.get("source", "")).startswith("manual:"):
+        return "manual_evidence"
+    if item.get("source_channel") == "primary_evidence_index":
+        return "primary_evidence"
+    if any(term in text for term in PRIMARY_SOURCE_TERMS):
+        return "primary_evidence"
+    if any(term in text for term in SOCIAL_KOL_TERMS):
+        return "kol_social"
+    if item.get("source_channel") in ("social_kol_search", "china_social_search"):
+        return "kol_social"
+    if item.get("source_channel") == "company_official_search":
+        return "primary_evidence"
+    if item.get("source_channel") == "china_official_search" and any(term in text for term in PRIMARY_SOURCE_TERMS):
+        return "primary_evidence"
+    if item.get("source_channel") in (
+        "trusted_site_search",
+        "mainstream_financial_search",
+        "industry_vertical_search",
+        "china_market_search",
+        "china_mainstream_search",
+        "china_official_search",
+        "china_broker_search",
+        "china_industry_search",
+        "china_public_news_direct",
+        "counter_narrative_search",
+    ):
+        return "trusted_news"
+    if any(term in text for term in TRUSTED_NEWS_TERMS):
+        return "trusted_news"
+    return "search_intel"
+
+
+def company_identity_terms(config):
+    terms = []
+
+    def add(value):
+        value = str(value or "").strip()
+        if not value:
+            return
+        candidates = [value]
+        if "." in value and len(value) <= 12:
+            candidates.append(value.split(".", 1)[0])
+        cleaned = re.sub(
+            r"\b(inc|corp|corporation|company|co|ltd|limited|holdings|technologies|technology|group|plc)\b\.?",
+            "",
+            value,
+            flags=re.IGNORECASE,
+        )
+        cleaned = re.sub(r"\s+", " ", cleaned).strip(" -")
+        if len(cleaned) >= 3:
+            candidates.append(cleaned)
+        for candidate in candidates:
+            lowered = candidate.lower()
+            if len(lowered) >= 3 and lowered not in terms:
+                terms.append(lowered)
+
+    for bucket in ("holdings", "watchlist"):
+        for item in config.get(bucket, []):
+            add(item.get("ticker"))
+            add(item.get("quote"))
+            add(item.get("name"))
+    for segment in config.get("segments", []):
+        for rep in segment.get("reps", []):
+            add(rep.get("quote"))
+            add(rep.get("name"))
+    return terms
+
+
+def contains_identity_text(text, term):
+    if not text or not term:
+        return False
+    if re.fullmatch(r"[a-z0-9]{1,6}", term):
+        return bool(re.search(rf"(?<![a-z0-9]){re.escape(term)}(?![a-z0-9])", text))
+    if "." in term and len(term) <= 12:
+        return term in text
+    return term in text
+
+
+def evidence_scope(item, config, theme=None):
+    text = normalize_text(item)
+    direct_hits = [term for term in company_identity_terms(config) if contains_identity_text(text, term)]
+    event_hit = any(term in text for term in COMPANY_EVENT_TERMS)
+    macro_hit = any(term in text for term in MACRO_MARKET_TERMS)
+    theme_hit = theme_keyword_hit(item, theme) if theme else False
+    if direct_hits and (event_hit or len(direct_hits) >= 2):
+        return "direct_company_evidence", direct_hits[:4]
+    if macro_hit and not direct_hits:
+        return "macro_market_context", []
+    if theme_hit:
+        return "sector_or_theme_evidence", []
+    return "background_or_noise", direct_hits[:4]
+
+
+def thesis_effect(item):
+    pos = item.get("positive_hits", [])
+    neg = item.get("negative_hits", [])
+    crowded = item.get("crowded_hits", [])
+    if neg and not pos:
+        return "refutes_or_risks_thesis"
+    if pos and not neg:
+        return "supports_thesis"
+    if pos and neg:
+        return "mixed_signal"
+    if crowded:
+        return "crowding_signal"
+    return "discovery_or_neutral"
+
+
+def evidence_strength(tier, scope, item):
+    text = normalize_text(item)
+    hard_event = any(term in text for term in COMPANY_EVENT_TERMS)
+    if tier in ("primary_evidence", "manual_evidence") and scope == "direct_company_evidence":
+        return "high"
+    if scope == "direct_company_evidence" and hard_event and tier in ("trusted_news", "search_intel"):
+        return "medium"
+    if tier == "trusted_news" and scope in ("sector_or_theme_evidence", "macro_market_context"):
+        return "medium"
+    if tier == "kol_social":
+        return "low"
+    return "low"
+
+
+def evidence_reasons(tier, scope, effect, item, identity_hits):
+    reasons = []
+    if tier == "primary_evidence":
+        reasons.append("primary/official-like source")
+    elif tier == "trusted_news":
+        reasons.append("trusted news source")
+    elif tier == "kol_social":
+        reasons.append("KOL/social source; narrative/crowding only")
+    elif tier == "manual_evidence":
+        reasons.append("manual inbox evidence")
+    if scope == "direct_company_evidence":
+        reasons.append("direct company/ticker match")
+    elif scope == "sector_or_theme_evidence":
+        reasons.append("sector/theme keyword match")
+    elif scope == "macro_market_context":
+        reasons.append("macro/financing context")
+    if identity_hits:
+        reasons.append("identity=" + ",".join(identity_hits[:3]))
+    if effect == "refutes_or_risks_thesis":
+        reasons.append("negative trigger terms dominate")
+    elif effect == "supports_thesis":
+        reasons.append("positive thesis terms dominate")
+    elif effect == "crowding_signal":
+        reasons.append("crowding language detected")
+    return reasons[:5]
+
+
+def enrich_evidence_item(config, item, theme, score, pos, neg):
+    enriched = dict(item)
+    enriched["link"] = normalized_link(item) or item.get("link")
+    enriched["score"] = score
+    enriched["positive_hits"] = pos
+    enriched["negative_hits"] = neg
+    enriched["crowded_hits"] = crowded_hits(item, config)
+    tier = source_tier(enriched)
+    scope, identity_hits = evidence_scope(enriched, config, theme)
+    effect = thesis_effect(enriched)
+    strength = evidence_strength(tier, scope, enriched)
+    enriched["source_tier"] = tier
+    enriched["evidence_scope"] = scope
+    enriched["identity_hits"] = identity_hits
+    enriched["thesis_effect"] = effect
+    enriched["evidence_strength"] = strength
+    enriched["evidence_reasons"] = evidence_reasons(tier, scope, effect, enriched, identity_hits)
+    return enriched
+
+
+def evidence_sort_key(item):
+    strength_rank = {"high": 3, "medium": 2, "low": 1}
+    effect_rank = {
+        "supports_thesis": 4,
+        "refutes_or_risks_thesis": 4,
+        "mixed_signal": 3,
+        "crowding_signal": 2,
+        "discovery_or_neutral": 1,
+    }
+    scope_rank = {
+        "direct_company_evidence": 4,
+        "sector_or_theme_evidence": 3,
+        "macro_market_context": 2,
+        "background_or_noise": 1,
+    }
+    published = item.get("published") or dt.datetime.min
+    return (
+        evidence_event_quality(item),
+        strength_rank.get(item.get("evidence_strength"), 0),
+        effect_rank.get(item.get("thesis_effect"), 0),
+        scope_rank.get(item.get("evidence_scope"), 0),
+        item.get("score", 0),
+        published,
+    )
+
+
+def evidence_event_quality(item):
+    text = normalize_text(item)
+    score = 0
+    if any(term in text for term in ["backlog", "server revenue", "revenue outlook", "guidance", "orders", "order book"]):
+        score += 4
+    if any(term in text for term in ["ai server", "data center utilization", "capex", "customer demand"]):
+        score += 3
+    if item.get("thesis_effect") in ("supports_thesis", "refutes_or_risks_thesis", "mixed_signal"):
+        score += 2
+    if item.get("source_tier") in ("primary_evidence", "trusted_news", "manual_evidence"):
+        score += 2
+    if item.get("source_tier") == "kol_social":
+        score -= 2
+    if item.get("thesis_effect") == "crowding_signal":
+        score -= 1
+    return score
+
+
 def score_item(item, theme):
     text = normalize_text(item)
     pos = [term for term in theme.get("positive_terms", []) if term.lower() in text]
@@ -191,9 +982,23 @@ def theme_keyword_hit(item, theme):
 
 
 def item_key(item):
-    link = item.get("link") or ""
+    link = normalized_link(item)
     title = item.get("title") or ""
     return link or title.lower()
+
+
+def parse_simple_date(value):
+    if not value:
+        return None
+    if isinstance(value, dt.datetime):
+        return value
+    text = str(value).strip()
+    for fmt in ("%Y-%m-%d", "%Y%m%d"):
+        try:
+            return dt.datetime.strptime(text[:10] if fmt == "%Y-%m-%d" else text[:8], fmt)
+        except Exception:
+            continue
+    return parse_date(text)
 
 
 def within_lookback(item, lookback_days):
@@ -213,7 +1018,173 @@ def within_delta_window(item, since):
     return published >= since
 
 
-def collect_items(config):
+def config_theme_ids(config):
+    return {theme.get("id") for theme in config.get("themes", [])}
+
+
+def segment_theme_map(config):
+    mapping = {}
+    theme_ids = config_theme_ids(config)
+    for segment in config.get("segments", []):
+        segment_id = segment.get("id")
+        themes = [theme for theme in segment.get("themes", []) if theme in theme_ids]
+        if segment_id and themes:
+            mapping[segment_id] = themes
+    return mapping
+
+
+def themes_for_evidence_segments(config, segments):
+    theme_ids = config_theme_ids(config)
+    segment_map = segment_theme_map(config)
+    themes = []
+    for segment in segments or []:
+        if segment in theme_ids:
+            candidates = [segment]
+        else:
+            candidates = segment_map.get(segment, [])
+        for candidate in candidates:
+            if candidate not in themes:
+                themes.append(candidate)
+    return themes
+
+
+def collect_trusted_news_items(config):
+    max_items = int(config.get("source_lane_max_items_per_query", config.get("trusted_max_items_per_query", min(6, int(config.get("max_items_per_query", 10))))))
+    specs = config.get("trusted_news_queries") or TRUSTED_NEWS_QUERY_SPECS
+    all_items = []
+    errors = []
+    for spec in specs:
+        if isinstance(spec, str):
+            name = spec
+            query = spec
+            theme_hint = None
+            coverage_lane = "mainstream_financial"
+            source_channel = "trusted_site_search"
+            use_bing = False
+        else:
+            name = spec.get("name") or spec.get("query")
+            query = spec.get("query")
+            theme_hint = spec.get("theme_hint")
+            coverage_lane = spec.get("coverage_lane") or "mainstream_financial"
+            source_channel = spec.get("source_channel") or "trusted_site_search"
+            use_bing = bool(spec.get("use_bing"))
+        if not query:
+            continue
+        try:
+            for item in fetch_google_news(query, max_items):
+                item["theme_hint"] = theme_hint
+                item["query_dimension"] = name
+                item["source_channel"] = source_channel
+                item["coverage_lane"] = coverage_lane
+                all_items.append(item)
+        except Exception as exc:
+            errors.append(f"Trusted source / {name}: {exc}")
+        if use_bing:
+            try:
+                for item in fetch_bing_news(query, max_items):
+                    item["theme_hint"] = theme_hint
+                    item["query_dimension"] = name
+                    item["source_channel"] = source_channel
+                    item["coverage_lane"] = coverage_lane
+                    all_items.append(item)
+            except Exception as exc:
+                errors.append(f"Trusted source / Bing / {name}: {exc}")
+    return all_items, errors
+
+
+def load_local_evidence_index(config):
+    path = config.get("evidence_index_path") or os.path.join(PROJECT_ROOT, "evidence", "index.json")
+    if not os.path.exists(path):
+        return None, path
+    with open(path, "r", encoding="utf-8", errors="replace") as f:
+        return json.load(f), path
+
+
+def collect_primary_evidence_items(config, since=None):
+    index, path = load_local_evidence_index(config)
+    if not index:
+        return [], []
+    lookback_days = int(config.get("primary_evidence_lookback_days", 60))
+    baseline_since = utc_now() - dt.timedelta(days=lookback_days)
+    items = []
+    errors = []
+
+    def primary_time_scope(published):
+        if since is not None and not published:
+            return "primary_baseline"
+        return "delta" if within_delta_window({"published": published}, since) else "primary_baseline"
+
+    for company in index.get("sec", []):
+        ticker = company.get("ticker") or ""
+        name = company.get("name") or ticker
+        theme_hints = themes_for_evidence_segments(config, company.get("segments", []))
+        for filing in company.get("filings", []):
+            published = parse_simple_date(filing.get("filing_date"))
+            if published and published < baseline_since:
+                continue
+            time_scope = primary_time_scope(published)
+            form = filing.get("form") or "SEC filing"
+            description = filing.get("description") or form
+            title = f"{name} ({ticker}) {form} filing - {filing.get('filing_date')}"
+            summary = f"{description}. Local primary evidence index segments: {', '.join(company.get('segments', []))}."
+            items.append(
+                {
+                    "query": "local_primary_evidence_index",
+                    "title": title,
+                    "link": filing.get("url") or filing.get("local_path") or path,
+                    "summary": summary,
+                    "published": published,
+                    "source": "Local Primary Evidence Index",
+                    "source_channel": "primary_evidence_index",
+                    "coverage_lane": "primary_evidence",
+                    "theme_hint": theme_hints[0] if theme_hints else None,
+                    "theme_hints": theme_hints,
+                    "time_scope": time_scope,
+                    "ticker": ticker,
+                    "company": name,
+                    "form": form,
+                }
+            )
+
+    for bucket in ("ir", "transcripts"):
+        rows = index.get(bucket, [])
+        for row in rows if isinstance(rows, list) else []:
+            ticker = row.get("ticker") or ""
+            name = row.get("name") or ticker
+            segments = row.get("segments", [])
+            theme_hints = themes_for_evidence_segments(config, segments)
+            links = row.get("links") or row.get("pages") or []
+            for link_row in links[:8]:
+                if isinstance(link_row, str):
+                    url = link_row
+                    title_text = url
+                    published = None
+                else:
+                    url = link_row.get("url") or link_row.get("link") or ""
+                    title_text = link_row.get("title") or link_row.get("text") or url
+                    published = parse_simple_date(link_row.get("date") or link_row.get("published"))
+                time_scope = primary_time_scope(published)
+                items.append(
+                    {
+                        "query": f"local_primary_{bucket}",
+                        "title": f"{name} ({ticker}) {bucket} evidence - {title_text[:80]}",
+                        "link": url or path,
+                        "summary": f"Local primary {bucket} evidence index. Segments: {', '.join(segments)}.",
+                        "published": published,
+                        "source": "Local Primary Evidence Index",
+                        "source_channel": "primary_evidence_index",
+                        "coverage_lane": "primary_evidence",
+                        "theme_hint": theme_hints[0] if theme_hints else None,
+                        "theme_hints": theme_hints,
+                        "time_scope": time_scope,
+                        "ticker": ticker,
+                        "company": name,
+                    }
+                )
+    return items, errors
+
+
+def collect_items(config, since=None):
     max_items = int(config.get("max_items_per_query", 10))
     all_items = []
     errors = []
@@ -233,6 +1204,15 @@ def collect_items(config):
                 errors.append(f"{theme['name']} / Google / {query}: {exc}")
     manual_dir = os.path.join(PROJECT_ROOT, config.get("manual_inbox_dir", "manual_inbox"))
     all_items.extend(read_manual_inbox(manual_dir))
+    trusted_items, trusted_errors = collect_trusted_news_items(config)
+    all_items.extend(trusted_items)
+    errors.extend(trusted_errors)
+    china_direct_items, china_direct_errors = collect_china_public_news_direct(config, since=since)
+    all_items.extend(china_direct_items)
+    errors.extend(china_direct_errors)
+    primary_items, primary_errors = collect_primary_evidence_items(config, since=since)
+    all_items.extend(primary_items)
+    errors.extend(primary_errors)
     return all_items, errors
 
 
@@ -263,6 +1243,8 @@ def collect_discovery_items(config, since=None):
 def classify_items(config, raw_items, since=None):
     dedup = {}
     for item in raw_items:
+        if item.get("time_scope") == "primary_baseline" and item.get("query") != "manual_inbox":
+            continue
         if not within_delta_window(item, since) and item.get("query") != "manual_inbox":
             continue
         dedup.setdefault(item_key(item), item)
@@ -271,18 +1253,26 @@ def classify_items(config, raw_items, since=None):
     for item in dedup.values():
         for theme in config["themes"]:
             score, pos, neg = score_item(item, theme)
-            query_hit = item.get("theme_hint") == theme["id"]
+            query_hit = item.get("theme_hint") == theme["id"] or theme["id"] in item.get("theme_hints", [])
             keyword_hit = theme_keyword_hit(item, theme)
-            if query_hit or (keyword_hit and score != 0):
-                enriched = dict(item)
-                enriched["score"] = score
-                enriched["positive_hits"] = pos
-                enriched["negative_hits"] = neg
-                enriched["crowded_hits"] = crowded_hits(item, config)
+            candidate = enrich_evidence_item(config, item, theme, score, pos, neg)
+            strong_enough = (
+                candidate["evidence_scope"] == "direct_company_evidence"
+                or candidate["evidence_strength"] in ("high", "medium")
+                or candidate["thesis_effect"] in ("supports_thesis", "refutes_or_risks_thesis", "mixed_signal")
+            )
+            if item.get("source_channel") == "china_public_news_direct":
+                query_hit = query_hit and strong_enough and candidate["evidence_scope"] != "background_or_noise"
+            if query_hit or (keyword_hit and strong_enough):
+                enriched = candidate
                 by_theme[theme["id"]].append(enriched)
 
     for theme_id in by_theme:
-        by_theme[theme_id].sort(key=lambda x: (x.get("score", 0), x.get("published") or dt.datetime.min), reverse=True)
+        sorted_items = sorted(by_theme[theme_id], key=evidence_sort_key, reverse=True)
+        event_dedup = {}
+        for item in sorted_items:
+            event_dedup.setdefault(canonical_event_key(item), item)
+        by_theme[theme_id] = list(event_dedup.values())
     return by_theme
 
 
@@ -1042,6 +2032,202 @@ def save_discovery_snapshot(config, counts):
         f.write(json.dumps({"date": today, "counts": top_counts}, ensure_ascii=False) + "\n")
 
 
+def jsonable(value):
+    if isinstance(value, dt.datetime):
+        return value.isoformat()
+    if isinstance(value, dict):
+        return {key: jsonable(val) for key, val in value.items()}
+    if isinstance(value, list):
+        return [jsonable(item) for item in value]
+    return value
+
+
+def evidence_audit_path(report_issued_at, latest=False):
+    data_dir = os.path.join(PROJECT_ROOT, "data")
+    os.makedirs(data_dir, exist_ok=True)
+    if latest:
+        return os.path.join(data_dir, "evidence_intelligence_latest.json")
+    return os.path.join(data_dir, f"evidence_intelligence_{report_issued_at:%Y-%m-%d}.json")
+
+
+def evidence_audit_summary(raw_items, by_theme, errors, report_issued_at, delta_since, discovery_items=None):
+    retained = list(iter_theme_items(by_theme)) if by_theme else []
+    by_query = defaultdict(lambda: {"raw": 0, "retained": 0, "sources": Counter()})
+    for item in raw_items:
+        key = item.get("query") or "unknown"
+        by_query[key]["raw"] += 1
+        by_query[key]["sources"][item.get("source") or "unknown"] += 1
+    for item in retained:
+        key = item.get("query") or "unknown"
+        by_query[key]["retained"] += 1
+    theme_stats = {}
+    for theme_id, items in by_theme.items():
+        theme_stats[theme_id] = {
+            "retained": len(items),
+            "source_tiers": dict(Counter(item.get("source_tier", "unknown") for item in items)),
+            "evidence_scopes": dict(Counter(item.get("evidence_scope", "unknown") for item in items)),
+            "thesis_effects": dict(Counter(item.get("thesis_effect", "unknown") for item in items)),
+            "strengths": dict(Counter(item.get("evidence_strength", "unknown") for item in items)),
+        }
+    lane_names = [
+        "standard_search",
+        "mainstream_financial",
+        "industry_vertical",
+        "company_official",
+        "china_market",
+        "china_mainstream",
+        "china_official",
+        "china_broker_research",
+        "china_industry",
+        "china_social",
+        "china_public_news_direct",
+        "counter_narrative",
+        "social_kol",
+        "primary_evidence",
+    ]
+    lane_stats = {
+        lane: {
+            "raw": 0,
+            "retained": 0,
+            "source_tiers": Counter(),
+            "evidence_scopes": Counter(),
+            "thesis_effects": Counter(),
+        }
+        for lane in lane_names
+    }
+    for item in raw_items:
+        lane = item.get("coverage_lane") or "standard_search"
+        lane_stats.setdefault(
+            lane,
+            {"raw": 0, "retained": 0, "source_tiers": Counter(), "evidence_scopes": Counter(), "thesis_effects": Counter()},
+        )
+        lane_stats[lane]["raw"] += 1
+        lane_stats[lane]["source_tiers"][source_tier(item)] += 1
+    for item in retained:
+        lane = item.get("coverage_lane") or "standard_search"
+        lane_stats.setdefault(
+            lane,
+            {"raw": 0, "retained": 0, "source_tiers": Counter(), "evidence_scopes": Counter(), "thesis_effects": Counter()},
+        )
+        lane_stats[lane]["retained"] += 1
+        lane_stats[lane]["evidence_scopes"][item.get("evidence_scope", "unknown")] += 1
+        lane_stats[lane]["thesis_effects"][item.get("thesis_effect", "unknown")] += 1
+    coverage_matrix = {
+        lane: {
+            "raw": stats["raw"],
+            "retained": stats["retained"],
+            "source_tiers": dict(stats["source_tiers"]),
+            "evidence_scopes": dict(stats["evidence_scopes"]),
+            "thesis_effects": dict(stats["thesis_effects"]),
+        }
+        for lane, stats in lane_stats.items()
+        if stats["raw"] or stats["retained"] or lane in lane_names
+    }
+    raw_sample_by_lane = defaultdict(list)
+    for item in raw_items:
+        lane = item.get("coverage_lane") or "standard_search"
+        if len(raw_sample_by_lane[lane]) >= 12:
+            continue
+        raw_sample_by_lane[lane].append(
+            {
+                "title": item.get("title"),
+                "link": normalized_link(item),
+                "published": item.get("published"),
+                "source": item.get("source"),
+                "query": item.get("query"),
+                "query_dimension": item.get("query_dimension"),
+                "source_channel": item.get("source_channel"),
+                "source_tier": source_tier(item),
+            }
+        )
+    return {
+        "generated_at": report_issued_at.isoformat(),
+        "delta_window": {
+            "start": delta_since.isoformat() if delta_since else None,
+            "end": report_issued_at.isoformat(),
+        },
+        "policy": {
+            "purpose": "Evidence intelligence supports the existing AI capex framework; it does not create a separate trading score.",
+            "tiers": ["primary_evidence", "trusted_news", "search_intel", "kol_social", "manual_evidence"],
+            "scopes": ["direct_company_evidence", "sector_or_theme_evidence", "macro_market_context", "background_or_noise"],
+        },
+        "counts": {
+            "raw_items": len(raw_items),
+            "retained_items": len(retained),
+            "discovery_items": len(discovery_items or []),
+            "errors": len(errors or []),
+            "trusted_site_raw_items": sum(1 for item in raw_items if item.get("source_channel") in (
+                "trusted_site_search",
+                "mainstream_financial_search",
+                "industry_vertical_search",
+                "company_official_search",
+                "china_market_search",
+                "china_mainstream_search",
+                "china_official_search",
+                "china_broker_search",
+                "china_industry_search",
+                "china_public_news_direct",
+                "counter_narrative_search",
+            )),
+            "source_lane_raw_items": sum(1 for item in raw_items if item.get("coverage_lane") and item.get("coverage_lane") != "primary_evidence"),
+            "primary_index_raw_items": sum(1 for item in raw_items if item.get("source_channel") == "primary_evidence_index"),
+            "primary_baseline_items": sum(1 for item in raw_items if item.get("time_scope") == "primary_baseline"),
+        },
+        "raw_counts": {
+            "source_channels": dict(Counter(item.get("source_channel", "standard_search") for item in raw_items)),
+            "coverage_lanes": dict(Counter(item.get("coverage_lane", "standard_search") for item in raw_items)),
+            "source_tiers": dict(Counter(source_tier(item) for item in raw_items)),
+            "time_scopes": dict(Counter(item.get("time_scope", "delta_or_unclassified") for item in raw_items)),
+        },
+        "coverage_matrix": coverage_matrix,
+        "raw_sample_by_lane": dict(raw_sample_by_lane),
+        "retained_counts": {
+            "source_tiers": dict(Counter(item.get("source_tier", "unknown") for item in retained)),
+            "evidence_scopes": dict(Counter(item.get("evidence_scope", "unknown") for item in retained)),
+            "thesis_effects": dict(Counter(item.get("thesis_effect", "unknown") for item in retained)),
+            "strengths": dict(Counter(item.get("evidence_strength", "unknown") for item in retained)),
+        },
+        "themes": theme_stats,
+        "queries": {
+            query: {
+                "raw": stats["raw"],
+                "retained": stats["retained"],
+                "sources": dict(stats["sources"]),
+            }
+            for query, stats in sorted(by_query.items(), key=lambda pair: (pair[1]["retained"], pair[1]["raw"]), reverse=True)
+        },
+        "retained_sample": [
+            {
+                "title": item.get("title"),
+                "link": item.get("link"),
+                "published": item.get("published"),
+                "source": item.get("source"),
+                "query": item.get("query"),
+                "theme_hint": item.get("theme_hint"),
+                "theme_hints": item.get("theme_hints"),
+                "source_channel": item.get("source_channel"),
+                "coverage_lane": item.get("coverage_lane"),
+                "time_scope": item.get("time_scope"),
+                "source_tier": item.get("source_tier"),
+                "evidence_scope": item.get("evidence_scope"),
+                "thesis_effect": item.get("thesis_effect"),
+                "evidence_strength": item.get("evidence_strength"),
+                "reasons": item.get("evidence_reasons"),
+            }
+            for item in sorted(retained, key=evidence_sort_key, reverse=True)[:40]
+        ],
+        "errors": list(errors or [])[:50],
+    }
+
+
+def save_evidence_audit(raw_items, by_theme, errors, report_issued_at, delta_since, discovery_items=None):
+    audit = evidence_audit_summary(raw_items, by_theme, errors, report_issued_at, delta_since, discovery_items)
+    for path in (evidence_audit_path(report_issued_at), evidence_audit_path(report_issued_at, latest=True)):
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(jsonable(audit), f, ensure_ascii=False, indent=2)
+    return audit
+
+
 def prior_average(history, phrase):
     values = [row.get("counts", {}).get(phrase, 0) for row in history[-30:]]
     if not values:
@@ -1311,6 +2497,11 @@ def ai_capex_macro_view(by_theme):
         consensus_delta = "需求侧边际强化"
         read_through = "新增信息主要支持 AI 基建继续扩张，但仍需要观察是否扩散到更多 hyperscaler 和供应链盈利预测。"
         risk_level = "中"
+    elif dell_hits:
+        stance = "中性偏利好"
+        consensus_delta = "服务器链需求韧性边际确认，但不是全市场 capex consensus 改写"
+        read_through = "Dell 对 AI server 收入/订单/积压是单公司硬增量；读法应是需求韧性被确认，而不是把全链条无差别上修。"
+        risk_level = "中"
     elif len(risk_hits) >= 3:
         stance = "利空"
         consensus_delta = "风险侧边际升温"
@@ -1345,13 +2536,14 @@ def ai_capex_macro_view(by_theme):
 
 
 def evidence_direction(item):
-    if item.get("negative_hits") and not item.get("positive_hits"):
+    effect = item.get("thesis_effect")
+    if effect == "refutes_or_risks_thesis":
         return "利空"
-    if item.get("positive_hits") and not item.get("negative_hits"):
+    if effect == "supports_thesis":
         return "利好"
-    if item.get("positive_hits") and item.get("negative_hits"):
+    if effect == "mixed_signal":
         return "多空都有"
-    if item.get("crowded_hits"):
+    if effect == "crowding_signal":
         return "拥挤风险"
     return "中性"
 
@@ -1364,7 +2556,7 @@ def canonical_title(value):
 
 def canonical_event_key(item):
     text = normalize_text(item)
-    if "dell" in text and any(term in text for term in ["ai server", "backlog", "record earnings", "raised outlook", "guidance"]):
+    if "dell" in text and any(term in text for term in ["ai server", "server revenue", "backlog", "earnings", "raised outlook", "revenue outlook", "guidance", "ai boom"]):
         return "dell_ai_server_results"
     if "bubble" in text and "ai capex" in text:
         return "ai_capex_bubble_risk"
@@ -1396,10 +2588,15 @@ def evidence_table_rows(by_theme, limit=8):
                 tags.extend(item["negative_hits"][:2])
             if item.get("crowded_hits"):
                 tags.append("拥挤:" + ",".join(item["crowded_hits"][:2]))
+            if item.get("evidence_reasons"):
+                tags.extend(item["evidence_reasons"][:2])
             rows.append({
                 "theme": theme_id,
                 "item": item,
                 "direction": evidence_direction(item),
+                "tier": item.get("source_tier", "search_intel"),
+                "scope": item.get("evidence_scope", "background_or_noise"),
+                "strength": item.get("evidence_strength", "low"),
                 "tags": tags,
             })
             if len(rows) >= limit:
@@ -1418,6 +2615,29 @@ def quote_market(quote):
     if quote:
         return "美股/海外"
     return "无代码"
+
+
+def evidence_tier_label(value):
+    return {
+        "primary_evidence": "硬证据",
+        "manual_evidence": "手工证据",
+        "trusted_news": "可信新闻",
+        "search_intel": "搜索线索",
+        "kol_social": "KOL/舆情",
+    }.get(value, value or "n/a")
+
+
+def evidence_scope_label(value):
+    return {
+        "direct_company_evidence": "公司直连",
+        "sector_or_theme_evidence": "行业/主题",
+        "macro_market_context": "宏观/资金",
+        "background_or_noise": "背景/噪音",
+    }.get(value, value or "n/a")
+
+
+def evidence_strength_label(value):
+    return {"high": "高", "medium": "中", "low": "低"}.get(value, value or "n/a")
 
 
 def segment_action(row):
@@ -1711,7 +2931,7 @@ def previous_report_issue_time(reports_dir, output_path):
     return dt.datetime.fromtimestamp(os.path.getmtime(latest_path), tz=dt.timezone.utc).replace(tzinfo=None)
 
 
-def build_report(config, by_theme, market_rows, discovery_candidates, discovery_topics, market_errors, errors, report_issued_at, delta_since):
+def build_report(config, by_theme, market_rows, discovery_candidates, discovery_topics, market_errors, errors, report_issued_at, delta_since, evidence_audit=None):
     now = report_issued_at
     theme_map = {theme["id"]: theme for theme in config["themes"]}
     market_summary = theme_market_summary(config, market_rows)
@@ -1777,11 +2997,22 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
     ]
     front_evidence = evidence_table_rows(by_theme, limit=8)
     kol_watch = load_latest_kol_watch()
+    audit_counts = (evidence_audit or {}).get("counts", {})
+    retained_counts = (evidence_audit or {}).get("retained_counts", {})
+    coverage_matrix = (evidence_audit or {}).get("coverage_matrix", {})
     lines.append("## 今日先看")
     lines.append("")
     lines.append(f"- **总判断**：需求侧={macro['stance']}，宏观/资金侧={macro_market['verdict']}。本轮更像“{macro['consensus_delta']}”，不是无条件的全链条需求大幅上修。")
     if dell_items:
-        top = dell_items[0]
+        top = sorted(
+            dell_items,
+            key=lambda item: (
+                item.get("source_tier") != "kol_social",
+                any(term in normalize_text(item) for term in ["backlog", "server revenue", "guidance", "revenue outlook"]),
+                item.get("published") or dt.datetime.min,
+            ),
+            reverse=True,
+        )[0]
         lines.append(f"- **关键事件**：Dell AI server 业绩/订单/积压进入本轮 delta，验证 AI server 需求韧性；但这是单公司/服务器链条的边际确认，不等于 hyperscaler capex consensus 被全市场大幅改写。来源：[Dell result]({top.get('link')})。")
     else:
         lines.append("- **关键事件**：本轮没有被自动抓到足够强的 AI server 单公司业绩事件；这类事件以后必须进入优先事件监控。")
@@ -1799,19 +3030,47 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
 
     lines.append("## 本轮新增证据")
     lines.append("")
-    lines.append("先看 update window 里真正新增的事实，再读后面的历史基准和拥挤度。方向只代表这条新闻/事实对 AI capex 链条的边际含义。")
+    lines.append("先看 update window 里真正新增的事实，再读后面的历史基准和拥挤度。后台已按硬证据/可信新闻/搜索线索/KOL 舆情分层，并区分公司直连、行业主题、宏观资金和背景噪音；方向只代表这条新闻/事实对 AI capex 链条的边际含义。")
+    if audit_counts:
+        lines.append(
+            f"- Evidence engine：raw={audit_counts.get('raw_items', 0)}，retained={audit_counts.get('retained_items', 0)}，"
+            f"direct={retained_counts.get('evidence_scopes', {}).get('direct_company_evidence', 0)}，"
+            f"primary/trusted={retained_counts.get('source_tiers', {}).get('primary_evidence', 0) + retained_counts.get('source_tiers', {}).get('trusted_news', 0)}，"
+            f"source-lane raw={audit_counts.get('source_lane_raw_items', audit_counts.get('trusted_site_raw_items', 0))}，"
+            f"primary baseline={audit_counts.get('primary_baseline_items', 0)}。"
+        )
+        lane_parts = []
+        for lane, label in [
+            ("mainstream_financial", "mainstream"),
+            ("industry_vertical", "industry"),
+            ("company_official", "official"),
+            ("china_market", "China"),
+            ("china_mainstream", "China-main"),
+            ("china_official", "China-official"),
+            ("china_broker_research", "China-broker"),
+            ("china_industry", "China-industry"),
+            ("china_social", "China-social"),
+            ("china_public_news_direct", "China-direct"),
+            ("counter_narrative", "counter"),
+            ("social_kol", "KOL"),
+        ]:
+            stats = coverage_matrix.get(lane, {})
+            lane_parts.append(f"{label}={stats.get('raw', 0)}/{stats.get('retained', 0)}")
+        if lane_parts:
+            lines.append("- Source coverage lanes: " + "；".join(lane_parts) + "（raw/retained）。")
     lines.append("")
-    lines.append("| 方向 | 主题 | 日期 | 证据 | 关键词 |")
-    lines.append("|---|---|---|---|---|")
+    lines.append("| 方向 | 主题 | 日期 | 证据 | 层级 | 关键词/保留理由 |")
+    lines.append("|---|---|---|---|---|---|")
     if front_evidence:
         for row in front_evidence:
             item = row["item"]
+            layer = f"{evidence_tier_label(row.get('tier'))}/{evidence_scope_label(row.get('scope'))}/{evidence_strength_label(row.get('strength'))}"
             lines.append(
                 f"| {row['direction']} | {row['theme']} | {format_date(item.get('published'))} | "
-                f"[{md_escape(item.get('title'))}]({item.get('link')}) | {md_escape(', '.join(row['tags']) or 'n/a')} |"
+                f"[{md_escape(item.get('title'))}]({item.get('link')}) | {md_escape(layer)} | {md_escape(', '.join(row['tags']) or 'n/a')} |"
             )
     else:
-        lines.append("| 中性 | n/a | n/a | 本轮没有足够强的新证据 | n/a |")
+        lines.append("| 中性 | n/a | n/a | 本轮没有足够强的新证据 | n/a | n/a |")
     lines.append("")
 
     lines.extend(render_kol_watch(kol_watch))
@@ -2049,9 +3308,21 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
                 hits.append("negative=" + ", ".join(item["negative_hits"][:4]))
             if item.get("crowded_hits"):
                 hits.append("crowded=" + ", ".join(item["crowded_hits"][:4]))
+            hits.append(
+                "layer="
+                + "/".join(
+                    [
+                        evidence_tier_label(item.get("source_tier")),
+                        evidence_scope_label(item.get("evidence_scope")),
+                        evidence_strength_label(item.get("evidence_strength")),
+                    ]
+                )
+            )
             hit_text = f" ({'; '.join(hits)})" if hits else ""
             summary = textwrap.shorten(md_escape(item.get("summary", "")), width=240, placeholder="...")
             lines.append(f"- {format_date(item.get('published'))} [{md_escape(item.get('title'))}]({item.get('link')}){hit_text}")
+            if item.get("evidence_reasons"):
+                lines.append(f"  - 保留理由：{md_escape('; '.join(item.get('evidence_reasons', [])[:4]))}")
             if summary:
                 lines.append(f"  - {summary}")
         lines.append("")
@@ -2189,10 +3460,11 @@ def main():
     if delta_since is None:
         delta_since = report_issued_at - dt.timedelta(days=int(config.get("lookback_days", 1)))
 
-    raw_items, errors = collect_items(config)
+    raw_items, errors = collect_items(config, since=delta_since)
     discovery_items, discovery_errors = collect_discovery_items(config, since=delta_since)
     errors.extend(discovery_errors)
     by_theme = classify_items(config, raw_items, since=delta_since)
+    evidence_audit = save_evidence_audit(raw_items, by_theme, errors, report_issued_at, delta_since, discovery_items)
     market_rows, market_errors = collect_market_data(config)
     market_summary = theme_market_summary(config, market_rows)
     discovery_candidates, discovery_topics = build_discovery(config, discovery_items, market_summary)
@@ -2206,6 +3478,7 @@ def main():
         errors,
         report_issued_at,
         delta_since,
+        evidence_audit,
     )
     readthrough = build_readthrough(
         config,
