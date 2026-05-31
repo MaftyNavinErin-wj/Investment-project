@@ -1521,6 +1521,60 @@ def md_escape(value):
     return (value or "").replace("|", "\\|").strip()
 
 
+def load_latest_kol_watch():
+    data_dir = os.path.join(PROJECT_ROOT, "data")
+    if not os.path.isdir(data_dir):
+        return None
+    candidates = []
+    for name in os.listdir(data_dir):
+        if re.match(r"kol_watch_\d{4}-\d{2}-\d{2}\.json$", name):
+            candidates.append(os.path.join(data_dir, name))
+    if not candidates:
+        return None
+    latest = max(candidates)
+    try:
+        with open(latest, "r", encoding="utf-8") as f:
+            payload = json.load(f)
+        payload["_path"] = latest
+        return payload
+    except Exception:
+        return None
+
+
+def render_kol_watch(kol_watch, limit=7):
+    if not kol_watch or not kol_watch.get("items"):
+        return []
+    lines = []
+    takeaway = kol_watch.get("framework_takeaway") or {}
+    lines.append("## 外部 KOL 交叉验证")
+    lines.append("")
+    lines.append(
+        "KOL 只作为 idea feed，不作为信仰来源。本节只检查外部市场叙事是否确认或挑战 AI capex 框架，"
+        "再把观点映射回 segment、拥挤度和公司级证据。"
+    )
+    if takeaway.get("stance"):
+        lines.append(f"- **KOL 解读**：{md_escape(takeaway.get('stance'))}")
+    if takeaway.get("report_use"):
+        lines.append(f"- **使用方式**：{md_escape(takeaway.get('report_use'))}")
+    lines.append("")
+    lines.append("| 日期 | 来源 | 视频/主题 | KOL 观点 | 框架校验 | A股映射 |")
+    lines.append("|---|---|---|---|---|---|")
+    for item in kol_watch.get("items", [])[:limit]:
+        source = item.get("program") or item.get("person") or "source"
+        source_url = item.get("source_url")
+        source_text = f"[{md_escape(source)}]({source_url})" if source_url else md_escape(source)
+        mapping = ", ".join(item.get("framework_mapping", [])[:4])
+        framework = item.get("cross_check", "")
+        if mapping:
+            framework = f"{framework} 映射：{mapping}。"
+        lines.append(
+            f"| {md_escape(item.get('date'))} | {source_text} | {md_escape(item.get('topic'))} | "
+            f"{md_escape(item.get('view'))} | {md_escape(framework)} | {md_escape(item.get('a_share_readthrough'))} |"
+        )
+    lines.append("")
+    return lines
+
+
 def markdown_to_html(markdown_text, title):
     def inline(value):
         value = html.escape(value)
@@ -1722,6 +1776,7 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
         if "dell" in normalize_text(item) and any(term in normalize_text(item) for term in ["server", "backlog", "orders", "guidance", "revenue"])
     ]
     front_evidence = evidence_table_rows(by_theme, limit=8)
+    kol_watch = load_latest_kol_watch()
     lines.append("## 今日先看")
     lines.append("")
     lines.append(f"- **总判断**：需求侧={macro['stance']}，宏观/资金侧={macro_market['verdict']}。本轮更像“{macro['consensus_delta']}”，不是无条件的全链条需求大幅上修。")
@@ -1758,6 +1813,8 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
     else:
         lines.append("| 中性 | n/a | n/a | 本轮没有足够强的新证据 | n/a |")
     lines.append("")
+
+    lines.extend(render_kol_watch(kol_watch))
 
     lines.append("## AI Capex Macro")
     lines.append("")

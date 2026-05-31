@@ -76,6 +76,18 @@ In Bloomberg VDI, run the exporter by full UNC path. This does not require chang
 & "\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie\run_bloomberg_reference.ps1"
 ```
 
+If PowerShell returns `running scripts is disabled on this system`, use a one-time execution-policy bypass:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File "\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie\run_bloomberg_full.ps1"
+```
+
+For reference-only:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File "\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie\run_bloomberg_reference.ps1"
+```
+
 Manual equivalent:
 
 ```powershell

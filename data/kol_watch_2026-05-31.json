@@ -1,0 +1,138 @@
+{
+  "date": "2026-05-31",
+  "scope": "外部 KOL idea feed，用来交叉验证 AI capex 框架。它不是买卖建议，也不能覆盖公司级证据、Bloomberg 数据、估值和拥挤度检查。",
+  "method": "后台抓取 YouTube/CNBC 公开视频元数据，并在可用时读取英文字幕；没有使用前台 GUI，也没有下载完整视频文件。",
+  "coverage_note": "本轮覆盖 2026-05 月以来与 Jim Cramer / Mad Money 相关、且和 AI capex、Dell、Nvidia、data center、semicap、hyperscaler、hardware/software rotation 直接相关的公开视频。不能保证 YouTube 全网零遗漏；FinVid 等二次汇编只作为线索，不作为主要证据。",
+  "framework_takeaway": {
+    "stance": "Cramer/CNBC 近期内容强烈确认 physical AI infrastructure 仍是市场主叙事，尤其是 AI server、data center、semicap equipment、interconnect、power/grid。但这也说明这条线已经是主流共识，KOL 价值更多是确认和拥挤度提醒，而不是提供新的低拥挤 alpha。",
+    "report_use": "用来强化报告里的核心判断：Dell 是正面增量，但硬件链已经拥挤；下一步要看订单、EPS revision 和软件/AI ROI 是否能跟上，而不是因为 KOL 热度直接追高。"
+  },
+  "sources": [
+    {
+      "source": "YouTube / CNBC Television",
+      "url": "https://www.youtube.com/results?search_query=jim+cramer",
+      "note": "用户指定的搜索入口。下面的 CNBC clips 通过后台元数据和可用字幕提取。"
+    },
+    {
+      "source": "I wonder if we will say this is the era when Dell took over the computer space, says Jim Cramer",
+      "url": "https://www.youtube.com/watch?v=JaID2co8KVg",
+      "note": "CNBC Television，上传日期 2026-05-29。"
+    },
+    {
+      "source": "Applied Materials CEO Gary Dickerson: This is the greatest time in the history of our industry",
+      "url": "https://www.youtube.com/watch?v=p4OJ-gCXTJk",
+      "note": "CNBC Television，上传日期 2026-05-28。"
+    },
+    {
+      "source": "Nvidia CEO Jensen Huang says Corning partnership will 'revitalize American manufacturing'",
+      "url": "https://www.youtube.com/watch?v=SKSVuqvjv0g",
+      "note": "CNBC Television，上传日期 2026-05-08。"
+    },
+    {
+      "source": "The drive of computers is going higher and taking many stocks up with it, says Jim Cramer",
+      "url": "https://www.youtube.com/watch?v=H0-wp__QDkU",
+      "note": "CNBC Television，上传日期 2026-05-04。"
+    },
+    {
+      "source": "Jim Cramer on playing the waiting game in the market",
+      "url": "https://www.youtube.com/watch?v=g6LLkALO8Qk",
+      "note": "CNBC Television，上传日期 2026-05-19。"
+    },
+    {
+      "source": "Databricks CEO Ali Ghodsi: AI doesn't have an intelligence problem. It has a context problem",
+      "url": "https://www.youtube.com/watch?v=CH7gtn87svI",
+      "note": "CNBC Television，上传日期 2026-05-21。"
+    },
+    {
+      "source": "AI is the biggest technology transformation in our lifetime, says Amazon CEO Andy Jassy",
+      "url": "https://www.youtube.com/watch?v=YFMuyD8fp9s",
+      "note": "CNBC Television，上传日期 2026-05-04。"
+    }
+  ],
+  "items": [
+    {
+      "person": "Jim Cramer",
+      "program": "Mad Money / CNBC Television",
+      "date": "2026-05-29",
+      "topic": "I wonder if we will say this is the era when Dell took over the computer space, says Jim Cramer",
+      "source_url": "https://www.youtube.com/watch?v=JaID2co8KVg",
+      "tickers": ["DELL", "NVDA", "NOW", "TEAM", "CRM", "MSFT"],
+      "view": "Cramer 把 Dell 这次财报称为重大超预期，并把 5 月一系列强 tech quarter 共同指向 data center。他同时提到尾盘出现 rotation：部分硬件赢家被获利了结，而一些之前弱势的软件股反弹。",
+      "framework_mapping": ["AI Server / GPU Infrastructure", "Data Center Networking", "Optical Modules 800G/1.6T", "High-speed PCB"],
+      "cross_check": "这条最能支撑今天报告的 Dell read-through：需求证据变强，但股价和板块反应已经非常敏感，容易出现 rotation。结论应是验证主线和检查拥挤度，不是全链条无差别追高。",
+      "a_share_readthrough": "对中际旭创、新易盛、天孚通信、沪电股份等光模块/PCB/server-chain 代表票是正向验证，但必须靠订单和盈利预测继续上修来消化拥挤。"
+    },
+    {
+      "person": "Jim Cramer / Gary Dickerson",
+      "program": "Mad Money / CNBC Television",
+      "date": "2026-05-28",
+      "topic": "Applied Materials CEO Gary Dickerson: This is the greatest time in the history of our industry",
+      "source_url": "https://www.youtube.com/watch?v=p4OJ-gCXTJk",
+      "tickers": ["AMAT", "MU", "TSM", "ASML"],
+      "view": "Applied Materials CEO 明确把 AI 带来的计算需求描述为行业历史级别的上行周期，并点名 leading-edge logic、DRAM、advanced packaging 是增长最快的环节。",
+      "framework_mapping": ["HBM", "DRAM / NAND / Enterprise SSD", "Testing / Burn-in / Yield", "Advanced Packaging"],
+      "cross_check": "这强化了 HBM、DRAM、先进封装、测试/良率这些瓶颈方向的产业逻辑。但它解决的是需求方向，不解决估值和拥挤问题；后续要看设备、材料、测试链是否出现 EPS revision。",
+      "a_share_readthrough": "对澜起科技、华峰测控等 memory interface / testing-yield workstream 是正向线索，但仍需要公司级收入、订单或客户验证。"
+    },
+    {
+      "person": "Jim Cramer / Jensen Huang / Wendell Weeks",
+      "program": "Mad Money / CNBC Television",
+      "date": "2026-05-08",
+      "topic": "Nvidia CEO Jensen Huang says Corning partnership will 'revitalize American manufacturing'",
+      "source_url": "https://www.youtube.com/watch?v=SKSVuqvjv0g",
+      "tickers": ["NVDA", "GLW"],
+      "view": "Jensen Huang 将 AI 描述为基础设施建设，并强调下一代 data center 的 GPU 数量、互连数量、互连速度和计算规模都会大幅提升；Corning 合作对应光纤/互连和制造能力升级。",
+      "framework_mapping": ["Optical Modules 800G/1.6T", "CPO / Silicon Photonics / OCS", "Fiber / Preform / Optical Cable", "Critical Power"],
+      "cross_check": "这验证了我们把瓶颈从 GPU 继续向 optical/interconnect、fiber、power/grid 迁移的框架。它是二阶验证，不是独立交易信号。",
+      "a_share_readthrough": "对光纤预制棒、光模块、高速互连方向有帮助，但 A 股映射必须继续找客户、订单和收入占比证据。"
+    },
+    {
+      "person": "Jim Cramer",
+      "program": "Mad Money / CNBC Television",
+      "date": "2026-05-19",
+      "topic": "Jim Cramer on playing the waiting game in the market",
+      "source_url": "https://www.youtube.com/watch?v=g6LLkALO8Qk",
+      "tickers": ["NVDA", "AMAT", "NOW", "CRM", "MSFT"],
+      "view": "Cramer 描述了硬件/data center 受益股和软件股之间的剧烈轮动：多数时候硬件更强，但软件反弹时也会很凶。",
+      "framework_mapping": ["AI Server / GPU Infrastructure", "Semicap Equipment", "AI Applications / ROI", "Software Monetization"],
+      "cross_check": "这对风险控制很重要：KOL 关注度说明硬件主题已经主流化、拥挤化。软件反弹不能立刻等同于 AI ROI 被验证，仍要看 monetization、合同、ARPU、margin。",
+      "a_share_readthrough": "提高追高硬件 proxy 的门槛；工作流应该转向 EPS revision 跟踪和低拥挤二阶映射，而不是只看主题热度。"
+    },
+    {
+      "person": "Jim Cramer / Andy Jassy",
+      "program": "Mad Money / CNBC Television",
+      "date": "2026-05-04",
+      "topic": "AI is the biggest technology transformation in our lifetime, says Amazon CEO Andy Jassy",
+      "source_url": "https://www.youtube.com/watch?v=YFMuyD8fp9s",
+      "tickers": ["AMZN", "MSFT", "GOOGL"],
+      "view": "Jassy 为高强度 AI capex 辩护，称 AI 是一生中最大的技术变革，并用早期 AI revenue run-rate 远快于早期 AWS 来解释为什么 hyperscaler 仍要重投入。",
+      "framework_mapping": ["Hyperscaler Capex", "AI Applications / ROI", "Data Center REIT", "Power / Cooling"],
+      "cross_check": "这支持我们的基准假设：头部云厂商仍愿意持续投入 AI 基建。真正的风险不在短期需求消失，而在 ROI 兑现节奏、融资成本和收入转化能否跟上 capex。",
+      "a_share_readthrough": "对上游需求是正面背景，但不能自动推出低拥挤 A 股标的。"
+    },
+    {
+      "person": "Jim Cramer",
+      "program": "Mad Money / CNBC Television",
+      "date": "2026-05-04",
+      "topic": "The drive of computers is going higher and taking many stocks up with it, says Jim Cramer",
+      "source_url": "https://www.youtube.com/watch?v=H0-wp__QDkU",
+      "tickers": ["AMZN", "MSFT", "NVDA"],
+      "view": "Cramer 把美国经济越来越 compute-driven 作为解释 tech 和 hyperscaler 强势的核心逻辑，同时承认利率和油价仍是宏观风险。",
+      "framework_mapping": ["AI Capex", "Hyperscalers", "Macro / Discount Rate", "Energy Input Cost"],
+      "cross_check": "这和报告的 split verdict 一致：需求仍强，但利率、能源和资源成本是抵消项。正确结论不是转空，而是更挑剔地看估值和兑现。",
+      "a_share_readthrough": "强化了报告中把 macro dashboard、拥挤度和主题强度放在一起看的必要性。"
+    },
+    {
+      "person": "Jim Cramer / Ali Ghodsi",
+      "program": "Mad Money / CNBC Television",
+      "date": "2026-05-21",
+      "topic": "Databricks CEO Ali Ghodsi: AI doesn't have an intelligence problem. It has a context problem",
+      "source_url": "https://www.youtube.com/watch?v=CH7gtn87svI",
+      "tickers": ["DATABRICKS", "SNOW", "MSFT", "NOW"],
+      "view": "Databricks 访谈把 AI 的问题从模型能力转向数据和 context，并强调 Databricks 这类 AI/data platform 已经有收入规模和正自由现金流。",
+      "framework_mapping": ["AI Applications / ROI", "Data Platform", "Agentic AI", "Software Monetization"],
+      "cross_check": "这提醒我们 AI ROI/application layer 不能忽略，尤其是在硬件交易已经拥挤之后。但它不是硬件链继续上修的直接证据。",
+      "a_share_readthrough": "对 A 股硬件映射较间接；更适合用来观察 AI 应用变现能否支撑长期 capex。"
+    }
+  ]
+}
