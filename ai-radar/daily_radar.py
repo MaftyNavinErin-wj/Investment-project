@@ -2892,6 +2892,8 @@ def find_browser():
 
 
 def render_pdf(html_path, pdf_path):
+    if os.environ.get("AI_RADAR_SKIP_PDF") == "1":
+        return False
     browser = find_browser()
     if not browser:
         return False
@@ -2907,6 +2909,7 @@ def render_pdf(html_path, pdf_path):
         check=True,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
+        timeout=90,
     )
     return True
 
