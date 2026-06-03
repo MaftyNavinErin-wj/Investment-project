@@ -13,6 +13,7 @@ $exporterLocal = Join-Path $projectRoot "scripts\bloomberg_export.py"
 $runnerReferenceLocal = Join-Path $projectRoot "bloomberg\run_bloomberg_reference.ps1"
 $runnerFullLocal = Join-Path $projectRoot "bloomberg\run_bloomberg_full.ps1"
 $runnerFieldSearchLocal = Join-Path $projectRoot "bloomberg\run_bloomberg_field_search.ps1"
+$runnerCommonLocal = Join-Path $projectRoot "bloomberg\run_bloomberg_common.ps1"
 $snapshotLocal = Join-Path $projectRoot "data\bloomberg_snapshot_latest.json"
 $historyLocal = Join-Path $projectRoot "data\bloomberg_history_latest.json"
 $newsLocal = Join-Path $projectRoot "data\bloomberg_news_latest.json"
@@ -24,6 +25,7 @@ $exporterShare = Join-Path $Share "bloomberg_export.py"
 $runnerReferenceShare = Join-Path $Share "run_bloomberg_reference.ps1"
 $runnerFullShare = Join-Path $Share "run_bloomberg_full.ps1"
 $runnerFieldSearchShare = Join-Path $Share "run_bloomberg_field_search.ps1"
+$runnerCommonShare = Join-Path $Share "run_bloomberg_common.ps1"
 $snapshotShare = Join-Path $Share "bloomberg_snapshot_latest.json"
 $historyShare = Join-Path $Share "bloomberg_history_latest.json"
 $newsShare = Join-Path $Share "bloomberg_news_latest.json"
@@ -59,7 +61,8 @@ function Push-BloombergFiles {
     Copy-Item -LiteralPath $runnerReferenceLocal -Destination $runnerReferenceShare -Force
     Copy-Item -LiteralPath $runnerFullLocal -Destination $runnerFullShare -Force
     Copy-Item -LiteralPath $runnerFieldSearchLocal -Destination $runnerFieldSearchShare -Force
-    Show-ItemStatus @($requestShare, $exporterShare, $runnerReferenceShare, $runnerFullShare, $runnerFieldSearchShare)
+    Copy-Item -LiteralPath $runnerCommonLocal -Destination $runnerCommonShare -Force
+    Show-ItemStatus @($requestShare, $exporterShare, $runnerReferenceShare, $runnerFullShare, $runnerFieldSearchShare, $runnerCommonShare)
 }
 
 function Pull-BloombergLatest {
