@@ -6,6 +6,10 @@ __pycache__/
 .edge-pdf-profile-emergent/
 data/bloomberg_snapshot*.json
 data/bloomberg_history*.json
+data/bloomberg_news*.json
+data/bloomberg_field_search*.json
+data/bloomberg_field_info*.json
 bloomberg/bloomberg_snapshot*.json
 bloomberg/bloomberg_history*.json
 bloomberg/__pycache__/
+evidence/

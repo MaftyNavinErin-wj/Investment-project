@@ -1,0 +1,65 @@
+{
+  "date": "2026-06-07",
+  "scope": "外部 KOL idea feed，用来交叉验证 AI capex 框架。它不是买卖建议，也不能覆盖公司级证据、Bloomberg 数据、估值和拥挤度检查。",
+  "method": "补充检查 2026-06-03 至 2026-06-07 的 CNBC/Cramer 相关公开摘要、YouTube 元数据和市场复盘。CNBC 原站部分页面受限，使用可访问的 CNBC 镜像/摘要和公开市场复盘作为发现层；只保留短摘要和框架映射。",
+  "coverage_note": "本轮重点覆盖 Broadcom、CrowdStrike、半导体去拥挤、利率上行和 AI hardware/software rotation。未发现新的、公开可直接读取且比 CNBC/Cramer 摘要更完整的官方 YouTube Cramer AI capex 视频；因此结论以 CNBC 摘要、市场复盘和 Bloomberg 市场数据交叉验证。",
+  "framework_takeaway": {
+    "stance": "Cramer/CNBC 线索没有推翻 AI capex 主线，反而强化了一个风险控制结论：Broadcom、CrowdStrike 这类 AI/AI-adjacent 龙头在财报前已经定价很满，业绩好但没有继续大幅上修时也会被卖。KOL 叙事从“AI infrastructure 很强”转向“强但必须超预期，且要防 rotation”。",
+    "report_use": "更新报告里的拥挤度判断：Broadcom 不达标更像高预期未继续上修，而不是 AI ASIC/networking 需求崩塌。对 A 股光模块、PCB、内存接口的含义是继续看产业趋势，但短期不能用 KOL 热度或美股 AI 龙头强叙事来支持追高。"
+  },
+  "sources": [
+    {
+      "source": "Where Jim Cramer stands on CrowdStrike and Broadcom ahead of earnings",
+      "url": "https://longbridge.com/en/news/288607926",
+      "note": "CNBC 摘要，发布时间 2026-06-03 16:25。摘要显示 Cramer 在 Broadcom 财报前保持谨慎，强调近期高位后需要强 guidance；同时对 AI-driven cybersecurity demand 仍正面。"
+    },
+    {
+      "source": "Broadcom tumbles 13% as AI chip guidance stalls; Google rallies on $85B expansion bet, SOXX -2.1%",
+      "url": "https://www.startuphub.ai/ai-news/ai-stocks-daily/2026/ai-stocks-2026-06-04",
+      "note": "AI stocks daily 复盘，发布时间 2026-06-04。记录 Broadcom 因 AI semiconductor outlook 未上调而下跌，并提到 Cramer 在 CNBC 上为 CrowdStrike 的 net new ARR 辩护。"
+    },
+    {
+      "source": "Broadcom Just Crashed 15%. Here's What It Means for Every AI Investor",
+      "url": "https://www.fool.com/investing/2026/06/04/broadcom-just-crashed-15-heres-what-it-means-for-e/",
+      "note": "Motley Fool 视频/文章，发布时间 2026-06-04。作为非 CNBC 的市场叙事交叉检查：AI 和 cybersecurity 龙头财报后下跌，说明预期门槛已经很高。"
+    }
+  ],
+  "items": [
+    {
+      "person": "Jim Cramer",
+      "program": "CNBC / Investing Club summary",
+      "date": "2026-06-03",
+      "topic": "Where Cramer stands on CrowdStrike and Broadcom ahead of earnings",
+      "source_url": "https://longbridge.com/en/news/288607926",
+      "tickers": ["AVGO", "CRWD", "PANW", "INTC"],
+      "view": "Cramer 在 Broadcom 财报前保持谨慎，核心不是否定 AI，而是认为股价高位后需要非常强的 guidance 才能继续支撑；对 CrowdStrike/Palo Alto 代表的 AI-driven cybersecurity demand 仍偏正面。",
+      "framework_mapping": ["AI ASIC / Custom Silicon", "Data Center Networking", "AI Security / Governance", "Software Monetization"],
+      "cross_check": "这和本次报告的判断一致：AI 需求没有被证伪，但市场开始不再接受“好但不够好”的财报。硬件链和 AI-adjacent 软件都需要继续上修来消化估值。",
+      "a_share_readthrough": "对中际旭创、沪电股份、澜起科技等 A 股 AI capex 映射的提示是：产业逻辑仍强，但短期定价更依赖订单/盈利预测上修，不能只靠海外龙头叙事。"
+    },
+    {
+      "person": "Jim Cramer / CNBC mention",
+      "program": "CNBC market discussion recap",
+      "date": "2026-06-04",
+      "topic": "CrowdStrike defended despite post-earnings selloff",
+      "source_url": "https://www.startuphub.ai/ai-news/ai-stocks-daily/2026/ai-stocks-2026-06-04",
+      "tickers": ["CRWD", "AVGO", "GOOGL", "AMD", "ARM"],
+      "view": "市场复盘提到 Cramer 为 CrowdStrike 的 net new ARR 辩护，称关键指标很强；但股价仍下跌，原因是软指引和前期涨幅使估值门槛过高。",
+      "framework_mapping": ["AI Security / Governance", "AI Applications / ROI", "Software Monetization", "Valuation / Crowding"],
+      "cross_check": "这强化了“不是基本面差，而是预期太满”的解释。Broadcom 和 CrowdStrike 同时被卖，说明市场在削高估值和高拥挤，而不是只针对某个产业环节。",
+      "a_share_readthrough": "对 A 股硬件链不是直接利空，但会提高市场对兑现的要求。短线应看 SOX/NDX、利率和成交承接，而不是把 Cramer 正面评价当作买点。"
+    },
+    {
+      "person": "Market narrative / AI investor recap",
+      "program": "Motley Fool / market video",
+      "date": "2026-06-04",
+      "topic": "Broadcom selloff tests AI investor expectations",
+      "source_url": "https://www.fool.com/investing/2026/06/04/broadcom-just-crashed-15-heres-what-it-means-for-e/",
+      "tickers": ["AVGO", "CRWD", "PANW", "META", "MSFT"],
+      "view": "Broadcom、CrowdStrike、Palo Alto 等 AI 或 AI-adjacent 资产在财报后被集中审视，市场关心的是 AI bull run 能否继续由财报上修支撑。",
+      "framework_mapping": ["AI ASIC / Custom Silicon", "Cybersecurity", "Hyperscaler Capex", "AI Applications / ROI"],
+      "cross_check": "这把本轮问题从单一 Broadcom 扩展为更广泛的“AI 预期门槛”问题：长期趋势仍在，但短期必须用业绩和指引继续证明。",
+      "a_share_readthrough": "对旭创/沪电/澜起的启示是维持主线但降低追高冲动；若后续海外 AI 龙头不能继续上修，A 股高弹性映射会先受估值压缩影响。"
+    }
+  ]
+}

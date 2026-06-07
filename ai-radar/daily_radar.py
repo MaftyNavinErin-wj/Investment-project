@@ -11,10 +11,12 @@ import shutil
 import subprocess
 import sys
 import textwrap
+import time
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from html.parser import HTMLParser
 
 
@@ -410,7 +412,7 @@ def parse_date(value):
         return None
 
 
-def fetch_url(url, timeout=18):
+def fetch_url(url, timeout=8):
     req = urllib.request.Request(
         url,
         headers={
@@ -418,11 +420,19 @@ def fetch_url(url, timeout=18):
             "Accept": "application/rss+xml, application/xml, text/xml, text/html;q=0.9,*/*;q=0.8",
         },
     )
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return resp.read()
+    last_exc = None
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                return resp.read()
+        except Exception as exc:
+            last_exc = exc
+            if attempt < 2:
+                time.sleep(0.5 * (attempt + 1))
+    raise last_exc
 
 
-def fetch_json(url, timeout=18):
+def fetch_json(url, timeout=8):
     return json.loads(fetch_url(url, timeout=timeout).decode("utf-8", errors="replace"))
 
 
@@ -472,6 +482,27 @@ def fetch_google_news(query, max_items):
             }
         )
     return items
+
+
+def run_fetch_jobs(jobs, max_workers=12):
+    results = []
+    errors = []
+    if not jobs:
+        return results, errors
+    worker_count = max(1, min(int(max_workers or 1), len(jobs)))
+    with ThreadPoolExecutor(max_workers=worker_count) as executor:
+        futures = {executor.submit(job["fn"], *job["args"]): job for job in jobs}
+        for future in as_completed(futures):
+            job = futures[future]
+            try:
+                items = future.result()
+                for item in items:
+                    for key, value in job.get("attrs", {}).items():
+                        item[key] = value
+                    results.append(item)
+            except Exception as exc:
+                errors.append(f"{job.get('label')}: {exc}")
+    return results, errors
 
 
 class NewsHTMLParser(HTMLParser):
@@ -1051,8 +1082,7 @@ def themes_for_evidence_segments(config, segments):
 def collect_trusted_news_items(config):
     max_items = int(config.get("source_lane_max_items_per_query", config.get("trusted_max_items_per_query", min(6, int(config.get("max_items_per_query", 10))))))
     specs = config.get("trusted_news_queries") or TRUSTED_NEWS_QUERY_SPECS
-    all_items = []
-    errors = []
+    jobs = []
     for spec in specs:
         if isinstance(spec, str):
             name = spec
@@ -1070,26 +1100,16 @@ def collect_trusted_news_items(config):
             use_bing = bool(spec.get("use_bing"))
         if not query:
             continue
-        try:
-            for item in fetch_google_news(query, max_items):
-                item["theme_hint"] = theme_hint
-                item["query_dimension"] = name
-                item["source_channel"] = source_channel
-                item["coverage_lane"] = coverage_lane
-                all_items.append(item)
-        except Exception as exc:
-            errors.append(f"Trusted source / {name}: {exc}")
+        attrs = {
+            "theme_hint": theme_hint,
+            "query_dimension": name,
+            "source_channel": source_channel,
+            "coverage_lane": coverage_lane,
+        }
+        jobs.append({"fn": fetch_google_news, "args": (query, max_items), "attrs": attrs, "label": f"Trusted source / {name}"})
         if use_bing:
-            try:
-                for item in fetch_bing_news(query, max_items):
-                    item["theme_hint"] = theme_hint
-                    item["query_dimension"] = name
-                    item["source_channel"] = source_channel
-                    item["coverage_lane"] = coverage_lane
-                    all_items.append(item)
-            except Exception as exc:
-                errors.append(f"Trusted source / Bing / {name}: {exc}")
-    return all_items, errors
+            jobs.append({"fn": fetch_bing_news, "args": (query, max_items), "attrs": attrs, "label": f"Trusted source / Bing / {name}"})
+    return run_fetch_jobs(jobs, config.get("news_fetch_workers", 12))
 
 
 def load_local_evidence_index(config):
@@ -1188,20 +1208,15 @@ def collect_items(config, since=None):
     max_items = int(config.get("max_items_per_query", 10))
     all_items = []
     errors = []
+    jobs = []
     for theme in config["themes"]:
         for query in theme["queries"]:
-            try:
-                for item in fetch_bing_news(query, max_items):
-                    item["theme_hint"] = theme["id"]
-                    all_items.append(item)
-            except Exception as exc:
-                errors.append(f"{theme['name']} / {query}: {exc}")
-            try:
-                for item in fetch_google_news(query, max_items):
-                    item["theme_hint"] = theme["id"]
-                    all_items.append(item)
-            except Exception as exc:
-                errors.append(f"{theme['name']} / Google / {query}: {exc}")
+            attrs = {"theme_hint": theme["id"]}
+            jobs.append({"fn": fetch_bing_news, "args": (query, max_items), "attrs": attrs, "label": f"{theme['name']} / {query}"})
+            jobs.append({"fn": fetch_google_news, "args": (query, max_items), "attrs": attrs, "label": f"{theme['name']} / Google / {query}"})
+    fetched_items, fetch_errors = run_fetch_jobs(jobs, config.get("news_fetch_workers", 12))
+    all_items.extend(fetched_items)
+    errors.extend(fetch_errors)
     manual_dir = os.path.join(PROJECT_ROOT, config.get("manual_inbox_dir", "manual_inbox"))
     all_items.extend(read_manual_inbox(manual_dir))
     trusted_items, trusted_errors = collect_trusted_news_items(config)
@@ -1218,21 +1233,12 @@ def collect_items(config, since=None):
 
 def collect_discovery_items(config, since=None):
     max_items = int(config.get("max_items_per_query", 10))
-    all_items = []
-    errors = []
+    jobs = []
     for query in config.get("discovery_queries", []):
-        try:
-            for item in fetch_bing_news(query, max_items):
-                item["theme_hint"] = "discovery"
-                all_items.append(item)
-        except Exception as exc:
-            errors.append(f"Discovery / {query}: {exc}")
-        try:
-            for item in fetch_google_news(query, max_items):
-                item["theme_hint"] = "discovery"
-                all_items.append(item)
-        except Exception as exc:
-            errors.append(f"Discovery / Google / {query}: {exc}")
+        attrs = {"theme_hint": "discovery"}
+        jobs.append({"fn": fetch_bing_news, "args": (query, max_items), "attrs": attrs, "label": f"Discovery / {query}"})
+        jobs.append({"fn": fetch_google_news, "args": (query, max_items), "attrs": attrs, "label": f"Discovery / Google / {query}"})
+    all_items, errors = run_fetch_jobs(jobs, config.get("news_fetch_workers", 12))
     dedup = {}
     for item in all_items:
         if within_delta_window(item, since):
@@ -3447,6 +3453,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default=os.path.join(ROOT, "config.json"))
     parser.add_argument("--output", default=None)
+    parser.add_argument("--market-only", action="store_true", help="Skip live news/web collection and build from Bloomberg/local market data")
+    parser.add_argument("--skip-pdf", action="store_true", help="Write markdown/html only")
     args = parser.parse_args()
 
     config = load_config(args.config)
@@ -3463,9 +3471,13 @@ def main():
     if delta_since is None:
         delta_since = report_issued_at - dt.timedelta(days=int(config.get("lookback_days", 1)))
 
-    raw_items, errors = collect_items(config, since=delta_since)
-    discovery_items, discovery_errors = collect_discovery_items(config, since=delta_since)
-    errors.extend(discovery_errors)
+    if args.market_only:
+        raw_items, errors = [], ["market-only run: skipped live news/web collection"]
+        discovery_items, discovery_errors = [], []
+    else:
+        raw_items, errors = collect_items(config, since=delta_since)
+        discovery_items, discovery_errors = collect_discovery_items(config, since=delta_since)
+        errors.extend(discovery_errors)
     by_theme = classify_items(config, raw_items, since=delta_since)
     evidence_audit = save_evidence_audit(raw_items, by_theme, errors, report_issued_at, delta_since, discovery_items)
     market_rows, market_errors = collect_market_data(config)
@@ -3506,15 +3518,16 @@ def main():
     with open(readthrough_html_output, "w", encoding="utf-8") as f:
         f.write(markdown_to_html(readthrough, f"{config.get('report_title', 'AI Capex Radar')} Readthrough"))
     pdf_ok = False
-    try:
-        pdf_ok = render_pdf(html_output, pdf_output)
-    except Exception as exc:
-        print(f"PDF export failed: {exc}")
     readthrough_pdf_ok = False
-    try:
-        readthrough_pdf_ok = render_pdf(readthrough_html_output, readthrough_pdf_output)
-    except Exception as exc:
-        print(f"Readthrough PDF export failed: {exc}")
+    if not args.skip_pdf:
+        try:
+            pdf_ok = render_pdf(html_output, pdf_output)
+        except Exception as exc:
+            print(f"PDF export failed: {exc}")
+        try:
+            readthrough_pdf_ok = render_pdf(readthrough_html_output, readthrough_pdf_output)
+        except Exception as exc:
+            print(f"Readthrough PDF export failed: {exc}")
     print(output)
     print(readthrough_output)
     print(html_output)

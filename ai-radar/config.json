@@ -227,6 +227,10 @@
       "logic": "Direct AI capex layer. Demand is clear, but market awareness is very high.",
       "reps": [
         {
+          "name": "NVIDIA",
+          "quote": "NVDA"
+        },
+        {
           "name": "Dell Technologies",
           "quote": "DELL"
         },
@@ -417,6 +421,10 @@
       "distance": "near_mid",
       "logic": "High-speed signal-chain complexity benefits connectors, SerDes, cables and interconnect solutions.",
       "reps": [
+        {
+          "name": "Broadcom",
+          "quote": "AVGO"
+        },
         {
           "name": "AVIC Jonhon",
           "quote": "002179.SZ"
@@ -1471,6 +1479,53 @@
         "networking_optics"
       ],
       "reason": "AI 服务器/网络系统制造代表票。"
+    },
+    {
+      "name": "NVIDIA",
+      "quote": "NVDA",
+      "themes": [
+        "ai_capex",
+        "networking_optics",
+        "memory"
+      ],
+      "reason": "AI GPU/data center chain master，用来跟踪本轮外围硬件杀估值和 AI demand 是否被证伪。"
+    },
+    {
+      "name": "Broadcom",
+      "quote": "AVGO",
+      "themes": [
+        "ai_capex",
+        "networking_optics",
+        "emerging_second_order"
+      ],
+      "reason": "Custom ASIC、AI networking、SerDes 和 VMware/software 转型代表票，是本轮 Broadcom guidance shock 的直接触发源。"
+    },
+    {
+      "name": "AMD",
+      "quote": "AMD",
+      "themes": [
+        "ai_capex",
+        "memory"
+      ],
+      "reason": "AI accelerator beta 和半导体风险偏好代表票，用于区分 AI compute 需求和板块去拥挤。"
+    },
+    {
+      "name": "Marvell",
+      "quote": "MRVL",
+      "themes": [
+        "networking_optics",
+        "emerging_second_order"
+      ],
+      "reason": "AI networking、custom silicon 和高速连接器代表票，跟踪 Broadcom read-through 是否扩散。"
+    },
+    {
+      "name": "Arm",
+      "quote": "ARM",
+      "themes": [
+        "ai_capex",
+        "emerging_second_order"
+      ],
+      "reason": "AI compute IP/edge-to-cloud beta 代表票，用于观察高估值 AI semiconductor 拥挤压力。"
     },
     {
       "name": "Amazon",

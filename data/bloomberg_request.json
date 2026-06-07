@@ -218,6 +218,31 @@
       "security": "DELL US Equity"
     },
     {
+      "name": "NVIDIA",
+      "quote": "NVDA",
+      "security": "NVDA US Equity"
+    },
+    {
+      "name": "Broadcom",
+      "quote": "AVGO",
+      "security": "AVGO US Equity"
+    },
+    {
+      "name": "AMD",
+      "quote": "AMD",
+      "security": "AMD US Equity"
+    },
+    {
+      "name": "Marvell",
+      "quote": "MRVL",
+      "security": "MRVL US Equity"
+    },
+    {
+      "name": "Arm",
+      "quote": "ARM",
+      "security": "ARM US Equity"
+    },
+    {
       "name": "Corning",
       "quote": "GLW",
       "security": "GLW US Equity"
