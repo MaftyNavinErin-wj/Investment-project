@@ -1,0 +1,65 @@
+{
+  "date": "2026-06-08",
+  "scope": "外部 KOL / 市场叙事 idea feed，用来交叉验证 AI capex 框架和拥挤度；不作为买卖建议，也不替代公司公告、Bloomberg 数据、订单和盈利预测。",
+  "method": "补充检查 2026-06-05 至 2026-06-08 的 CNBC/Cramer、YouTube 元数据、Bloomberg/公开播客、市场复盘和社区逐字稿复盘。未发现 2026-06-08 当天可直接读取、且比 2026-06-07 KOL 文件更新的官方 CNBC/Cramer AI capex 强增量片段；因此本轮 KOL 结论以“无新增反转信号 + 拥挤交易复核”为主。",
+  "coverage_note": "本轮重点覆盖 Broadcom、Nvidia、AI data center、AI capex ROI、半导体去拥挤和 A 股 AI 硬件映射。YouTube 元数据未发现 2026-06-08 官方 CNBC/Mad Money 新片段；检索到的近端视频和公开叙事主要指向 6 月 5-6 日，结论只作为市场拥挤度和叙事温度校验。",
+  "framework_takeaway": {
+    "stance": "6 月 8 日没有发现新的高质量官方 KOL 证据来推翻 AI capex 主线，也没有发现能支持“无视拥挤继续追高”的新观点。外部叙事的边际变化仍是：AI 基建长期需求被认可，但 Broadcom/AI 软件和硬件龙头的反应说明市场开始要求更明确的上修，而不是只接受主题叙事。",
+    "report_use": "报告中继续把 KOL 段落用于拥挤度校验：A 股光模块、PCB、内存接口、服务器链不因 KOL 热度而升级；只有公司级订单、毛利、产能利用率或盈利预测继续上修，才支持继续加仓。若只是社媒/节目层面的 AI capex 热度，最多作为趋势确认，不作为买点。"
+  },
+  "sources": [
+    {
+      "source": "Bloomberg This Weekend | Major Indexes Tumble, Trump Eyes Government Stake in AI",
+      "url": "https://www.youtube.com/watch?v=5ugtVb0aafM",
+      "note": "YouTube 元数据，Bloomberg Podcasts，上传日期 2026-06-06。作为宏观市场叙事和 AI 公共资本/compute rush 讨论的背景样本，不作为公司级证据。"
+    },
+    {
+      "source": "I went through the AVGO transcript line by line. Here's what I actually found.",
+      "url": "https://www.reddit.com/r/investing/comments/1ty77by/i_went_through_the_avgo_transcript_line_by_line/",
+      "note": "Reddit 社区复盘，发布于 2026-06-06。样本价值在于观察市场如何解释 Broadcom 下跌：不是需求消失，而是高预期没有继续上修。"
+    },
+    {
+      "source": "Technology stocks trail broader market as investors question AI infrastructure ROI",
+      "url": "https://www.stockstracker.com/market/articles/581",
+      "note": "市场复盘样本，发布于 2026-06 初。用于交叉验证 AI capex 从“买增长故事”转向“要求利润和回报证明”的叙事变化。"
+    }
+  ],
+  "items": [
+    {
+      "person": "Market narrative / Bloomberg public discussion",
+      "program": "Bloomberg Podcasts",
+      "date": "2026-06-06",
+      "topic": "Major indexes tumble; public money and AI compute rush",
+      "source_url": "https://www.youtube.com/watch?v=5ugtVb0aafM",
+      "tickers": ["NVDA", "AVGO", "AMD", "MRVL"],
+      "view": "公开市场叙事仍围绕 AI compute rush 和政策/公共资本参与展开，但同时把指数下跌、科技股拥挤和宏观风险放在同一个框架里讨论。",
+      "framework_mapping": ["AI Capex", "Policy / Public Capital", "Valuation / Crowding", "Macro Risk"],
+      "cross_check": "这与报告判断一致：AI capex 长期方向没有被否定，但短期交易主要受估值、利率和拥挤度约束。KOL/节目叙事不能替代订单和盈利上修。",
+      "a_share_readthrough": "对 A 股算力链的含义是保留产业主线，但避免把政策/海外节目热度直接映射成追高理由；中际旭创、沪电股份、澜起科技等仍要回到订单和盈利兑现。"
+    },
+    {
+      "person": "Community transcript review",
+      "program": "Reddit / r/investing",
+      "date": "2026-06-06",
+      "topic": "Broadcom transcript line-by-line review",
+      "source_url": "https://www.reddit.com/r/investing/comments/1ty77by/i_went_through_the_avgo_transcript_line_by_line/",
+      "tickers": ["AVGO", "NVDA", "GOOGL", "META"],
+      "view": "社区复盘的核心不是说 AI 需求塌了，而是认为 Broadcom 已经给出很强可见度，但市场仍因 FY2027 AI 收入预期未进一步上修而卖出。",
+      "framework_mapping": ["AI ASIC / Custom Silicon", "Data Center Networking", "Valuation / Crowding", "Earnings Revision"],
+      "cross_check": "这强化了“强需求不等于好交易”的判断。AI ASIC/networking 方向仍强，但高位资产需要连续上修来消化估值。",
+      "a_share_readthrough": "对中际旭创、沪电股份、澜起科技、新易盛的映射是：逻辑强度不降，但仓位管理要更依赖半年报预期、订单和毛利变化；没有上修就不应因为海外 AI 叙事继续提高集中度。"
+    },
+    {
+      "person": "Market recap / AI ROI narrative",
+      "program": "StocksTracker market article",
+      "date": "2026-06-06",
+      "topic": "AI infrastructure ROI and Broadcom expectation reset",
+      "source_url": "https://www.stockstracker.com/market/articles/581",
+      "tickers": ["AVGO", "MSFT", "NVDA", "MRVL", "AMD"],
+      "view": "市场叙事从单纯追逐 AI capex 转向追问 ROI、利润证明和指引上修；Broadcom 未上调 AI 销售预期成为高预期重定价的样本。",
+      "framework_mapping": ["AI Capex ROI", "Semiconductor Crowding", "Software Monetization", "Discount Rate"],
+      "cross_check": "这与报告中的资金侧判断一致：不是 AI capex 被证伪，而是 discount-rate + crowding 的组合变差，市场更挑剔。",
+      "a_share_readthrough": "A 股硬件链短期更适合做持仓兑现复核，不适合扩大无差别 AI 硬件仓位；可把光纤、电力、低拥挤应用 ROI 方向作为观察池，但仍需公司级证据。"
+    }
+  ]
+}

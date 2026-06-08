@@ -10,6 +10,16 @@ The daily workflow answers one question:
 
 Do not treat KOLs, YouTube clips, social media, or recap articles as conviction sources. They are idea feeds and crowding/narrative checks. Framework changes should come from company evidence, market data, Bloomberg snapshots, and repeatable segment logic.
 
+## Operator Trigger Rule
+
+When the user says "更新报告", the first action is to refresh the VDI-side Bloomberg scripts/request files:
+
+```powershell
+.\scripts\sync-bloomberg-shared.ps1 -Mode Push
+```
+
+Then stop and let the user run the Bloomberg export inside VDI. Do not generate the final report until the user confirms the VDI export has finished and the latest Bloomberg files have been pulled back locally.
+
 ## 1. Start Clean
 
 From the project root:
