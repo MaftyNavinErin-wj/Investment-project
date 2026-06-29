@@ -51,7 +51,7 @@ STOPWORDS = {
     "under", "while", "with", "would", "year", "years", "your", "news", "market", "markets", "shares",
     "company", "companies", "inc", "corp", "group", "holdings", "technology", "technologies", "and",
     "the", "for", "are", "was", "will", "has", "had", "its", "our", "you", "can", "may", "center",
-    "centers", "infrastructure", "business", "growth", "driver", "drivers", "largest", "world"
+    "centers", "infrastructure", "business", "growth", "driver", "drivers", "largest", "world", "now"
 }
 
 PRIMARY_SOURCE_TERMS = (
@@ -834,7 +834,7 @@ def company_identity_terms(config):
             candidates.append(cleaned)
         for candidate in candidates:
             lowered = candidate.lower()
-            if len(lowered) >= 3 and lowered not in terms:
+            if len(lowered) >= 3 and lowered not in STOPWORDS and lowered not in terms:
                 terms.append(lowered)
 
     for bucket in ("holdings", "watchlist"):
@@ -967,6 +967,7 @@ def evidence_sort_key(item):
     }
     published = item.get("published") or dt.datetime.min
     return (
+        evidence_novelty_score(item),
         evidence_event_quality(item),
         strength_rank.get(item.get("evidence_strength"), 0),
         effect_rank.get(item.get("thesis_effect"), 0),
@@ -978,11 +979,11 @@ def evidence_sort_key(item):
 
 def evidence_event_quality(item):
     text = normalize_text(item)
-    score = 0
+    score = evidence_novelty_score(item)
     if any(term in text for term in ["backlog", "server revenue", "revenue outlook", "guidance", "orders", "order book"]):
-        score += 4
+        score += 2
     if any(term in text for term in ["ai server", "data center utilization", "capex", "customer demand"]):
-        score += 3
+        score += 1
     if item.get("thesis_effect") in ("supports_thesis", "refutes_or_risks_thesis", "mixed_signal"):
         score += 2
     if item.get("source_tier") in ("primary_evidence", "trusted_news", "manual_evidence"):
@@ -991,7 +992,82 @@ def evidence_event_quality(item):
         score -= 2
     if item.get("thesis_effect") == "crowding_signal":
         score -= 1
+    if is_old_consensus_item(item):
+        score -= 5
     return score
+
+
+SURPRISE_TERMS = (
+    "raise", "raised", "raises", "raising", "upgrade", "upgraded", "beats", "beat",
+    "miss", "misses", "cut", "cuts", "lower", "lowered", "increase", "increases",
+    "price increase", "price gains", "shatters estimates", "forecast", "outlook",
+    "guidance", "accelerates", "accelerate", "first", "new", "contract", "order",
+    "orders", "backlog", "sold out", "shortage", "tight", "supply", "delay",
+    "grid hook", "interconnection", "financing", "debt", "free cash flow", "margin",
+    "revenue growth", "multiple inflection"
+)
+
+RECAP_OR_CROWDING_TERMS = (
+    "rockets", "soars", "surges", "surged", "rallies", "rally", "shares climb",
+    "stock climbs", "stock rockets", "stock soars", "why ", "explained",
+    "what happened", "year to date", "ytd", "250%", "757%", "boom", "roars back"
+)
+
+AGGREGATOR_TERMS = (
+    "msn.com", "aol.com", "yahoo.com", "finance.yahoo.com", "blockonomi.com",
+    "247wallst", "fool.com", "stockstracker"
+)
+
+
+def evidence_novelty_score(item):
+    text = normalize_text(item)
+    source = source_text(item)
+    score = 0
+    if item.get("source_tier") in ("primary_evidence", "manual_evidence"):
+        score += 3
+    elif item.get("source_tier") == "trusted_news":
+        score += 2
+    elif item.get("source_tier") == "kol_social":
+        score -= 3
+    if any(term in text for term in SURPRISE_TERMS):
+        score += 2
+    if any(term in text for term in ["price increase", "price gains", "shatters estimates", "accelerates", "multiple inflection", "grid hook", "interconnection"]):
+        score += 2
+    if item.get("evidence_scope") == "direct_company_evidence":
+        score += 1
+    if item.get("thesis_effect") == "refutes_or_risks_thesis":
+        score += 2
+    if item.get("thesis_effect") == "crowding_signal":
+        score -= 2
+    if any(term in text for term in RECAP_OR_CROWDING_TERMS):
+        score -= 3
+    if any(term in source for term in AGGREGATOR_TERMS):
+        score -= 2
+    if "dell" in text and any(term in text for term in ["ai server", "server revenue", "backlog", "ai factory", "supercomputing", "hpc", "757%", "250%"]):
+        score -= 4
+    return score
+
+
+def is_old_consensus_item(item):
+    text = normalize_text(item)
+    source = source_text(item)
+    if item.get("source_tier") == "kol_social":
+        return True
+    if any(term in text for term in RECAP_OR_CROWDING_TERMS):
+        return True
+    if any(term in source for term in AGGREGATOR_TERMS) and not any(term in text for term in ["price increase", "accelerates", "cut", "miss", "delay", "contract", "order"]):
+        return True
+    if "dell" in text and any(term in text for term in ["ai", "ai server", "server revenue", "backlog", "ai factory", "supercomputing", "hpc", "757%", "250%"]):
+        return True
+    return False
+
+
+def evidence_bucket(item):
+    if is_old_consensus_item(item):
+        return "old_consensus"
+    if item.get("source_tier") in ("primary_evidence", "trusted_news", "manual_evidence") and evidence_novelty_score(item) >= 3:
+        return "new_delta"
+    return "background"
 
 
 def score_item(item, theme):
@@ -1495,6 +1571,15 @@ def load_bloomberg_snapshot():
                 "price_to_book": parse_float(fields.get("PX_TO_BOOK_RATIO")),
                 "enterprise_value": parse_float(fields.get("CURR_ENTP_VAL")),
                 "ttm_eps": parse_float(fields.get("TRAIL_12M_EPS")),
+                "volume": parse_float(fields.get("VOLUME")),
+                "volume_avg_30d": parse_float(fields.get("VOLUME_AVG_30D")),
+                "free_float_pct": parse_float(fields.get("EQY_FREE_FLOAT_PCT")),
+                "short_interest_ratio": parse_float(fields.get("SHORT_INT_RATIO")),
+                "beta": parse_float(fields.get("BETA_ADJ_OVERRIDABLE")),
+                "volatility_30d": parse_float(fields.get("VOLATILITY_30D")),
+                "best_eps": parse_float(fields.get("BEST_EPS")),
+                "best_sales": parse_float(fields.get("BEST_SALES")),
+                "best_target_price": parse_float(fields.get("BEST_TARGET_PRICE")),
                 "returns": {
                     "1M": parse_float(fields.get("CHG_PCT_1M")),
                     "3M": parse_float(fields.get("CHG_PCT_3M")),
@@ -1840,12 +1925,38 @@ def crowded_by_valuation(row):
     return "估值中性"
 
 
+def positioning_crowding_score(row):
+    volume = row.get("volume")
+    avg_volume = row.get("volume_avg_30d")
+    short_ratio = row.get("short_interest_ratio")
+    volatility = row.get("volatility_30d")
+    score = 0
+    if volume is not None and avg_volume not in (None, 0):
+        volume_ratio = volume / avg_volume
+        if volume_ratio >= 2.0:
+            score += 2
+        elif volume_ratio >= 1.5:
+            score += 1
+    if short_ratio is not None:
+        if short_ratio >= 5:
+            score += 2
+        elif short_ratio >= 3:
+            score += 1
+    if volatility is not None:
+        if volatility >= 80:
+            score += 2
+        elif volatility >= 55:
+            score += 1
+    return score
+
+
 def combined_crowding(row):
     ret = crowded_by_return(row)
     val = crowded_by_valuation(row)
-    if "极拥挤" in ret or val == "估值很贵":
+    positioning = positioning_crowding_score(row)
+    if "极拥挤" in ret or val == "估值很贵" or positioning >= 3:
         return "高拥挤"
-    if "偏拥挤" in ret or val == "估值偏贵":
+    if "偏拥挤" in ret or val == "估值偏贵" or positioning >= 2:
         return "中高拥挤"
     if ret in ("不算拥挤", "降温/回撤") and val in ("估值尚可", "估值中性", "估值缺口"):
         return "拥挤度尚可"
@@ -2351,7 +2462,9 @@ def segment_crowding(rep_rows):
 def segment_delta(segment, by_theme, discovery_topics):
     signals = []
     for theme_id in segment.get("themes", []):
-        items = by_theme.get(theme_id, [])
+        items = [item for item in by_theme.get(theme_id, []) if evidence_bucket(item) == "new_delta"]
+        if not items:
+            continue
         direction = theme_signal(items)
         if direction in ("利好", "利空"):
             driver = signal_driver(items, direction)
@@ -2489,24 +2602,17 @@ def ai_capex_macro_view(by_theme):
     ]
     pos_hits = sorted({term for term in pos_terms if term in texts})
     risk_hits = sorted({term for term in risk_terms if term in texts})
-    dell_hits = [
-        item for item in items
-        if "dell" in normalize_text(item) and any(term in normalize_text(item) for term in ["server", "backlog", "guidance", "revenue"])
-    ]
+    new_delta_items = [item for item in items if evidence_bucket(item) == "new_delta"]
+    old_consensus_items = [item for item in items if evidence_bucket(item) == "old_consensus"]
     if len(pos_hits) >= 3 and len(risk_hits) >= 3:
         stance = "中性偏利好"
         consensus_delta = "边际强化，不是全市场 capex consensus 的大幅改写"
-        read_through = "Dell 对 AI server 订单和 backlog 是硬证据，但更像供应链需求韧性的追加确认；若是全市场 consensus 大幅上修，供应链应出现更广谱的大涨和盈利预测同步上修。"
+        read_through = "新增证据同时包含需求强化和风险约束，二级市场读法不是全链条上修，而是只奖励能带来订单、价格、交付或盈利预测继续上修的环节。"
         risk_level = "中高"
     elif len(pos_hits) >= 3:
         stance = "利好"
         consensus_delta = "需求侧边际强化"
         read_through = "新增信息主要支持 AI 基建继续扩张，但仍需要观察是否扩散到更多 hyperscaler 和供应链盈利预测。"
-        risk_level = "中"
-    elif dell_hits:
-        stance = "中性偏利好"
-        consensus_delta = "服务器链需求韧性边际确认，但不是全市场 capex consensus 改写"
-        read_through = "Dell 对 AI server 收入/订单/积压是单公司硬增量；读法应是需求韧性被确认，而不是把全链条无差别上修。"
         risk_level = "中"
     elif len(risk_hits) >= 3:
         stance = "利空"
@@ -2516,11 +2622,11 @@ def ai_capex_macro_view(by_theme):
     else:
         stance = "中性"
         consensus_delta = "未见足够强的新共识变化"
-        read_through = "本窗口新增证据不足以改变 AI capex 总判断。"
+        read_through = "本窗口新增证据不足以改变 AI capex 总判断；旧共识只能作背景，不能驱动仓位。"
         risk_level = "待确认"
     evidence = []
     evidence_titles = set()
-    for item in dell_hits + items:
+    for item in new_delta_items + items:
         title_key = canonical_title(item.get("title"))
         if item_key(item) in {item_key(existing) for existing in evidence} or title_key in evidence_titles:
             continue
@@ -2537,7 +2643,8 @@ def ai_capex_macro_view(by_theme):
         "pos_hits": pos_hits,
         "risk_hits": risk_hits,
         "top_items": evidence,
-        "dell_hits": dell_hits,
+        "new_delta_items": new_delta_items,
+        "old_consensus_items": old_consensus_items,
     }
 
 
@@ -2562,8 +2669,6 @@ def canonical_title(value):
 
 def canonical_event_key(item):
     text = normalize_text(item)
-    if "dell" in text and any(term in text for term in ["ai server", "server revenue", "backlog", "earnings", "raised outlook", "revenue outlook", "guidance", "ai boom"]):
-        return "dell_ai_server_results"
     if "bubble" in text and "ai capex" in text:
         return "ai_capex_bubble_risk"
     if "kuaishou" in text and any(term in text for term in ["monetization", "revenue", "kling"]):
@@ -2573,41 +2678,77 @@ def canonical_event_key(item):
     return canonical_title(item.get("title"))
 
 
-def evidence_table_rows(by_theme, limit=8):
+def evidence_table_rows(by_theme, limit=8, bucket="new_delta"):
     rows = []
     seen = set()
     seen_titles = set()
     priority = ["ai_capex", "networking_optics", "memory", "power_cooling", "ai_app_roi", "emerging_second_order"]
+    theme_lists = {}
     for theme_id in priority:
-        for item in by_theme.get(theme_id, []):
-            key = item_key(item)
-            title_key = canonical_event_key(item)
-            if key in seen or title_key in seen_titles:
+        items = [
+            item for item in sorted(by_theme.get(theme_id, []), key=evidence_sort_key, reverse=True)
+            if not bucket or evidence_bucket(item) == bucket
+        ]
+        if items:
+            theme_lists[theme_id] = items
+
+    def append_row(theme_id, item):
+        key = item_key(item)
+        title_key = canonical_event_key(item)
+        if key in seen or title_key in seen_titles:
+            return False
+        seen.add(key)
+        if title_key:
+            seen_titles.add(title_key)
+        tags = []
+        if item.get("positive_hits"):
+            tags.extend(item["positive_hits"][:2])
+        if item.get("negative_hits"):
+            tags.extend(item["negative_hits"][:2])
+        if item.get("crowded_hits"):
+            tags.append("拥挤:" + ",".join(item["crowded_hits"][:2]))
+        if item.get("evidence_reasons"):
+            tags.extend(item["evidence_reasons"][:2])
+        tags.append(f"novelty={evidence_novelty_score(item)}")
+        rows.append({
+            "theme": theme_id,
+            "item": item,
+            "direction": evidence_direction(item),
+            "tier": item.get("source_tier", "search_intel"),
+            "scope": item.get("evidence_scope", "background_or_noise"),
+            "strength": item.get("evidence_strength", "low"),
+            "tags": tags,
+            "bucket": evidence_bucket(item),
+        })
+        return True
+
+    offset = 0
+    while len(rows) < limit:
+        added = False
+        for theme_id in priority:
+            items = theme_lists.get(theme_id) or []
+            if offset >= len(items):
                 continue
-            seen.add(key)
-            if title_key:
-                seen_titles.add(title_key)
-            tags = []
-            if item.get("positive_hits"):
-                tags.extend(item["positive_hits"][:2])
-            if item.get("negative_hits"):
-                tags.extend(item["negative_hits"][:2])
-            if item.get("crowded_hits"):
-                tags.append("拥挤:" + ",".join(item["crowded_hits"][:2]))
-            if item.get("evidence_reasons"):
-                tags.extend(item["evidence_reasons"][:2])
-            rows.append({
-                "theme": theme_id,
-                "item": item,
-                "direction": evidence_direction(item),
-                "tier": item.get("source_tier", "search_intel"),
-                "scope": item.get("evidence_scope", "background_or_noise"),
-                "strength": item.get("evidence_strength", "low"),
-                "tags": tags,
-            })
+            added = append_row(theme_id, items[offset]) or added
             if len(rows) >= limit:
                 return rows
+        if not added:
+            break
+        offset += 1
     return rows
+
+
+def evidence_rows_summary(rows, fallback):
+    if not rows:
+        return fallback
+    parts = []
+    for row in rows[:4]:
+        item = row["item"]
+        title = re.sub(r"\s+", " ", item.get("title") or "").strip()
+        if len(title) > 78:
+            title = title[:75].rstrip() + "..."
+        parts.append(f"{row['theme']}：{title}")
+    return "；".join(parts)
 
 
 def quote_market(quote):
@@ -3000,31 +3141,18 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
     ]
     pullback_rows = pullback_risk_dashboard(config, market_rows, by_theme)
     high_pullback = [item for item in pullback_rows if item["risk"]["level"] in ("高", "中高")]
-    dell_items = [
-        item for item in by_theme.get("ai_capex", [])
-        if "dell" in normalize_text(item) and any(term in normalize_text(item) for term in ["server", "backlog", "orders", "guidance", "revenue"])
-    ]
-    front_evidence = evidence_table_rows(by_theme, limit=8)
+    front_evidence = evidence_table_rows(by_theme, limit=8, bucket="new_delta")
+    old_consensus_evidence = evidence_table_rows(by_theme, limit=6, bucket="old_consensus")
     kol_watch = load_latest_kol_watch()
     audit_counts = (evidence_audit or {}).get("counts", {})
     retained_counts = (evidence_audit or {}).get("retained_counts", {})
     coverage_matrix = (evidence_audit or {}).get("coverage_matrix", {})
     lines.append("## 今日先看")
     lines.append("")
-    lines.append(f"- **总判断**：需求侧={macro['stance']}，宏观/资金侧={macro_market['verdict']}。本轮更像“{macro['consensus_delta']}”，不是无条件的全链条需求大幅上修。")
-    if dell_items:
-        top = sorted(
-            dell_items,
-            key=lambda item: (
-                item.get("source_tier") != "kol_social",
-                any(term in normalize_text(item) for term in ["backlog", "server revenue", "guidance", "revenue outlook"]),
-                item.get("published") or dt.datetime.min,
-            ),
-            reverse=True,
-        )[0]
-        lines.append(f"- **关键事件**：Dell AI server 业绩/订单/积压进入本轮 delta，验证 AI server 需求韧性；但这是单公司/服务器链条的边际确认，不等于 hyperscaler capex consensus 被全市场大幅改写。来源：[Dell result]({top.get('link')})。")
-    else:
-        lines.append("- **关键事件**：本轮没有被自动抓到足够强的 AI server 单公司业绩事件；这类事件以后必须进入优先事件监控。")
+    lines.append(f"- **总判断**：需求侧={macro['stance']}，宏观/资金侧={macro_market['verdict']}。二级市场只应奖励 update window 里的新事实；旧 AI server/Dell 叙事只能作为基准，不当作新 signal。")
+    lines.append(f"- **新增 delta**：{evidence_rows_summary(front_evidence, '本轮没有抓到足够强、足够新的公司/产业级证据；仓位不应靠旧共识加码。')}")
+    if old_consensus_evidence:
+        lines.append(f"- **旧共识复核**：{evidence_rows_summary(old_consensus_evidence, '')}。这些只用于判断拥挤和市场叙事，不驱动新增仓位。")
     lines.append(f"- **读法**：{macro['read_through']}")
     lines.append(f"- **Macro risk**：{macro_market['message']}")
     if candidates:
@@ -3039,7 +3167,7 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
 
     lines.append("## 本轮新增证据")
     lines.append("")
-    lines.append("先看 update window 里真正新增的事实，再读后面的历史基准和拥挤度。后台已按硬证据/可信新闻/搜索线索/KOL 舆情分层，并区分公司直连、行业主题、宏观资金和背景噪音；方向只代表这条新闻/事实对 AI capex 链条的边际含义。")
+    lines.append("先看 update window 里真正新增的事实，再读历史基准、旧共识和拥挤度。后台已按硬证据/可信新闻/搜索线索/KOL 舆情分层，并区分公司直连、行业主题、宏观资金和背景噪音；方向只代表这条新闻/事实对 AI capex 链条的边际含义。")
     if audit_counts:
         lines.append(
             f"- Evidence engine：raw={audit_counts.get('raw_items', 0)}，retained={audit_counts.get('retained_items', 0)}，"
@@ -3081,6 +3209,19 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
     else:
         lines.append("| 中性 | n/a | n/a | 本轮没有足够强的新证据 | n/a | n/a |")
     lines.append("")
+    if old_consensus_evidence:
+        lines.append("### 旧共识复核（背景，不驱动仓位）")
+        lines.append("")
+        lines.append("| 方向 | 主题 | 日期 | 证据 | 层级 | 为什么降权 |")
+        lines.append("|---|---|---|---|---|---|")
+        for row in old_consensus_evidence:
+            item = row["item"]
+            layer = f"{evidence_tier_label(row.get('tier'))}/{evidence_scope_label(row.get('scope'))}/{evidence_strength_label(row.get('strength'))}"
+            lines.append(
+                f"| {row['direction']} | {row['theme']} | {format_date(item.get('published'))} | "
+                f"[{md_escape(item.get('title'))}]({item.get('link')}) | {md_escape(layer)} | {md_escape(', '.join(row['tags']) or 'old consensus')} |"
+            )
+        lines.append("")
 
     lines.extend(render_kol_watch(kol_watch))
 
@@ -3261,18 +3402,23 @@ def build_report(config, by_theme, market_rows, discovery_candidates, discovery_
     lines.append("## 持仓映射")
     lines.append("")
     for holding in config.get("holdings", []):
-        own_row = market_by_quote.get(holding.get("quote") or holding.get("ticker"), {})
+        quote = holding.get("quote") or holding.get("ticker")
+        own_row = market_by_quote.get(quote, {})
         own_returns = own_row.get("returns", {})
         own_crowding = combined_crowding(own_row) if own_row else "无行情"
-        linked = []
-        for theme_id in holding["themes"]:
-            row = next((row for row in theme_rows if row["theme"]["id"] == theme_id), None)
-            if row:
-                linked.append(f"{row['theme']['name']}={row['layer']}/{row['signal']}/{row['market_state']}")
-        linked_text = "; ".join(linked) if linked else "无明确 AI 直接映射"
+        if quote in ("300308.SZ", "002463.SZ", "688008.SS"):
+            implication = "AI 硬件主线映射明确，但本轮只有新增订单、涨价、毛利率或盈利预测上修才算有效增量；旧共识复述只提高拥挤度警惕。"
+        elif quote == "300750.SZ":
+            implication = "AI 电力/储能是加分项，核心仍是电池、储能和电力设备基本面，不能机械当作纯 AI capex beta。"
+        elif quote in ("0700.HK", "1024.HK"):
+            implication = "更偏 AI 应用/ROI，关键是 AI 是否转成广告、内容、云或工具收入和利润，硬件 capex 新闻只能间接影响估值偏好。"
+        elif quote == "0300.HK":
+            implication = "白电/工业自动化的 AI 相关度弱于硬件主线，按消费、出海和效率改善主线看，AI 只作边际效率变量。"
+        else:
+            implication = "AI 直接映射不强，按原本基本面框架和风险预算处理。"
         lines.append(
-            f"- **{holding['name']} ({holding['ticker']})**：自身={own_crowding} "
-            f"(3M {fmt_pct(own_returns.get('3M'))}, 1Y {fmt_pct(own_returns.get('1Y'))})；相关主题：{linked_text}"
+            f"- **{holding['name']} ({quote})**：拥挤度={own_crowding} "
+            f"(3M {fmt_pct(own_returns.get('3M'))}, 1Y {fmt_pct(own_returns.get('1Y'))})。{implication}"
         )
     lines.append("")
 
@@ -3361,6 +3507,8 @@ def build_readthrough(config, by_theme, market_rows, discovery_topics, report_is
     macro = ai_capex_macro_view(by_theme)
     macro_market = macro_market_dashboard()
     market_by_quote = {row.get("quote"): row for row in market_rows}
+    front_evidence = evidence_table_rows(by_theme, limit=6, bucket="new_delta")
+    old_consensus_evidence = evidence_table_rows(by_theme, limit=4, bucket="old_consensus")
     lines = []
     lines.append(f"# AI Capex Radar Readthrough - {report_issued_at:%Y-%m-%d}")
     lines.append("")
@@ -3371,23 +3519,16 @@ def build_readthrough(config, by_theme, market_rows, discovery_topics, report_is
     lines.append("## 一句话")
     lines.append("")
     lines.append(
-        "今天不是“AI capex 全面重新上修”的日子，而是 Dell 把 AI server 需求韧性又确认了一次。"
-        "这对服务器、光模块、PCB、内存接口是利好，但这些方向很多已经很拥挤；同时利率和项目融资成本在变贵，"
-        "所以市场会更挑剔：只奖励真正继续超预期的公司。"
+        "这版 readthrough 不再把旧 AI server 标题当作新结论。先看上次更新后新增的公司披露、新闻和 KOL/舆情，"
+        "再判断它们是否改变订单、价格、交付、盈利预测或资金成本。旧共识只用于衡量拥挤度，不直接推导加仓。"
     )
     lines.append("")
 
     lines.append("## 今天真正更新了什么")
     lines.append("")
-    dell_items = [
-        item for item in by_theme.get("ai_capex", [])
-        if "dell" in normalize_text(item) and any(term in normalize_text(item) for term in ["server", "backlog", "guidance", "revenue", "record"])
-    ]
-    if dell_items:
-        item = dell_items[0]
-        lines.append(f"- **Dell 事件**：Dell AI server 相关业绩、订单/积压和指引进入本轮窗口。来源：[{md_escape(item.get('title'))}]({item.get('link')})。")
-    else:
-        lines.append("- **Dell 事件**：本轮没有抓到足够强的 Dell/AI server 新证据。")
+    lines.append(f"- **新增 delta**：{evidence_rows_summary(front_evidence, '本轮新增证据强度不足，不能靠旧共识推导仓位变化。')}")
+    if old_consensus_evidence:
+        lines.append(f"- **旧共识/拥挤度**：{evidence_rows_summary(old_consensus_evidence, '')}。这些说明市场叙事热，但不是本轮新的二级 signal。")
     lines.append(f"- **需求侧判断**：{macro['stance']}。这更像“{macro['consensus_delta']}”，不是全市场共识被大幅改写。")
     lines.append(f"- **资金侧判断**：{macro_market['verdict']}。{macro_market['message']}")
     lines.append("- **信用利差**：IG/HY OAS 当前没有明显恶化，说明短期不是信用市场关门；压力主要来自国债利率和估值拥挤。")
@@ -3411,9 +3552,9 @@ def build_readthrough(config, by_theme, market_rows, discovery_topics, report_is
 
     lines.append("## 应该怎么看供应链")
     lines.append("")
-    lines.append("- **AI server / optical / PCB**：Dell 是正面验证，但这些已经是 Hot Consensus。正确动作是复核订单和盈利预测是否继续上修，不是因为新闻标题就全链条追高。")
-    lines.append("- **HBM / memory / retimer**：产业逻辑仍强，但本窗口没有同等级的新确认；更适合等财报、价格、交期和订单数据。")
-    lines.append("- **Power / cooling / grid**：逻辑不是“今天 Dell 利好所以全涨”，而是数据中心建设继续推高 power availability 的稀缺性。现在新增的 CEG/VST/NEE 可以作为电力侧观察 proxy。")
+    lines.append("- **AI server / optical / PCB**：方向仍在主线，但多数已是 Hot Consensus。正确动作是复核订单、价格、交付和盈利预测是否继续上修，不是看到旧标题就全链条追高。")
+    lines.append("- **HBM / memory / retimer**：如果新增证据落在涨价、缺货、交期拉长或客户订单，这才是二级市场有效增量；单纯复述 AI 内存需求强只能作背景。")
+    lines.append("- **Power / cooling / grid**：重点不是某个服务器新闻外溢，而是 power availability、grid interconnection、gas/nuclear/utility 合同是否变成项目约束或订单。")
     lines.append("- **Data center REIT**：EQIX/DLR 可以看需求是否真的转成租金/开发收益，但估值已经不便宜，且对长端利率敏感。")
     lines.append("- **AI applications / ROI**：这是 capex 能否长期持续的最终答案。腾讯、快手、Microsoft、ServiceNow 这类要看 AI 是否带来收入，而不是只看投入。")
     lines.append("")
@@ -3426,7 +3567,7 @@ def build_readthrough(config, by_theme, market_rows, discovery_topics, report_is
         returns = row.get("returns", {})
         crowding = combined_crowding(row) if row else "无行情"
         if quote in ("300308.SZ", "002463.SZ", "688008.SS"):
-            implication = "主线逻辑被 Dell 支撑，但自身已高拥挤，后面必须靠订单/利润继续兑现。"
+            implication = "仍是 AI 硬件主线映射，但若新增证据只是旧共识复述，不能单独支持加仓；后面必须靠订单、价格、毛利率或盈利预测继续兑现。"
         elif quote in ("0700.HK", "1024.HK"):
             implication = "更偏 ROI/应用侧，关键是 AI 是否真正带来收入和利润，而不是 capex 本身。"
         elif quote == "300750.SZ":
@@ -3440,7 +3581,7 @@ def build_readthrough(config, by_theme, market_rows, discovery_topics, report_is
 
     lines.append("## 下一步要盯什么")
     lines.append("")
-    lines.append("- Hyperscaler 是否跟随 Dell 出现更强 capex / backlog / data center capacity 上修。")
+    lines.append("- Hyperscaler 是否出现新的 capex / backlog / data center capacity 上修，而不是旧订单新闻重复流通。")
     lines.append("- SOX、光模块、PCB、内存接口代表票是否继续涨但盈利预测没有同步上修。")
     lines.append("- US 5Y/10Y/30Y 是否继续上行；如果继续上行，高估值和 REIT/utility 会更敏感。")
     lines.append("- IG/HY OAS 是否开始走阔；如果走阔，说明融资压力从利率扩散到信用风险。")

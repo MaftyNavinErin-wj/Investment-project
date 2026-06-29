@@ -14,6 +14,7 @@ $runnerReferenceLocal = Join-Path $projectRoot "bloomberg\run_bloomberg_referenc
 $runnerFullLocal = Join-Path $projectRoot "bloomberg\run_bloomberg_full.ps1"
 $runnerFieldSearchLocal = Join-Path $projectRoot "bloomberg\run_bloomberg_field_search.ps1"
 $runnerVolatilityLocal = Join-Path $projectRoot "bloomberg\run_bloomberg_volatility_update.ps1"
+$runnerComprehensiveLocal = Join-Path $projectRoot "bloomberg\run_bloomberg_comprehensive_update.ps1"
 $runnerCommonLocal = Join-Path $projectRoot "bloomberg\run_bloomberg_common.ps1"
 $snapshotLocal = Join-Path $projectRoot "data\bloomberg_snapshot_latest.json"
 $historyLocal = Join-Path $projectRoot "data\bloomberg_history_latest.json"
@@ -27,6 +28,7 @@ $runnerReferenceShare = Join-Path $Share "run_bloomberg_reference.ps1"
 $runnerFullShare = Join-Path $Share "run_bloomberg_full.ps1"
 $runnerFieldSearchShare = Join-Path $Share "run_bloomberg_field_search.ps1"
 $runnerVolatilityShare = Join-Path $Share "run_bloomberg_volatility_update.ps1"
+$runnerComprehensiveShare = Join-Path $Share "run_bloomberg_comprehensive_update.ps1"
 $runnerCommonShare = Join-Path $Share "run_bloomberg_common.ps1"
 $snapshotShare = Join-Path $Share "bloomberg_snapshot_latest.json"
 $historyShare = Join-Path $Share "bloomberg_history_latest.json"
@@ -64,8 +66,9 @@ function Push-BloombergFiles {
     Copy-Item -LiteralPath $runnerFullLocal -Destination $runnerFullShare -Force
     Copy-Item -LiteralPath $runnerFieldSearchLocal -Destination $runnerFieldSearchShare -Force
     Copy-Item -LiteralPath $runnerVolatilityLocal -Destination $runnerVolatilityShare -Force
+    Copy-Item -LiteralPath $runnerComprehensiveLocal -Destination $runnerComprehensiveShare -Force
     Copy-Item -LiteralPath $runnerCommonLocal -Destination $runnerCommonShare -Force
-    Show-ItemStatus @($requestShare, $exporterShare, $runnerReferenceShare, $runnerFullShare, $runnerFieldSearchShare, $runnerVolatilityShare, $runnerCommonShare)
+    Show-ItemStatus @($requestShare, $exporterShare, $runnerReferenceShare, $runnerFullShare, $runnerFieldSearchShare, $runnerVolatilityShare, $runnerComprehensiveShare, $runnerCommonShare)
 }
 
 function Pull-BloombergLatest {
@@ -87,7 +90,7 @@ function Pull-BloombergLatest {
 switch ($Mode) {
     "Status" {
         Test-Share
-        Show-ItemStatus @($requestShare, $exporterShare, $runnerVolatilityShare, $snapshotShare, $historyShare, $newsShare, $fieldSearchShare, $fieldInfoShare, $requestLocal, $exporterLocal, $runnerVolatilityLocal, $snapshotLocal, $historyLocal, $newsLocal, $fieldSearchLocal, $fieldInfoLocal)
+        Show-ItemStatus @($requestShare, $exporterShare, $runnerVolatilityShare, $runnerComprehensiveShare, $snapshotShare, $historyShare, $newsShare, $fieldSearchShare, $fieldInfoShare, $requestLocal, $exporterLocal, $runnerVolatilityLocal, $runnerComprehensiveLocal, $snapshotLocal, $historyLocal, $newsLocal, $fieldSearchLocal, $fieldInfoLocal)
     }
     "Push" {
         Push-BloombergFiles

@@ -53,7 +53,7 @@ Optional status check:
 Inside Bloomberg VDI, while Bloomberg Terminal is logged in, run:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File "\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie\run_bloomberg_full.ps1"
+powershell -ExecutionPolicy Bypass -File "\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie\run_bloomberg_comprehensive_update.ps1"
 ```
 
 If script execution is still blocked, bypass the runner and call Python directly:
@@ -68,6 +68,7 @@ Expected outputs on the shared drive:
 - `bloomberg_snapshot_latest.json`
 - `bloomberg_history_latest.json`
 - dated archive copies for both files
+- `run_bloomberg_comprehensive_update_YYYYMMDD_HHMMSS.log`
 
 Bloomberg News is best-effort and may remain stale because the current VDI API session has not reliably exposed Bloomberg News search.
 

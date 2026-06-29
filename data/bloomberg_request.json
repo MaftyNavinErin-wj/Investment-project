@@ -15,6 +15,9 @@
     "PX_TO_BOOK_RATIO",
     "CURR_ENTP_VAL",
     "TRAIL_12M_EPS",
+    "BEST_EPS",
+    "BEST_SALES",
+    "BEST_TARGET_PRICE",
     "VOLUME",
     "VOLUME_AVG_30D",
     "EQY_FREE_FLOAT_PCT",
@@ -134,8 +137,8 @@
     },
     {
       "name": "美的集团",
-      "quote": "000333.SZ",
-      "security": "000333 CH Equity"
+      "quote": "0300.HK",
+      "security": "300 HK Equity"
     },
     {
       "name": "快手-W",
@@ -218,6 +221,16 @@
       "security": "DELL US Equity"
     },
     {
+      "name": "Super Micro Computer",
+      "quote": "SMCI",
+      "security": "SMCI US Equity"
+    },
+    {
+      "name": "Hewlett Packard Enterprise",
+      "quote": "HPE",
+      "security": "HPE US Equity"
+    },
+    {
       "name": "NVIDIA",
       "quote": "NVDA",
       "security": "NVDA US Equity"
@@ -273,6 +286,21 @@
       "security": "PWR US Equity"
     },
     {
+      "name": "Schneider Electric",
+      "quote": "SU",
+      "security": "SU FP Equity"
+    },
+    {
+      "name": "Hon Hai Precision",
+      "quote": "2317.TW",
+      "security": "2317 TT Equity"
+    },
+    {
+      "name": "Delta Electronics",
+      "quote": "2308.TW",
+      "security": "2308 TT Equity"
+    },
+    {
       "name": "Micron",
       "quote": "MU",
       "security": "MU US Equity"
@@ -321,6 +349,16 @@
       "name": "Credo",
       "quote": "CRDO",
       "security": "CRDO US Equity"
+    },
+    {
+      "name": "Arista Networks",
+      "quote": "ANET",
+      "security": "ANET US Equity"
+    },
+    {
+      "name": "Astera Labs",
+      "quote": "ALAB",
+      "security": "ALAB US Equity"
     },
     {
       "name": "GE Vernova",

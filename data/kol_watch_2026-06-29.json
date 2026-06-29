@@ -1,0 +1,82 @@
+{
+  "date": "2026-06-29",
+  "scope": "外部 KOL / 市场叙事 idea feed，用来交叉验证 AI capex 框架和拥挤度；不作为买卖建议，也不替代公司公告、Bloomberg 数据、订单和盈利预测。",
+  "method": "补充检查 2026-06-17 至 2026-06-29 的 YouTube 元数据，重点搜索 CNBC/Cramer、Bloomberg Technology、AI capex、data center、Nvidia、Oracle、CoreWeave、Dell/HPE/Supermicro、power/cooling 和 AI software ROI。未发现新的高质量官方 CNBC/Cramer 片段足以改变框架；保留 Bloomberg Television/Technology 的市场叙事样本作为 crowding 和 narrative check。",
+  "coverage_note": "本轮 KOL 结论不是对全网视频的穷尽覆盖。搜索结果主要集中在 Bloomberg 节目和少量二次剪辑；FinVid 等二次搬运仅作发现线索，不作为结论依据。",
+  "framework_takeaway": {
+    "stance": "6 月 17 日之后，外部叙事没有推翻 AI capex 主线，但明显更强调“AI optimism 与 tech volatility 同时存在”。Micron/AI memory 带动的乐观和 OpenAI/AI 软件商业化讨论，说明需求叙事仍在；但 AI wake-up call、tech selloff、OpenAI IPO/估值讨论说明市场继续要求盈利、现金流和上修兑现。",
+    "report_use": "报告中把 KOL 段落用于拥挤度和叙事校验：AI server、光模块、PCB、内存接口、HBM/DRAM 仍是强主线，但高拥挤标的只能靠订单、毛利、产能利用率和 EPS revision 继续证明。KOL 热度不能直接支持追高；若叙事转向 ROI/融资/估值压力，先提高仓位纪律，而不是否定产业趋势。"
+  },
+  "sources": [
+    {
+      "source": "Bloomberg Technology - OpenAI Weighs IPO in 2027",
+      "url": "https://www.youtube.com/watch?v=1f6BeloOdgQ",
+      "note": "YouTube 元数据，Bloomberg Technology，上传日期 2026-06-26。用于观察 AI 应用/模型公司商业化和估值叙事，不作为公司级证据。"
+    },
+    {
+      "source": "Bloomberg Television - Micron Soars After AI-Fueled Forecast Shatters Estimates",
+      "url": "https://www.youtube.com/watch?v=xlDUn47hT3s",
+      "note": "YouTube 元数据，Bloomberg Television，上传日期 2026-06-25。用于观察 AI memory/HBM 叙事热度，不替代 Micron 官方财报和 Bloomberg 市场数据。"
+    },
+    {
+      "source": "Bloomberg Television - Stocks Slide as Wall Street Gets AI Wake-up Call",
+      "url": "https://www.youtube.com/watch?v=nqbNv5bZww4",
+      "note": "YouTube 元数据，Bloomberg Television，上传日期 2026-06-23。用于观察 AI 交易拥挤度和估值重定价叙事。"
+    },
+    {
+      "source": "Bloomberg Television - Apple Prices Climb and the AI Trade Roars Back",
+      "url": "https://www.youtube.com/watch?v=pmez4S_ChLg",
+      "note": "YouTube 元数据，Bloomberg Television，上传日期 2026-06-25。用于观察 AI beta 反弹叙事和市场风险偏好。"
+    }
+  ],
+  "items": [
+    {
+      "person": "Market narrative / Bloomberg Technology",
+      "program": "Bloomberg Technology",
+      "date": "2026-06-26",
+      "topic": "OpenAI Weighs IPO in 2027",
+      "source_url": "https://www.youtube.com/watch?v=1f6BeloOdgQ",
+      "tickers": ["MSFT", "NVDA", "ORCL", "CRWV"],
+      "view": "AI 模型和应用公司的估值、IPO 与商业化讨论继续升温，说明市场没有放弃 AI demand/ROI 叙事，但正在把注意力从纯 capex 扩张转向收入、现金流和退出路径。",
+      "framework_mapping": ["AI Applications / ROI", "AI Capex Financing", "Valuation / Crowding", "Software Monetization"],
+      "cross_check": "这与报告框架一致：AI capex 需求仍强，但资本市场开始要求应用端收入和融资闭环来证明硬件投入的回报。",
+      "a_share_readthrough": "对腾讯、快手的含义是继续看 AI 应用商业化和成本纪律，而不是仅因 OpenAI/模型公司估值热度就上调中国应用侧仓位。"
+    },
+    {
+      "person": "Market narrative / Bloomberg Television",
+      "program": "Bloomberg Television",
+      "date": "2026-06-25",
+      "topic": "Micron Soars After AI-Fueled Forecast Shatters Estimates",
+      "source_url": "https://www.youtube.com/watch?v=xlDUn47hT3s",
+      "tickers": ["MU", "WDC", "000660.KS", "688008.SS"],
+      "view": "AI memory/HBM 叙事继续很强，Micron 相关市场讨论显示 memory wall 仍是投资人愿意追踪的核心瓶颈。",
+      "framework_mapping": ["HBM", "DRAM / NAND / Enterprise SSD", "Memory Interface / Retimer / CXL", "Earnings Revision"],
+      "cross_check": "这强化 memory 链条仍处在强需求验证期，但也说明 HBM/存储/内存接口已经不是冷门方向，必须看盈利预测和订单继续上修。",
+      "a_share_readthrough": "对澜起科技是正面背景，但当前股价和估值已经高拥挤，只有 MRCD/RCD/Retimer/CXL 收入和毛利继续兑现，才支持加仓。"
+    },
+    {
+      "person": "Market narrative / Bloomberg Television",
+      "program": "Bloomberg Television",
+      "date": "2026-06-23",
+      "topic": "Stocks Slide as Wall Street Gets AI Wake-up Call",
+      "source_url": "https://www.youtube.com/watch?v=nqbNv5bZww4",
+      "tickers": ["NVDA", "AVGO", "ANET", "ALAB"],
+      "view": "AI 交易出现波动和再定价讨论，外部叙事从“AI 一直涨”转向“强主线也会因为估值、兑现和资金成本波动”。",
+      "framework_mapping": ["AI Hardware Crowding", "Valuation / Crowding", "Macro Risk", "Earnings Revision"],
+      "cross_check": "这不等于 AI 需求被证伪，而是说明高 beta 硬件链需要更严格地区分产业强度和交易拥挤度。",
+      "a_share_readthrough": "对中际旭创、沪电股份、澜起科技的含义是降低追高容忍度；持有可以，但新增仓位要等订单/盈利上修或回调后的赔率。"
+    },
+    {
+      "person": "Market narrative / Bloomberg Television",
+      "program": "Bloomberg Television",
+      "date": "2026-06-25",
+      "topic": "Apple Prices Climb and the AI Trade Roars Back",
+      "source_url": "https://www.youtube.com/watch?v=pmez4S_ChLg",
+      "tickers": ["AAPL", "NVDA", "MU", "SOX"],
+      "view": "AI beta 仍能快速修复，说明市场风险偏好没有崩；但“roars back”本身也提示交易热度高，不能把反弹直接等同于新低拥挤机会。",
+      "framework_mapping": ["AI Equity Beta", "Risk Appetite", "Semiconductor Crowding", "Momentum"],
+      "cross_check": "这支持本轮报告的基调：产业趋势仍强，市场表现也强，但 alpha 来自兑现差和细分瓶颈，不来自笼统追 AI beta。",
+      "a_share_readthrough": "A 股 AI 硬件链仍可持有核心强票，但仓位管理应以拥挤度和业绩验证为先；低拥挤观察池仍需要公司级证据。"
+    }
+  ]
+}

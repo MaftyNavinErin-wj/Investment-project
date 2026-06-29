@@ -47,6 +47,7 @@ The sync also writes VDI runner scripts to the shared-drive folder:
 - `run_bloomberg_reference.ps1`
 - `run_bloomberg_full.ps1`
 - `run_bloomberg_field_search.ps1`
+- `run_bloomberg_comprehensive_update.ps1`
 
 ## Pull Latest Data Back
 
@@ -73,13 +74,19 @@ To check timestamps and file sizes without copying:
 In Bloomberg VDI, run the exporter by full UNC path. This does not require changing the current directory:
 
 ```powershell
-& "\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie\run_bloomberg_reference.ps1"
+powershell -ExecutionPolicy Bypass -File "\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie\run_bloomberg_comprehensive_update.ps1"
 ```
 
 If PowerShell returns `running scripts is disabled on this system`, use a one-time execution-policy bypass:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File "\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie\run_bloomberg_full.ps1"
+```
+
+The comprehensive runner performs preflight checks, runs the full reference and history export, prints output file status, validates the latest JSON files, and writes a timestamped log in the shared-drive folder. To additionally run the best-effort Bloomberg News diagnostic probe:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File "\\primavera.local\primavera.local\shared\Beijing\Shared Documentation\bloomberg\Jie\run_bloomberg_comprehensive_update.ps1" -NewsProbe
 ```
 
 For reference-only:

@@ -235,6 +235,14 @@
           "quote": "DELL"
         },
         {
+          "name": "Super Micro Computer",
+          "quote": "SMCI"
+        },
+        {
+          "name": "Hewlett Packard Enterprise",
+          "quote": "HPE"
+        },
+        {
           "name": "Foxconn Industrial Internet",
           "quote": "601138.SS"
         },
@@ -436,6 +444,14 @@
         {
           "name": "Credo",
           "quote": "CRDO"
+        },
+        {
+          "name": "Arista Networks",
+          "quote": "ANET"
+        },
+        {
+          "name": "Astera Labs",
+          "quote": "ALAB"
         }
       ]
     },
@@ -458,6 +474,18 @@
         {
           "name": "Eaton",
           "quote": "ETN"
+        },
+        {
+          "name": "Schneider Electric",
+          "quote": "SU"
+        },
+        {
+          "name": "Hon Hai Precision",
+          "quote": "2317.TW"
+        },
+        {
+          "name": "Delta Electronics",
+          "quote": "2308.TW"
         },
         {
           "name": "Kehua Data",
@@ -1188,8 +1216,8 @@
       ]
     },
     {
-      "ticker": "000333.SZ",
-      "name": "美的集团",
+      "ticker": "0300.HK",
+      "name": "美的集团 H",
       "severity": "orange",
       "trigger": "扣非利润、现金流或海外业务连续恶化。",
       "action": "复核底仓逻辑，避免把防守仓误拿成成长仓。",
@@ -1254,9 +1282,10 @@
       "logic": "中国互联网核心资产，AI 应用、广告、游戏和云的商业化决定估值修复空间。"
     },
     {
-      "ticker": "000333.SZ",
-      "quote": "000333.SZ",
-      "name": "美的集团",
+      "ticker": "0300.HK",
+      "quote": "0300.HK",
+      "security": "300 HK Equity",
+      "name": "美的集团 H",
       "themes": [],
       "logic": "现金流和分红底仓。暂不把它机械映射到 AI power/cooling，除非后续看到数据中心热管理、楼宇能源或工业技术订单的明确证据。"
     },
@@ -1569,6 +1598,48 @@
         "ai_capex"
       ],
       "reason": "AI infrastructure platform 和融资型算力扩张代表票，重点看收入增长、债务和客户集中度。"
+    },
+    {
+      "name": "Super Micro Computer",
+      "quote": "SMCI",
+      "themes": [
+        "ai_capex"
+      ],
+      "reason": "AI server backlog、融资和交付节奏代表票，用来交叉验证 Dell/HPE 服务器链条。"
+    },
+    {
+      "name": "Hewlett Packard Enterprise",
+      "quote": "HPE",
+      "themes": [
+        "ai_capex"
+      ],
+      "reason": "AI server 和企业服务器供给链代表票，重点看 backlog、毛利和内存/交付瓶颈。"
+    },
+    {
+      "name": "Schneider Electric",
+      "quote": "SU",
+      "themes": [
+        "power_cooling"
+      ],
+      "reason": "critical power、模块化数据中心和配电链条代表票，验证 AI data center 电力瓶颈是否继续外溢。"
+    },
+    {
+      "name": "Arista Networks",
+      "quote": "ANET",
+      "themes": [
+        "networking_optics",
+        "ai_capex"
+      ],
+      "reason": "AI cluster Ethernet/networking 代表票，验证网络侧 capex 是否继续强于普通服务器。"
+    },
+    {
+      "name": "Astera Labs",
+      "quote": "ALAB",
+      "themes": [
+        "networking_optics",
+        "emerging_second_order"
+      ],
+      "reason": "PCIe/CXL connectivity 代表票，跟踪内存墙、Retimer 和高速互连瓶颈的市场定价。"
     },
     {
       "name": "Equinix",

@@ -29,12 +29,24 @@ KEY_MACRO = [
 
 FOCUS_QUOTES = [
     "DELL",
+    "SMCI",
+    "HPE",
+    "NVDA",
+    "AVGO",
+    "AMD",
+    "MRVL",
+    "ARM",
     "MU",
     "WDC",
+    "ANET",
+    "ALAB",
     "COHR",
     "LITE",
     "VRT",
     "ETN",
+    "SU",
+    "2317.TW",
+    "2308.TW",
     "PWR",
     "GEV",
     "FCX",
@@ -54,6 +66,7 @@ FOCUS_QUOTES = [
     "0700.HK",
     "1024.HK",
     "300750.SZ",
+    "0300.HK",
 ]
 
 HOLDINGS = [
@@ -62,17 +75,11 @@ HOLDINGS = [
     "002463.SZ",
     "688008.SS",
     "0700.HK",
-    "000333.SZ",
+    "0300.HK",
     "1024.HK",
 ]
 
-MISSING_TRIGGER_TICKERS = [
-    ("NVDA", "NVDA US Equity"),
-    ("AVGO", "AVGO US Equity"),
-    ("AMD", "AMD US Equity"),
-    ("MRVL", "MRVL US Equity"),
-    ("ARM", "ARM US Equity"),
-]
+MISSING_TRIGGER_TICKERS = []
 
 
 def load_json(name):
@@ -360,14 +367,19 @@ def build_report():
             "- 第三优先级是分层买回：核心订单/盈利可见度强的票等恐慌释放后分批；纯估值扩张、主题补涨和二阶弱映射先不接。",
             "- A 股映射上，光模块、PCB、内存接口仍是产业主线，但当前很多票已经是高拥挤，后续必须靠订单、毛利率和盈利预测继续上修来消化估值。",
             "- 应用/ROI 方向相对不是本轮下跌核心，但如果硬件链调整，市场可能重新追问 AI 投入回报，腾讯、快手这类应看 AI 是否转成收入和利润，而不是只看 capex。",
-            "",
-            "## 数据缺口",
-            "",
-            "这次 Bloomberg request 当前没有纳入以下触发源单票："
-            + "、".join(f"{quote} ({security})" for quote, security in MISSING_TRIGGER_TICKERS)
-            + "。本报告已用 SOX/NDX 和已有供应链票覆盖外围冲击；若要把 Broadcom/Nvidia/AMD/Marvell/ARM 单票纳入下一版表格，需要补 request 后再跑一次 VDI。",
         ]
     )
+    if MISSING_TRIGGER_TICKERS:
+        lines.extend(
+            [
+                "",
+                "## 数据缺口",
+                "",
+                "这次 Bloomberg request 当前没有纳入以下触发源单票："
+                + "、".join(f"{quote} ({security})" for quote, security in MISSING_TRIGGER_TICKERS)
+                + "。本报告已用 SOX/NDX 和已有供应链票覆盖外围冲击；若要把缺口单票纳入下一版表格，需要补 request 后再跑一次 VDI。",
+            ]
+        )
 
     return "\n".join(lines)
 
